@@ -45,6 +45,15 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
 
     Dictionary<int, int> lookupPixelSegment = new Dictionary<int, int>();
 
+    int[] closestPointsInSegments;
+
+    int[] closestPointsStartArray;
+
+    int[] lastClosestPointsInSegments;
+
+    [SerializeField] int heightSegments = 2;
+    [SerializeField] int widthSegments = 2;
+
     ////
 
 
@@ -112,6 +121,16 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
             depthHistBufferData = new int[DepthSensorBase.MAX_DEPTH_DISTANCE_MM + 1];
             equalHistBufferData = new int[DepthSensorBase.MAX_DEPTH_DISTANCE_MM + 1];
 
+            /// Trigger
+
+            CreatePixelSegmentLookup(depthImageTexture.width, depthImageTexture.height);
+
+            closestPointsStartArray = CreateClosestPointsStartArray();
+
+            closestPointsInSegments = CreateClosestPointsStartArray();
+
+            lastClosestPointsInSegments = CreateClosestPointsStartArray();
+
 
 
         }
@@ -155,6 +174,8 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
     }
 
 
+
+
     void Update()
     {
         if (kinectManager && kinectManager.IsInitialized() && sensorData != null)
@@ -185,6 +206,8 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
                 print("trigger changing end");
             }
         }
+
+        
 
     }
 
@@ -220,19 +243,29 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
 
             int frameLen = sensorData.colorCamDepthImage.Length;
 
-            print("ColorCamDepthImageLength: " + frameLen);
-            print("depthImagePixels: " + depthImageTexture.height * depthImageTexture.width);
+            
 
 
 
            
-            nearestPointDistance = depthMaxDistance;
+            //nearestPointDistance = depthMaxDistance;
+
+            //closestPointsInSegments = closestPointsStartArray;
+
+            for (int i = 0; i < closestPointsInSegments.Length; i++)
+            {
+                closestPointsInSegments[i] = depthMaxDistance;
+            }
+
+            nearestDistanceChanging = false;
             
 
             for (int i = 0; i < frameLen; i++)
             {
                 int depth = sensorData.colorCamDepthImage[i];
                 int limDepth = (depth <= DepthSensorBase.MAX_DEPTH_DISTANCE_MM) ? depth : 0;
+
+                int currentTriggerSegment = lookupPixelSegment[i];
 
                 if (limDepth > 0)
                 {
@@ -241,10 +274,16 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
 
                     ////Trigger: Capture nearest Point of Loop
 
-        
-                    if (limDepth < nearestPointDistance)
+                    // if (limDepth < nearestPointDistance)
+                    // {
+                    //     nearestPointDistance = limDepth;
+                    // }
+
+                    // SegmentTrigger
+
+                    if(limDepth < closestPointsInSegments[currentTriggerSegment])
                     {
-                        nearestPointDistance = limDepth;
+                        closestPointsInSegments[currentTriggerSegment] = limDepth;
                     }
 
                 }
@@ -252,24 +291,54 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
 
             /// Trigger
 
-            if (Mathf.Abs(nearestPointDistance - lastNearestPointDistance) > distChangeThreshold)
-            {
-                nearestDistanceChanging = true;
-                lastNearestPointDistance = nearestPointDistance;
+            // if (Mathf.Abs(nearestPointDistance - lastNearestPointDistance) > distChangeThreshold)
+            // {
+            //     nearestDistanceChanging = true;
+            //     lastNearestPointDistance = nearestPointDistance;
                 
-                //changingBar = Mathf.Clamp01(changingBar += Time.deltaTime * triggerSensitivityIn);
-                changingBar = Mathf.Lerp(changingBar, 1f, Time.deltaTime * triggerDelayIn);
+            //     //changingBar = Mathf.Clamp01(changingBar += Time.deltaTime * triggerSensitivityIn);
+            //     changingBar = Mathf.Lerp(changingBar, 1f, Time.deltaTime * triggerDelayIn);
 
                 
+            // }
+
+            // else
+            // {
+            //     nearestDistanceChanging = false;
+
+            //     //changingBar = Mathf.Clamp01(changingBar -= Time.deltaTime * triggerSensitivityOut);
+            //     changingBar = Mathf.Lerp(changingBar, 0f, Time.deltaTime * triggerDelayOut);
+                
+            // }
+
+            /// Segment Trigger
+
+            
+
+            for (int j = 0; j < closestPointsInSegments.Length; j++)
+            {
+                
+                if (Mathf.Abs(closestPointsInSegments[j] - lastClosestPointsInSegments[j]) > distChangeThreshold)
+                {
+                    nearestDistanceChanging = true;
+                    lastClosestPointsInSegments[j] = closestPointsInSegments[j];
+                }
+
+                else
+                {
+                    
+                }
+
+            }
+
+            if(nearestDistanceChanging)
+            {
+                changingBar = Mathf.Lerp(changingBar, 1f, Time.deltaTime * triggerDelayIn);
             }
 
             else
             {
-                nearestDistanceChanging = false;
-
-                //changingBar = Mathf.Clamp01(changingBar -= Time.deltaTime * triggerSensitivityOut);
                 changingBar = Mathf.Lerp(changingBar, 0f, Time.deltaTime * triggerDelayOut);
-                
             }
 
             
@@ -321,6 +390,46 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
         }
 
 
+    }
+
+    private void CreatePixelSegmentLookup(int imageWidth, int imageHeight)
+    {
+
+        int segmentHeight = imageHeight / heightSegments; // height of each segment
+        int segmentWidth = imageWidth / widthSegments; // width of each segment
+
+        // Check if the image height and width are evenly divisible by the number of segments
+        if (imageHeight % heightSegments != 0 || imageWidth % widthSegments != 0)
+        {
+            Debug.LogError("The image dimensions are not evenly divisible by the number of segments. This can cause Problems");
+        }
+
+        int totalPixels = imageHeight * imageWidth;
+        for (int i = 0; i < totalPixels; i++)
+        {
+            int row = i / imageWidth; // calculate row of the pixel
+            int col = i % imageWidth; // calculate column of the pixel
+
+            int segmentRow = row / segmentHeight; // calculate segment row
+            int segmentCol = col / segmentWidth; // calculate segment column
+
+            // calculate unique segment number
+            int segmentNumber = segmentRow * widthSegments + segmentCol;
+
+            lookupPixelSegment.Add(i, segmentNumber);
+        }
+    }
+
+    
+
+    int[] CreateClosestPointsStartArray()
+    {
+        int[] newArray = new int[heightSegments * widthSegments];
+        for (int i = 0; i < newArray.Length; i++)
+        {
+            newArray[i] = 10000;
+        }
+        return newArray;
     }
 }
 
