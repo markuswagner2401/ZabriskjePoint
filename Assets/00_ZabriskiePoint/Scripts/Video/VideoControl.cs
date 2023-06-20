@@ -2,16 +2,22 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Video;
 
+
+
 public class VideoControl : MonoBehaviour
 {
+
+
     public enum SequenceBehaviour
     {
         PlayFirstVideoOfSequence,
         PlayRandomVideoOfSequence,
         PlayNextVideoOfSequence,
+        PlayNamedVideoOfSequence
     }
 
-    
+
+
 
     public enum ClipEndBehaviour
     {
@@ -28,10 +34,9 @@ public class VideoControl : MonoBehaviour
         public VideoClip videoClip;
         public float fadeInDuration;
         public AnimationCurve animationCurve;
-
-        
-        
         public ClipEndBehaviour clipEndBehaviour;
+
+
     }
 
     [System.Serializable]
@@ -42,7 +47,9 @@ public class VideoControl : MonoBehaviour
         public int currentFaderIndex;
     }
 
-    private int currentSequenceIndex = 0;
+
+
+    [SerializeField] private int currentSequenceIndex = 0;
 
     [SerializeField] private VideoSequence[] videoSequences;
 
@@ -50,51 +57,91 @@ public class VideoControl : MonoBehaviour
     public VideoPlayer videoPlayerA;
     public VideoPlayer videoPlayerB;
 
-    private Coroutine blendCoroutine;
+
     private bool isBlendingTransition;
+
+    int targetBlend = 0; // 0 for targeting VideoPlayerA, 1 for targeting VideoPlayerB
+
+    bool interrupted = false;
 
 
     /// public methods (to be used by UnityEvents, therefore without PlayBehaviour enum)
 
 
-    public void PlayRandomVideoOfSequence(string sequenceName)
+    // public void PlayRandomVideoOfSequence(string sequenceName)
+    // {
+    //     int sequenceIndex = GetSequenceIndexByName(sequenceName);
+    //     if (sequenceIndex != -1)
+    //     {
+    //         PlayVideoOfSequence(sequenceIndex, SequenceBehaviour.PlayRandomVideoOfSequence, string.Empty);
+    //     }
+    // }
+
+    // public void PlayNextVideoOfSequence(string sequenceName)
+    // {
+    //     int sequenceIndex = GetSequenceIndexByName(sequenceName);
+    //     if (sequenceIndex != -1)
+    //     {   
+    //         PlayVideoOfSequence(sequenceIndex, SequenceBehaviour.PlayNextVideoOfSequence, string.Empty);
+    //     }
+    // }
+
+    // public void PlayFirstVideoOfSequence(string sequenceName)
+    // {
+    //     int sequenceIndex = GetSequenceIndexByName(sequenceName);
+    //     if (sequenceIndex != -1)
+    //     {
+    //         PlayVideoOfSequence(sequenceIndex, SequenceBehaviour.PlayFirstVideoOfSequence, string.Empty);
+    //     }
+    // }
+
+    
+
+    public void Integrate()
     {
-        int sequenceIndex = GetSequenceIndexByName(sequenceName);
-        if (sequenceIndex != -1)
-        {
-            PlayVideoOfSequence(sequenceIndex, SequenceBehaviour.PlayRandomVideoOfSequence);
-        }
+        SetNextSequence();
+        PlayFirstVideoOfCurrentSequence();
     }
 
-    public void PlayNextVideoOfSequence(string sequenceName)
+    public void Desintegrate()
     {
-        int sequenceIndex = GetSequenceIndexByName(sequenceName);
-        if (sequenceIndex != -1)
-        {   
-            PlayVideoOfSequence(sequenceIndex, SequenceBehaviour.PlayNextVideoOfSequence);
-        }
+        PlayNamedFaderOfCurrentSequence("Outro");
     }
 
-    public void PlayFirstVideoOfSequence(string sequenceName)
+    //
+
+    public void SetCurrentSequence(string name)
     {
-        int sequenceIndex = GetSequenceIndexByName(sequenceName);
-        if (sequenceIndex != -1)
-        {
-            PlayVideoOfSequence(sequenceIndex, SequenceBehaviour.PlayFirstVideoOfSequence);
-        }
+        currentSequenceIndex = GetSequenceIndexByName(name);
     }
+
+    public void SetNextSequence()
+    {
+        currentSequenceIndex++;
+        currentSequenceIndex %= videoSequences.Length;
+    }
+
 
     public void PlayFirstVideoOfCurrentSequence()
     {
-        PlayVideoOfSequence(currentSequenceIndex, SequenceBehaviour.PlayFirstVideoOfSequence);
+        PlayVideoOfSequence(currentSequenceIndex, SequenceBehaviour.PlayFirstVideoOfSequence, string.Empty);
     }
 
     public void PlayNextVideoOfCurrentSequence()
     {
-        PlayVideoOfSequence(currentSequenceIndex, SequenceBehaviour.PlayNextVideoOfSequence);
+        PlayVideoOfSequence(currentSequenceIndex, SequenceBehaviour.PlayNextVideoOfSequence, string.Empty);
     }
 
-    
+    public void PlayNamedFaderOfCurrentSequence(string name)
+    {
+        PlayVideoOfSequence(currentSequenceIndex, SequenceBehaviour.PlayNamedVideoOfSequence, name);
+    }
+
+
+
+
+
+
 
     //// private methods
 
@@ -107,8 +154,22 @@ public class VideoControl : MonoBehaviour
                 return i;
             }
         }
-        Debug.LogError($"VideoChangerGroup with name '{name}' not found!");
+        Debug.LogError($"VideoSequence with name '{name}' not found!");
         return -1;
+    }
+
+    private int GetFaderIndexByName(int sequenceIndex, string name)
+    {
+        for (int i = 0; i < videoSequences[sequenceIndex].videoFaders.Length; i++)
+        {
+            if (videoSequences[sequenceIndex].videoFaders[i].name == name)
+            {
+                return i;
+            }
+        }
+        Debug.LogError($"VideoFader with name '{name}' not found!");
+        return -1;
+
     }
 
 
@@ -116,7 +177,7 @@ public class VideoControl : MonoBehaviour
 
     // video group methods
 
-    private void PlayVideoOfSequence(int sequenceIndex, SequenceBehaviour playBehaviour)
+    private void PlayVideoOfSequence(int sequenceIndex, SequenceBehaviour playBehaviour, string name)
     {
         if (sequenceIndex < 0 || sequenceIndex >= videoSequences.Length)
         {
@@ -128,20 +189,24 @@ public class VideoControl : MonoBehaviour
         switch (playBehaviour)
         {
             case SequenceBehaviour.PlayFirstVideoOfSequence:
-            faderIndex = 0;
-            break;
+                faderIndex = 0;
+                break;
 
             case SequenceBehaviour.PlayRandomVideoOfSequence:
-            faderIndex = Random.Range(0, videoSequences[sequenceIndex].videoFaders.Length);
-            break;
+                faderIndex = Random.Range(0, videoSequences[sequenceIndex].videoFaders.Length);
+                break;
 
             case SequenceBehaviour.PlayNextVideoOfSequence:
-            faderIndex = (videoSequences[sequenceIndex].currentFaderIndex + 1) % videoSequences[sequenceIndex].videoFaders.Length;
-            break;
+                faderIndex = (videoSequences[sequenceIndex].currentFaderIndex + 1) % videoSequences[sequenceIndex].videoFaders.Length;
+                break;
+
+            case SequenceBehaviour.PlayNamedVideoOfSequence:
+                faderIndex = GetFaderIndexByName(sequenceIndex, name);
+                break;
 
             default:
-            faderIndex = 0;
-            break;
+                faderIndex = 0;
+                break;
         }
 
         currentSequenceIndex = sequenceIndex;
@@ -151,45 +216,50 @@ public class VideoControl : MonoBehaviour
 
     }
 
-    
-    
+
+
 
     ////
 
     private void BlendInClip(int sequenceIndex, int faderIndex)
     {
 
+        StartCoroutine(InterruptAndBlendInClip(sequenceIndex, faderIndex));
 
-        // If a blending routine is currently running, stop it and complete the ongoing blending quickly
-        if (blendCoroutine != null)
-        {
-            isBlendingTransition = true;
-            blendCoroutine = StartCoroutine(BlendingTransitionRoutine(sequenceIndex, faderIndex));
-            return;
-        }
-
-        StartBlendInClip(sequenceIndex, faderIndex);
     }
+
+    IEnumerator InterruptAndBlendInClip(int sequenceIndex, int faderIndex)
+    {
+        //StopAllCoroutines();
+        interrupted = true;
+        yield return new WaitForSeconds(0.2f);
+        interrupted = false;
+        StartCoroutine(BlendingTransitionRoutine(sequenceIndex, faderIndex));
+        yield break;
+    }
+
+
 
     IEnumerator BlendingTransitionRoutine(int sequenceIndex, int faderIndex)
     {
 
         float currentBlend = VideoShader.GetFloat("_BlendAB");
-        float targetBlend = currentBlend >= 0.5f ? 1f : 0f;
-        
+        //float targetBlend = currentBlend >= 0.5f ? 1f : 0f;
 
-        while (Mathf.Abs(targetBlend - VideoShader.GetFloat("_BlendAB")) > 0.01f)
+
+        while ((Mathf.Abs(targetBlend - VideoShader.GetFloat("_BlendAB")) > 0.01f) && !interrupted)
         {
             float value = Mathf.MoveTowards(VideoShader.GetFloat("_BlendAB"), targetBlend, Time.deltaTime);
             VideoShader.SetFloat("_BlendAB", value);
-
             yield return null;
         }
 
+        if (interrupted) yield break;
+
         VideoShader.SetFloat("_BlendAB", targetBlend);
         isBlendingTransition = false;
-
         StartBlendInClip(sequenceIndex, faderIndex);
+        yield break;
     }
 
     private void StartBlendInClip(int sequenceIndex, int faderIndex)
@@ -198,28 +268,39 @@ public class VideoControl : MonoBehaviour
         float currentBlend = VideoShader.GetFloat("_BlendAB");
 
         // Depending on the current blend, set next clip to either ClipA or ClipB
-        if (currentBlend >= 1f)
+        if (currentBlend >= 0.9f)
         {
             videoPlayerA.clip = videoSequences[sequenceIndex].videoFaders[faderIndex].videoClip;
             videoPlayerA.Prepare();
             videoPlayerA.time = 0f;
-            blendCoroutine = StartCoroutine(BlendingRoutine(sequenceIndex, faderIndex, currentBlend, 0f));
+            targetBlend = 0;
+            if (!interrupted)
+            {
+                StartCoroutine(BlendingRoutine(sequenceIndex, faderIndex, currentBlend, 0f));
+            }
+
         }
         else
         {
             videoPlayerB.clip = videoSequences[sequenceIndex].videoFaders[faderIndex].videoClip;
             videoPlayerB.Prepare();
+            targetBlend = 1;
             videoPlayerB.time = 0f;
-            blendCoroutine = StartCoroutine(BlendingRoutine(sequenceIndex, faderIndex, currentBlend, 1f));
+            if (!interrupted)
+            {
+                StartCoroutine(BlendingRoutine(sequenceIndex, faderIndex, currentBlend, 1f));
+            }
+
         }
     }
 
-    
 
-    
+
+
 
     IEnumerator BlendingRoutine(int sequenceIndex, int faderIndex, float startValue, float endValue)
     {
+        //print("Blending Routine: seq:" + sequenceIndex + "faderIndex: " + faderIndex);
 
         float time = 0f;
         float duration = videoSequences[sequenceIndex].videoFaders[faderIndex].fadeInDuration;
@@ -230,48 +311,59 @@ public class VideoControl : MonoBehaviour
         VideoPlayer currentVideoPlayer = (endValue == 1f) ? videoPlayerB : videoPlayerA;
 
         currentVideoPlayer.Play();
-        
-        
 
-        while (time < duration && !isBlendingTransition)
+
+
+        while ((time < duration) && !interrupted)
         {
+            time += Time.deltaTime;
+
             float value = Mathf.Lerp(startValue, endValue, curve.Evaluate(time / duration));
             VideoShader.SetFloat("_BlendAB", value);
 
-            time += Time.deltaTime;
             yield return null;
         }
 
-        if (!isBlendingTransition)
+        if(!interrupted)
         {
             VideoShader.SetFloat("_BlendAB", endValue);
-            blendCoroutine = null;
         }
 
-        // clip end behaviour
+        else
+        {
+            yield break;
+        }
 
         
 
-        if(videoSequences[sequenceIndex].videoFaders[faderIndex].clipEndBehaviour == ClipEndBehaviour.PlayNext)
+        // clip end behaviour
+
+        if (videoSequences[sequenceIndex].videoFaders[faderIndex].clipEndBehaviour == ClipEndBehaviour.PlayNext)
         {
-            
-            while (currentVideoPlayer.time < clipLength)
+            int nextFaderIndex = (faderIndex + 1) % videoSequences[sequenceIndex].videoFaders.Length;
+            float nextFadeInTime = videoSequences[sequenceIndex].videoFaders[nextFaderIndex].fadeInDuration;
+            double lastVideoPlayerTime = 0;
+
+            while ((currentVideoPlayer.time < clipLength - nextFadeInTime || currentVideoPlayer.time != lastVideoPlayerTime) && !interrupted)
             {
+                lastVideoPlayerTime = currentVideoPlayer.time;
                 yield return null;
             }
-            PlayVideoOfSequence(sequenceIndex, SequenceBehaviour.PlayNextVideoOfSequence);
-            
+            if (interrupted) yield break;
+            //print("play Next behaviour");
+            PlayVideoOfSequence(sequenceIndex, SequenceBehaviour.PlayNextVideoOfSequence, "");
+
         }
 
-        else if(videoSequences[sequenceIndex].videoFaders[faderIndex].clipEndBehaviour == ClipEndBehaviour.Loop)
+        else if (videoSequences[sequenceIndex].videoFaders[faderIndex].clipEndBehaviour == ClipEndBehaviour.Loop)
         {
             currentVideoPlayer.isLooping = true;
         }
 
-        else if(videoSequences[sequenceIndex].videoFaders[faderIndex].clipEndBehaviour == ClipEndBehaviour.PlayOnce)
+        else if (videoSequences[sequenceIndex].videoFaders[faderIndex].clipEndBehaviour == ClipEndBehaviour.PlayOnce)
         {
             currentVideoPlayer.isLooping = false;
-            
+
         }
 
         yield break;

@@ -21,7 +21,9 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
 
     bool nearestDistanceChanging = false;
 
-    [SerializeField] UnityEvent onNearestDistanceChangingStart;
+    [SerializeField] UnityEvent onDepthChangingEnd;
+
+    [SerializeField] UnityEvent onDepthChangingStart;
 
     [SerializeField] float triggerDelayIn = 1f;
     [SerializeField] float triggerDelayOut = 1f;
@@ -32,7 +34,7 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
     
 
 
-    [SerializeField] UnityEvent onNearestDistanceChangingEnd;
+    
 
     bool changingEventTriggered = false;
 
@@ -191,8 +193,8 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
             if(!changingEventTriggered)
             {
                 changingEventTriggered = true;
-                onNearestDistanceChangingStart.Invoke();
-                print("trigger changing");
+                onDepthChangingStart.Invoke();
+               // print("trigger changing");
             }
         }
 
@@ -202,8 +204,8 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
             if(!changingEndEventTriggered)
             {
                 changingEndEventTriggered = true;
-                onNearestDistanceChangingEnd.Invoke();
-                print("trigger changing end");
+                onDepthChangingEnd.Invoke();
+                //print("trigger changing end");
             }
         }
 
@@ -248,9 +250,7 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
 
 
            
-            //nearestPointDistance = depthMaxDistance;
-
-            //closestPointsInSegments = closestPointsStartArray;
+            
 
             for (int i = 0; i < closestPointsInSegments.Length; i++)
             {
@@ -272,12 +272,7 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
                     depthHistBufferData[limDepth]++;
                     depthHistTotalPoints++;
 
-                    ////Trigger: Capture nearest Point of Loop
-
-                    // if (limDepth < nearestPointDistance)
-                    // {
-                    //     nearestPointDistance = limDepth;
-                    // }
+                    
 
                     // SegmentTrigger
 
@@ -289,27 +284,7 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
                 }
             }
 
-            /// Trigger
-
-            // if (Mathf.Abs(nearestPointDistance - lastNearestPointDistance) > distChangeThreshold)
-            // {
-            //     nearestDistanceChanging = true;
-            //     lastNearestPointDistance = nearestPointDistance;
-                
-            //     //changingBar = Mathf.Clamp01(changingBar += Time.deltaTime * triggerSensitivityIn);
-            //     changingBar = Mathf.Lerp(changingBar, 1f, Time.deltaTime * triggerDelayIn);
-
-                
-            // }
-
-            // else
-            // {
-            //     nearestDistanceChanging = false;
-
-            //     //changingBar = Mathf.Clamp01(changingBar -= Time.deltaTime * triggerSensitivityOut);
-            //     changingBar = Mathf.Lerp(changingBar, 0f, Time.deltaTime * triggerDelayOut);
-                
-            // }
+            
 
             /// Segment Trigger
 
@@ -322,11 +297,7 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
                 {
                     nearestDistanceChanging = true;
                     lastClosestPointsInSegments[j] = closestPointsInSegments[j];
-                }
-
-                else
-                {
-                    
+                    //print("Segment Changed: " +  j + " closest point: " + closestPointsInSegments[j]);
                 }
 
             }
