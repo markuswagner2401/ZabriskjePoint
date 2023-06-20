@@ -270,6 +270,7 @@ MonoBehaviour:
   triggerDelayOut: 2
   changingBar: 0
   distChangeThreshold: 10
+  distanceChecckFrequency: 0.1
   heightSegments: 2
   widthSegments: 2
   receiverMaterial: {fileID: 2100000, guid: 548ae71cefcc0e5468920c1aa417fe58, type: 2}
@@ -677,7 +678,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 207321066}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0c8e86e848a9edb4ba2a26f1962a6f33, type: 3}
   m_Name: 
@@ -753,8 +754,9 @@ MonoBehaviour:
   triggerDelayOut: 7
   changingBar: 0
   distChangeThreshold: 10
-  heightSegments: 4
-  widthSegments: 4
+  distanceChecckFrequency: 0.1
+  heightSegments: 2
+  widthSegments: 2
   receiverMaterial: {fileID: 2100000, guid: 548ae71cefcc0e5468920c1aa417fe58, type: 2}
   depthTextureRef: _Texture
   colorTextureRef: _ColorTexture

@@ -12,8 +12,8 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
 
     // Trigger
 
-    
-    
+
+
 
     int nearestPointDistance = 9999999;
 
@@ -28,13 +28,13 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
     [SerializeField] float triggerDelayIn = 1f;
     [SerializeField] float triggerDelayOut = 1f;
 
-    [Range(0,1)]
+    [Range(0, 1)]
     [SerializeField] float changingBar = 0;
 
-    
 
 
-    
+
+
 
     bool changingEventTriggered = false;
 
@@ -43,13 +43,15 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
 
     public int distChangeThreshold = 10;
 
+    public float distanceChecckFrequency = 0.1f;
+
     //
 
     Dictionary<int, int> lookupPixelSegment = new Dictionary<int, int>();
 
     int[] closestPointsInSegments;
 
-    int[] closestPointsStartArray;
+
 
     int[] lastClosestPointsInSegments;
 
@@ -95,6 +97,8 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
     protected int[] equalHistBufferData = null;
     protected int depthHistTotalPoints = 0;
 
+    bool closestPointTriggerRunning = false;
+
 
     void Start()
     {
@@ -125,13 +129,7 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
 
             /// Trigger
 
-            CreatePixelSegmentLookup(depthImageTexture.width, depthImageTexture.height);
 
-            closestPointsStartArray = CreateClosestPointsStartArray();
-
-            closestPointsInSegments = CreateClosestPointsStartArray();
-
-            lastClosestPointsInSegments = CreateClosestPointsStartArray();
 
 
 
@@ -184,24 +182,32 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
         {
             UpdateTextureWithNewFrame();
 
+            if (!closestPointTriggerRunning)
+            {
+                StartCoroutine(ClosestPointTriggerRoutine());
+                closestPointTriggerRunning = true;
+            }
+
+
+
             receiverMaterial.SetTexture(colorTextureRef, kinectManager.GetColorImageTex(sensorIndex));
         }
 
-        if(changingBar > 0.1f)
+        if (changingBar > 0.1f)
         {
             changingEndEventTriggered = false;
-            if(!changingEventTriggered)
+            if (!changingEventTriggered)
             {
                 changingEventTriggered = true;
                 onDepthChangingStart.Invoke();
-               // print("trigger changing");
+                // print("trigger changing");
             }
         }
 
-        if(changingBar < 0.1f)
+        if (changingBar < 0.1f)
         {
             changingEventTriggered = false;
-            if(!changingEndEventTriggered)
+            if (!changingEndEventTriggered)
             {
                 changingEndEventTriggered = true;
                 onDepthChangingEnd.Invoke();
@@ -209,7 +215,83 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
             }
         }
 
-        
+
+
+    }
+
+    IEnumerator ClosestPointTriggerRoutine()
+    {
+        CreatePixelSegmentLookup(depthImageTexture.width, depthImageTexture.height);
+
+  
+
+        closestPointsInSegments = new int[heightSegments * widthSegments];
+
+        lastClosestPointsInSegments = new int[heightSegments * widthSegments];
+
+
+        while (true)
+        {
+            if (sensorData == null || sensorData.sensorInterface == null || sensorData.colorCamDepthImage == null)
+                yield return null;
+
+            int frameLen = sensorData.colorCamDepthImage.Length;
+
+            for (int i = 0; i < closestPointsInSegments.Length; i++)
+            {
+                closestPointsInSegments[i] = 100000;
+            }
+
+            nearestDistanceChanging = false;
+
+            for (int i = 0; i < frameLen; i++)
+            {
+                int depth = sensorData.colorCamDepthImage[i];
+                int limDepth = (depth <= DepthSensorBase.MAX_DEPTH_DISTANCE_MM) ? depth : 0;
+
+                int currentTriggerSegment = lookupPixelSegment[i];
+
+                if (limDepth > 0)
+                {
+                    if (limDepth < closestPointsInSegments[currentTriggerSegment])
+                    {
+                        closestPointsInSegments[currentTriggerSegment] = limDepth;
+                    }
+
+                }
+
+
+            }
+
+            for (int j = 0; j < closestPointsInSegments.Length; j++)
+            {
+
+                if (Mathf.Abs(closestPointsInSegments[j] - lastClosestPointsInSegments[j]) > distChangeThreshold)
+                {
+                    nearestDistanceChanging = true;
+                    lastClosestPointsInSegments[j] = closestPointsInSegments[j];
+                    //print("Segment Changed: " +  j + " closest point: " + closestPointsInSegments[j]);
+                }
+
+            }
+
+            if (nearestDistanceChanging)
+            {
+                changingBar = Mathf.Lerp(changingBar, 1f, distanceChecckFrequency * triggerDelayIn);
+            }
+
+            else
+            {
+                changingBar = Mathf.Lerp(changingBar, 0f, distanceChecckFrequency * triggerDelayOut);
+            }
+
+            yield return new WaitForSeconds(distanceChecckFrequency);
+
+
+        }
+
+
+
 
     }
 
@@ -220,11 +302,11 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
         if (sensorData == null || sensorData.sensorInterface == null || sensorData.colorCamDepthImage == null)
             return;
 
-        
+
         // get the updated depth frame
         if (lastColorCamDepthFrameTime != sensorData.lastColorCamDepthFrameTime)
         {
-            
+
             lastColorCamDepthFrameTime = sensorData.lastColorCamDepthFrameTime;
 
             if (depthImageTexture.width != sensorData.colorImageWidth || depthImageTexture.height != sensorData.colorImageHeight)
@@ -245,78 +327,29 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
 
             int frameLen = sensorData.colorCamDepthImage.Length;
 
-            
-
-
 
            
-            
 
-            for (int i = 0; i < closestPointsInSegments.Length; i++)
-            {
-                closestPointsInSegments[i] = depthMaxDistance;
-            }
-
-            nearestDistanceChanging = false;
-            
 
             for (int i = 0; i < frameLen; i++)
             {
                 int depth = sensorData.colorCamDepthImage[i];
                 int limDepth = (depth <= DepthSensorBase.MAX_DEPTH_DISTANCE_MM) ? depth : 0;
 
-                int currentTriggerSegment = lookupPixelSegment[i];
+                
 
                 if (limDepth > 0)
                 {
                     depthHistBufferData[limDepth]++;
                     depthHistTotalPoints++;
 
-                    
-
-                    // SegmentTrigger
-
-                    if(limDepth < closestPointsInSegments[currentTriggerSegment])
-                    {
-                        closestPointsInSegments[currentTriggerSegment] = limDepth;
-                    }
 
                 }
             }
 
-            
 
-            /// Segment Trigger
 
             
-
-            for (int j = 0; j < closestPointsInSegments.Length; j++)
-            {
-                
-                if (Mathf.Abs(closestPointsInSegments[j] - lastClosestPointsInSegments[j]) > distChangeThreshold)
-                {
-                    nearestDistanceChanging = true;
-                    lastClosestPointsInSegments[j] = closestPointsInSegments[j];
-                    //print("Segment Changed: " +  j + " closest point: " + closestPointsInSegments[j]);
-                }
-
-            }
-
-            if(nearestDistanceChanging)
-            {
-                changingBar = Mathf.Lerp(changingBar, 1f, Time.deltaTime * triggerDelayIn);
-            }
-
-            else
-            {
-                changingBar = Mathf.Lerp(changingBar, 0f, Time.deltaTime * triggerDelayOut);
-            }
-
-            
-
-            
-
-            ///
 
             equalHistBufferData[0] = depthHistBufferData[0];
             for (int i = 1; i < depthHistBufferData.Length; i++)
@@ -353,7 +386,7 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
 
             if (nearestDistanceChanging)
             {
- 
+
                 Graphics.Blit(null, depthImageTexture, depthImageMaterial);
             }
 
@@ -391,7 +424,7 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
         }
     }
 
-    
+
 
     int[] CreateClosestPointsStartArray()
     {
