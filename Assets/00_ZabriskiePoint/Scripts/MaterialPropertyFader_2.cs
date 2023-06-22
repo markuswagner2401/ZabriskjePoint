@@ -119,6 +119,23 @@ using UnityEngine.Events;
             public bool isInterrupted;
 
         }
+
+
+        [System.Serializable]
+        struct FloatUpdater
+        {
+            public string name;
+
+            public float startValue;
+
+            public string propRef;
+            public float smoothing;
+
+            
+        }
+
+        [SerializeField] FloatUpdater[] floatUpdaters;
+
         [SerializeField] float daumenkinoTimingMin = 1f;
         [SerializeField] float daumenkinoChangeMax = 2f;
 
@@ -187,6 +204,13 @@ using UnityEngine.Events;
                 textureFader.faderIsLeft = block.GetFloat(textureFader.faderRef) == 0 ? true : false;
             }
 
+            foreach (var item in floatUpdaters)
+            {
+                block.SetFloat(item.propRef, item.startValue);
+            }
+
+            
+
             ///
 
 
@@ -221,10 +245,7 @@ using UnityEngine.Events;
                         {
                             item.SetPropertyBlock(block);
                         }
-
-
                     }
-
                 }
 
                 else
@@ -235,10 +256,7 @@ using UnityEngine.Events;
                         {
                             item.SetPropertyBlock(block);
                         }
-
                     }
-
-
                 }
 
             }
@@ -285,13 +303,10 @@ using UnityEngine.Events;
             {
                 if (floatChangers[i].note == name)
                 {
-                 
                     return i;
-
                 }
                 else
                 {
-                   
                     continue;
                 }
             }
@@ -313,8 +328,6 @@ using UnityEngine.Events;
                     {
                         item.SetPropertyBlock(block);
                     }
-
-
                 }
 
                 else
@@ -323,8 +336,6 @@ using UnityEngine.Events;
                     {
                         item.SetPropertyBlock(block);
                     }
-
-
                 }
 
                 yield return null;
@@ -503,6 +514,17 @@ using UnityEngine.Events;
 
 
             yield break;
+        }
+
+
+        /// float updaters
+
+        public void UpdateFloat(int index, float newValue)
+        {
+
+            float currentValue = block.GetFloat(floatUpdaters[index].propRef);
+            float smoothedValue = Mathf.Lerp(currentValue, newValue, floatUpdaters[index].smoothing);
+            block.SetFloat(floatUpdaters[index].propRef, smoothedValue);
         }
 
         ////texture Changers

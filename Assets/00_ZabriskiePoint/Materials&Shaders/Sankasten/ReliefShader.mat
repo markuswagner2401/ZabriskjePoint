@@ -73,15 +73,19 @@ Material:
     - _AlphaDstBlend: 0
     - _AlphaSrcBlend: 1
     - _BlendMode: 0
-    - _ColorTextureStrength: 0
+    - _ChangingAreaSize: 0.36
+    - _ChangingAreaSmoothness: 0.3
+    - _ChangingPosX: 0.5
+    - _ChangingPosY: 0
+    - _ColorTextureStrength: 0.54
     - _ConservativeDepthOffsetEnable: 0
     - _CullMode: 2
     - _CullModeForward: 2
     - _DefaultTextureBlend: -0.26
     - _DepthOffsetEnable: 0
-    - _Displacement: 20
+    - _Displacement: 6.24
     - _Distort: -0.05
-    - _DistortSpeed: 0
+    - _DistortSpeed: 0.001
     - _DoubleSidedEnable: 0
     - _DoubleSidedGIMode: 0
     - _DoubleSidedNormalMode: 2
@@ -89,7 +93,7 @@ Material:
     - _EnableBlendModePreserveSpecularLighting: 0
     - _EnableFogOnTransparent: 1
     - _LayerStrength: 1
-    - _LineSrength: 0.42
+    - _LineSrength: 1.21
     - _OpaqueCullMode: 2
     - _QueueControl: 1
     - _QueueOffset: 0
@@ -100,6 +104,7 @@ Material:
     - _RenderQueueType: 1
     - _RequireSplitLighting: 0
     - _Saturation: 0.5
+    - _Shift: -0.33
     - _SrcBlend: 1
     - _StencilRef: 0
     - _StencilRefDepth: 8
@@ -111,7 +116,7 @@ Material:
     - _StencilWriteMaskDistortionVec: 4
     - _StencilWriteMaskGBuffer: 15
     - _StencilWriteMaskMV: 41
-    - _Steps: 15
+    - _Steps: 10
     - _SupportDecals: 1
     - _SurfaceType: 0
     - _TransparentBackfaceEnable: 0
@@ -126,9 +131,14 @@ Material:
     - _ZTestGBuffer: 4
     - _ZTestTransparent: 4
     - _ZWrite: 1
+    - _depthMultiply: 2.09
+    - _depthOffset: -1000
     m_Colors:
+    - _ChangingPosition: {r: 0.5, g: 0.5, b: 0, a: 0}
     - _DoubleSidedConstants: {r: 1, g: 1, b: -1, a: 0}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
+    - _InMinMax: {r: 0, g: 1, b: 0, a: 0}
+    - _OutMinMax: {r: 0, g: 1, b: 0, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &4272481946539972639
 MonoBehaviour:
