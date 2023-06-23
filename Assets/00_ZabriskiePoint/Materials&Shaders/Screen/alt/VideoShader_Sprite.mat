@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-6352642516476328885
+--- !u!114 &-7373404670190352483
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
@@ -20,8 +20,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: VideoShader
-  m_Shader: {fileID: -6465566751694194690, guid: ad072c269d1aac644a51fd04a3f9b140, type: 3}
+  m_Name: VideoShader_Sprite
+  m_Shader: {fileID: -6465566751694194690, guid: 08a2696747988f548ba1e84e93400920, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -44,6 +44,10 @@ Material:
         m_Texture: {fileID: 8400000, guid: 2f1443e7351be40478d92bcebd5f7349, type: 2}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -59,7 +63,5 @@ Material:
     m_Ints: []
     m_Floats:
     - _BlendAB: 0
-    - _QueueControl: 0
-    - _QueueOffset: 0
     m_Colors: []
   m_BuildTextureStacks: []
