@@ -8,7 +8,7 @@ using UnityEngine.Events;
 public class UnityEventInt : UnityEvent<int> {}
 
 
-public class DisplaySelector : MonoBehaviour
+public class DeviceSelector : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI displayTMP;
 
@@ -18,7 +18,7 @@ public class DisplaySelector : MonoBehaviour
 
     [SerializeField] Color displayInactiveColor;
 
-    [SerializeField] UnityEventInt onDisplayPatchChanged;
+    //[SerializeField] UnityEventInt onDisplayPatchChanged;
 
     
     void Start()
@@ -38,13 +38,13 @@ public class DisplaySelector : MonoBehaviour
         return dropdown.value;
     }
 
-    public void SetDisplayActiveColor(bool value)
+    public void SetDeviceActiveColor(bool value)
     {
         displayTMP.color = value ? displayActiveColor : displayInactiveColor;
     }
 
-    public void OnDropdownValueChanged(int index)
-    {
-        onDisplayPatchChanged.Invoke(index);
-    }
+    // public void OnDropdownValueChanged(int index)
+    // {
+    //     onDisplayPatchChanged.Invoke(index);
+    // }
 }

@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using System.Linq;
+using System;
 
 public class MyConsole : MonoBehaviour
 {
@@ -11,6 +13,8 @@ public class MyConsole : MonoBehaviour
    
     [SerializeField]
     private TextMeshProUGUI consoleText;
+
+    [SerializeField] int maxLines = 5;
 
     private void Awake()
     {
@@ -32,12 +36,18 @@ public class MyConsole : MonoBehaviour
 
    
     public void Print(string message)
+{
+    if (gameObject.activeInHierarchy)
     {
-       
-        if (gameObject.activeInHierarchy)
+        string newText = message + "\n" + consoleText.text;
+        string[] lines = newText.Split(new[] { "\n" }, StringSplitOptions.None);
+
+        if (lines.Length > maxLines)
         {
-          
-            consoleText.text = message + "\n" + consoleText.text;
+            lines = lines.Take(maxLines).ToArray();
         }
+
+        consoleText.text = String.Join("\n", lines);
     }
+}
 }
