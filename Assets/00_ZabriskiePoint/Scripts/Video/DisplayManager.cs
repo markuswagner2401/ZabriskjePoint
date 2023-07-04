@@ -2,58 +2,103 @@ using UnityEngine;
 
 public class DisplayManager : MonoBehaviour
 {
+    [Tooltip("Match this array with dropdown in display selector")]
+    public Camera[] cameras;
+
     [System.Serializable]
     public struct Display
     {
         public string name;
-        public Camera camera;
-        public int outputIndex;
+        //public Camera camera;
+        public DisplaySelector displaySelector;
+
     }
 
+    [Tooltip("display index matches index of array element")]
     public Display[] displays;
 
+    int displayCount;
+
     void Start()
-{
+    {
+        UpdateDisplayCameraPatch();
+    }
+
+
+
+    /////
+
+    public void UpdateDisplayCameraPatch()
+    {
+        UpdateDisplayCount();
+        ActivateDisplays();
+        SetCameras();
+    }
+
+
+
+    ////
+
     
-   
 
-    // Get the number of displays connected to the graphics card
-    int displayCount = UnityEngine.Display.displays.Length;
+    
 
-    // Loop through each connected display and activate it
-    for (int i = 0; i < displayCount; i++)
+    private void UpdateDisplayCount()
     {
-        UnityEngine.Display.displays[i].Activate();
+        displayCount = UnityEngine.Display.displays.Length;
+        MyConsole.Instance.Print("Verbundene Bildschirme: " + displayCount);
     }
 
-    // Loop through each configured display
-    foreach (var display in displays)
+    private void ActivateDisplays()
     {
-        // Check if the configured outputIndex is within the range of connected displays
-        if (display.outputIndex >= 0 && display.outputIndex < displayCount)
+        for (int i = 0; i < displayCount; i++)
         {
-            // Set the camera's targetDisplay
-            display.camera.targetDisplay = display.outputIndex;
-        }
-        else
-        {
-            Debug.LogWarning("Display outputIndex out of range for " + display.name);
+            UnityEngine.Display.displays[i].Activate();
         }
     }
-}
 
-    public void SetDisplay(Camera camera, int displayIndex)
+    private void SetCameras()
     {
-        // Check if the displayIndex is within the range of connected displays
+        for (int i = 0; i < displays.Length; i++)
+        {
+            SetCamera(i);
+        }
+    }
+
+    private void SetCamera(int displayIndex)
+    {
+        //Check if the displayIndex is within the range of connected displays
+
         if (displayIndex >= 0 && displayIndex < UnityEngine.Display.displays.Length)
         {
             // Activate the display and set the camera's targetDisplay
             UnityEngine.Display.displays[displayIndex].Activate();
-            camera.targetDisplay = displayIndex;
+            int cameraIndex = displays[displayIndex].displaySelector.GetDropdownValue();
+
+            if (cameraIndex == -1)
+            {
+                Debug.LogError("Please Assign a Dropdown Element in Display Selector for Display: " + displayIndex);
+                return;
+            }
+
+            Camera targetCamera = cameras[cameraIndex];
+            targetCamera.targetDisplay = displayIndex;
+
         }
         else
         {
             Debug.LogWarning("Display index out of range in SetDisplay()");
         }
+
     }
+
+
+    ////
+
+
+
+
+
+
+
 }

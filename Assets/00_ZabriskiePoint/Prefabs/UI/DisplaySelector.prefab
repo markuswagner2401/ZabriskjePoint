@@ -142,7 +142,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Sand
+  m_text: "\xDCBERSICHT"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5302535af1044152a457ed104f1f4b91, type: 2}
   m_sharedMaterial: {fileID: 2164040, guid: 5302535af1044152a457ed104f1f4b91, type: 2}
@@ -493,13 +493,15 @@ MonoBehaviour:
   m_Value: 0
   m_Options:
     m_Options:
-    - m_Text: Sand
+    - m_Text: "\xDCBERSICHT"
       m_Image: {fileID: 0}
-    - m_Text: Partikel 1
+    - m_Text: SAND
       m_Image: {fileID: 0}
-    - m_Text: Partikel 2
+    - m_Text: PARTIKEL I
       m_Image: {fileID: 0}
-    - m_Text: Avatar
+    - m_Text: PARTIKEL II
+      m_Image: {fileID: 0}
+    - m_Text: AVATAR
       m_Image: {fileID: 0}
   m_OnValueChanged:
     m_PersistentCalls:

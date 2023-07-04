@@ -12,6 +12,8 @@ public class DisplaySelector : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI displayTMP;
 
+    [SerializeField] TMP_Dropdown dropdown;
+
     [SerializeField] Color displayActiveColor;
 
     [SerializeField] Color displayInactiveColor;
@@ -28,6 +30,12 @@ public class DisplaySelector : MonoBehaviour
     void Update()
     {
         
+    }
+
+    public int GetDropdownValue()
+    {
+        if(dropdown == null) return -1;
+        return dropdown.value;
     }
 
     public void SetDisplayActiveColor(bool value)
