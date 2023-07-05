@@ -87,7 +87,7 @@ public class DisplayManager : MonoBehaviour
     {
         // Find Camera
 
-        int cameraIndex = displays[displayIndex].displaySelector.GetDropdownValue();
+        int cameraIndex = displays[displayIndex].displaySelector.GetDisplayDropdownValue();
         
         if (cameraIndex == -1)
         {
@@ -109,14 +109,14 @@ public class DisplayManager : MonoBehaviour
 
             targetCamera.targetDisplay = displayIndex;
 
-            displays[displayIndex].displaySelector.SetDeviceActiveColor(true);
+            displays[displayIndex].displaySelector.SetSetupCompleteColor(true);
 
         }
         else
         {
             Debug.LogWarning("Display index out of range in SetDisplay()");
 
-            displays[displayIndex].displaySelector.SetDeviceActiveColor(false);
+            displays[displayIndex].displaySelector.SetSetupCompleteColor(false);
             
         }
 

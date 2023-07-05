@@ -10,16 +10,14 @@ public class DeviceManager : MonoBehaviour
     public struct DeviceUse
     {
         public string useName;
-
-        public TMP_Dropdown sensorSelector;
-
+        public DeviceSelector deviceSelector;
         public KinectManager kinectManager;
         public Kinect4AzureInterface kinect4AzureInterface;
-
-        public TMP_Dropdown displaySelector;
-
         public Camera camera;
 
+        public bool displayOK;
+
+        public bool kinectOK;
 
     }
     [SerializeField] DeviceUse[] deviceUses;
@@ -31,7 +29,12 @@ public class DeviceManager : MonoBehaviour
     private void Start()
     {
         UpdateDisplayCameraPatch();
+        SetupKinect();
+
+
     }
+
+
 
     // Displays
 
@@ -40,6 +43,7 @@ public class DeviceManager : MonoBehaviour
         UpdateDisplayCount();
         ActivateDisplays();
         PatchCameras();
+        UpdateValidColors();
     }
 
     private void UpdateDisplayCount()
@@ -59,26 +63,30 @@ public class DeviceManager : MonoBehaviour
     void PatchCameras()
     {
         activeCameras = new List<Camera>();
-        
+
         for (int i = 0; i < deviceUses.Length; i++)
         {
-            int displayIndex = deviceUses[i].displaySelector.value;
+            int displayIndex = deviceUses[i].deviceSelector.GetDisplayDropdownValue();
             if (displayIndex >= displayCount)
             {
-                MyConsole.Instance.Print(deviceUses[i].useName + " kann nicht gezeigt werden. (Display nicht angeschlossen)" );
-                if(activeCameras.Count > 0)
+                //MyConsole.Instance.Print(deviceUses[i].useName + " kann nicht gezeigt werden. (Display nicht angeschlossen)" );
+                deviceUses[i].displayOK = false;
+                //deviceUses[i].deviceSelector.SetDisplayActiveColor(false);
+                if (activeCameras.Count > 0)
                 {
                     deviceUses[i].camera.enabled = false;
                 }
-                 
+
             }
             else
             {
                 deviceUses[i].camera.enabled = true;
                 activeCameras.Add(deviceUses[i].camera);
                 deviceUses[i].camera.targetDisplay = displayIndex;
+                //
+                deviceUses[i].displayOK = true;
             }
-            
+
         }
     }
 
@@ -88,23 +96,69 @@ public class DeviceManager : MonoBehaviour
     {
         for (int i = 0; i < deviceUses.Length; i++)
         {
-            if(deviceUses[i].kinectManager == null) continue;
-            int kinectIndex = deviceUses[i].sensorSelector.value;
-            deviceUses[i].kinect4AzureInterface.deviceIndex = deviceUses[i].sensorSelector.value;
-            if(deviceUses[i].kinect4AzureInterface.IsSensorDataValid())
+            if (deviceUses[i].kinectManager == null)
             {
-                MyConsole.Instance.Print(deviceUses[i].useName + " Kinect Sensor is OK");
+                deviceUses[i].kinectOK = true;
+                continue;
+            }
+            int kinectIndex = deviceUses[i].deviceSelector.GetSensorDropdownValue();
+
+            List<KinectInterop.SensorDeviceInfo> alSensors = deviceUses[i].kinect4AzureInterface.GetAvailableSensors();
+            if (kinectIndex >= alSensors.Count)
+            {
+                deviceUses[i].kinectOK = false;
+            }
+            else
+            {
+                deviceUses[i].kinectOK = true;
+                deviceUses[i].kinect4AzureInterface.deviceIndex = kinectIndex;
+            }
+        }
+
+        UpdateValidColors();
+    }
+
+    void UpdateValidColors()
+    {
+        for (int i = 0; i < deviceUses.Length; i++)
+        {
+            // display
+
+            if (deviceUses[i].displayOK)
+            {
+                deviceUses[i].deviceSelector.SetDisplayActiveColor(true);
             }
 
             else
             {
-                MyConsole.Instance.Print(deviceUses[i].useName + " Kinect Sensor is not OK");
+                deviceUses[i].deviceSelector.SetDisplayActiveColor(false);
             }
-            
-            
+
+            //kinect
+
+            if (deviceUses[i].kinectOK)
+            {
+                deviceUses[i].deviceSelector.SetSensorActiveColor(true);
+            }
+
+            else
+            {
+                deviceUses[i].deviceSelector.SetSensorActiveColor(false);
+            }
+
+            // both
+
+            if (deviceUses[i].displayOK && deviceUses[i].kinectOK)
+            {
+                deviceUses[i].deviceSelector.SetSetupCompleteColor(true);
+            }
+            else
+            {
+                deviceUses[i].deviceSelector.SetSetupCompleteColor(false);
+            }
         }
     }
-    
+
 
 }
 

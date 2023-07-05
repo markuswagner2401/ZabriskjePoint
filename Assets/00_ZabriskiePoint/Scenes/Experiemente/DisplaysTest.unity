@@ -597,17 +597,6 @@ Transform:
   m_Father: {fileID: 484199089}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
---- !u!114 &308858748 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 9042931297320872222, guid: d7bf7c4a9fd0163469000f6c4b83303b, type: 3}
-  m_PrefabInstance: {fileID: 4217165191914503676}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7b743370ac3e4ec2a1668f5455a8ef8a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &371675674
 GameObject:
   m_ObjectHideFlags: 0
@@ -711,7 +700,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: -23.003, y: 36.381, z: 0}
 --- !u!1001 &396125106
 PrefabInstance:
@@ -727,7 +716,7 @@ PrefabInstance:
       objectReference: {fileID: 2800000, guid: e13c308547036df45b51dce58f137ef3, type: 3}
     - target: {fileID: 5588182168119531304, guid: 99af91987b8453d40922dc14783d268b, type: 3}
       propertyPath: m_RootOrder
-      value: 7
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 5588182168119531304, guid: 99af91987b8453d40922dc14783d268b, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1132,19 +1121,8 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &570609706 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6965597595222112381, guid: d7bf7c4a9fd0163469000f6c4b83303b, type: 3}
-  m_PrefabInstance: {fileID: 4217165191914503676}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7b743370ac3e4ec2a1668f5455a8ef8a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &595629534
 GameObject:
   m_ObjectHideFlags: 1
@@ -1187,7 +1165,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!20 &660780621 stripped
 Camera:
@@ -1329,17 +1307,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 675276339}
   m_CullTransparentMesh: 1
---- !u!114 &721172099 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6965597595222112381, guid: d7bf7c4a9fd0163469000f6c4b83303b, type: 3}
-  m_PrefabInstance: {fileID: 1591170083}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7b743370ac3e4ec2a1668f5455a8ef8a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &750476661
 GameObject:
   m_ObjectHideFlags: 0
@@ -1351,7 +1318,7 @@ GameObject:
   - component: {fileID: 750476662}
   - component: {fileID: 750476663}
   m_Layer: 0
-  m_Name: Kinect4Azure
+  m_Name: Kinect4Azure_Sand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1499,111 +1466,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 759095217}
   m_CullTransparentMesh: 1
---- !u!1 &835338661
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 835338662}
-  - component: {fileID: 835338663}
-  m_Layer: 0
-  m_Name: Kinect4Azure
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &835338662
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 835338661}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1144000800}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &835338663
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 835338661}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e8f864d895d4d9c4cb2a9b96bb86c08b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  deviceStreamingMode: 1
-  deviceIndex: 0
-  recordingFile: 
-  minDepthDistance: 0.5
-  maxDepthDistance: 2
-  pointCloudResolution: 0
-  pointCloudVertexTexture: {fileID: 0}
-  pointCloudColorTexture: {fileID: 0}
-  pointCloudPlayerList: 
-  frameSourceFlags: 0
-  depth2colorCamMat:
-    e00: 1
-    e01: 0
-    e02: 0
-    e03: 0
-    e10: 0
-    e11: 1
-    e12: 0
-    e13: 0
-    e20: 0
-    e21: 0
-    e22: 1
-    e23: 0
-    e30: 0
-    e31: 0
-    e32: 0
-    e33: 1
-  sensorRotValueY: 0
-  colorCameraMode: 1
-  depthCameraMode: 3
-  cameraFPS: 2
-  deviceSyncMode: 0
-  subDeviceDelayUsec: 0
-  bodyTemporalSmoothing: 0
-  playbackPosSeconds: -1
-  loopPlayback: 0
-  bodyTrackingSensorOrientation: 0
-  bodyTrackingProcessingMode: 2
-  detectFloorForPoseEstimation: 1
---- !u!114 &858319403 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 9042931297320872222, guid: d7bf7c4a9fd0163469000f6c4b83303b, type: 3}
-  m_PrefabInstance: {fileID: 1855629414}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7b743370ac3e4ec2a1668f5455a8ef8a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &885868144 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 9042931297320872222, guid: d7bf7c4a9fd0163469000f6c4b83303b, type: 3}
-  m_PrefabInstance: {fileID: 1591170083}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7b743370ac3e4ec2a1668f5455a8ef8a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &910765784
 GameObject:
   m_ObjectHideFlags: 0
@@ -2115,7 +1977,7 @@ GameObject:
   - component: {fileID: 1070822672}
   - component: {fileID: 1070822671}
   m_Layer: 0
-  m_Name: KinectControllerSand
+  m_Name: KinectController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2183,6 +2045,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 750476662}
+  - {fileID: 1957126696}
   - {fileID: 1751517726}
   - {fileID: 1808465312}
   m_Father: {fileID: 0}
@@ -2323,90 +2186,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1135499464}
   m_CullTransparentMesh: 1
---- !u!1 &1144000798
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1144000800}
-  - component: {fileID: 1144000799}
-  m_Layer: 0
-  m_Name: KinectControllerAvatar
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1144000799
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1144000798}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6b531f336dfee5f438f94ed501caefc7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  useMultiCamConfig: 0
-  syncMultiCamFrames: 0
-  startDepthSensors: 1
-  dontDestroyAcrossScenes: 0
-  getDepthFrames: 2
-  getColorFrames: 2
-  getInfraredFrames: 0
-  getPoseFrames: 0
-  getBodyFrames: 0
-  syncDepthAndColor: 0
-  syncBodyAndDepth: 0
-  minUserDistance: 0
-  maxUserDistance: 0
-  maxLeftRightDistance: 0
-  maxTrackedUsers: 0
-  showAllowedUsersOnly: 0
-  userDetectionOrder: 0
-  ignoreInferredJoints: 0
-  ignoreZCoordinates: 0
-  jointPositionSmoothing: 1
-  estimateJointVelocities: 0
-  jointVelocitySmoothing: 2
-  boneOrientationConstraints: 1
-  bodySpinFilter: 0
-  playerCalibrationPose: 0
-  userManager: {fileID: 0}
-  gestureManager: {fileID: 0}
-  displayImages: 
-  displayImageWidthPercent: 0.2
-  statusInfoText: {fileID: 0}
-  consoleLogMessages: 1
-  OnDepthSensorsStarted:
-    m_PersistentCalls:
-      m_Calls: []
-  OnDepthSensorsStopped:
-    m_PersistentCalls:
-      m_Calls: []
---- !u!4 &1144000800
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1144000798}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 835338662}
-  - {fileID: 1246965829}
-  - {fileID: 2120492090}
-  m_Father: {fileID: 0}
-  m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1203484403
 GameObject:
   m_ObjectHideFlags: 0
@@ -2694,90 +2473,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 971408845294800448, guid: d7bf7c4a9fd0163469000f6c4b83303b, type: 3}
   m_PrefabInstance: {fileID: 1227663387}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1235286689 stripped
+--- !u!114 &1317377809 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 9042931297320872222, guid: d7bf7c4a9fd0163469000f6c4b83303b, type: 3}
+  m_CorrespondingSourceObject: {fileID: 3702514321118814967, guid: d7bf7c4a9fd0163469000f6c4b83303b, type: 3}
   m_PrefabInstance: {fileID: 1227663387}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7b743370ac3e4ec2a1668f5455a8ef8a, type: 3}
+  m_Script: {fileID: 11500000, guid: 8b36ac6ad37d37d4eb2f62356fdcbaeb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &1246965828
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1246965829}
-  - component: {fileID: 1246965830}
-  m_Layer: 0
-  m_Name: KinectV2
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1246965829
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1246965828}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1144000800}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1246965830
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1246965828}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3187c833c6106e54facb6071b57475a2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  deviceStreamingMode: 0
-  deviceIndex: 0
-  recordingFile: 
-  minDepthDistance: 0.5
-  maxDepthDistance: 2
-  pointCloudResolution: 0
-  pointCloudVertexTexture: {fileID: 0}
-  pointCloudColorTexture: {fileID: 0}
-  pointCloudPlayerList: 
-  frameSourceFlags: 0
-  depth2colorCamMat:
-    e00: 1
-    e01: 0
-    e02: 0
-    e03: 0
-    e10: 0
-    e11: 1
-    e12: 0
-    e13: 0
-    e20: 0
-    e21: 0
-    e22: 1
-    e23: 0
-    e30: 0
-    e31: 0
-    e32: 0
-    e33: 1
-  sensorRotValueY: 0
-  usersFaceBackwards: 0
 --- !u!1 &1317934325
 GameObject:
   m_ObjectHideFlags: 0
@@ -3029,7 +2735,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 12.818, y: -30, z: 0}
 --- !u!1 &1383557615
 GameObject:
@@ -3136,19 +2842,8 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 84.722, y: 0, z: 0}
---- !u!114 &1520498378 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 9042931297320872222, guid: d7bf7c4a9fd0163469000f6c4b83303b, type: 3}
-  m_PrefabInstance: {fileID: 1650019278}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7b743370ac3e4ec2a1668f5455a8ef8a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1576137939
 GameObject:
   m_ObjectHideFlags: 0
@@ -3533,6 +3228,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 971408845294800448, guid: d7bf7c4a9fd0163469000f6c4b83303b, type: 3}
   m_PrefabInstance: {fileID: 1650019278}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1650019280 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3702514321118814967, guid: d7bf7c4a9fd0163469000f6c4b83303b, type: 3}
+  m_PrefabInstance: {fileID: 1650019278}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b36ac6ad37d37d4eb2f62356fdcbaeb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1674301758
 GameObject:
   m_ObjectHideFlags: 0
@@ -3752,17 +3458,17 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: DisplayManager, Assembly-CSharp
-        m_MethodName: UpdateDisplayCameraPatch
-        m_Mode: 1
+      - m_Target: {fileID: 2080625620}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: ShowQuitUI
+        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
-          m_BoolArgument: 0
+          m_BoolArgument: 1
         m_CallState: 2
 --- !u!114 &1721670833
 MonoBehaviour:
@@ -4336,6 +4042,111 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 971408845294800448, guid: d7bf7c4a9fd0163469000f6c4b83303b, type: 3}
   m_PrefabInstance: {fileID: 1855629414}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1855629416 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3702514321118814967, guid: d7bf7c4a9fd0163469000f6c4b83303b, type: 3}
+  m_PrefabInstance: {fileID: 1855629414}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b36ac6ad37d37d4eb2f62356fdcbaeb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1932959290 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3702514321118814967, guid: d7bf7c4a9fd0163469000f6c4b83303b, type: 3}
+  m_PrefabInstance: {fileID: 1591170083}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b36ac6ad37d37d4eb2f62356fdcbaeb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1 &1957126694
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1957126696}
+  - component: {fileID: 1957126695}
+  m_Layer: 0
+  m_Name: Kinect4Azure_Avatar
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1957126695
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1957126694}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8f864d895d4d9c4cb2a9b96bb86c08b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  deviceStreamingMode: 1
+  deviceIndex: 0
+  recordingFile: 
+  minDepthDistance: 0.5
+  maxDepthDistance: 2
+  pointCloudResolution: 0
+  pointCloudVertexTexture: {fileID: 0}
+  pointCloudColorTexture: {fileID: 0}
+  pointCloudPlayerList: 
+  frameSourceFlags: 0
+  depth2colorCamMat:
+    e00: 1
+    e01: 0
+    e02: 0
+    e03: 0
+    e10: 0
+    e11: 1
+    e12: 0
+    e13: 0
+    e20: 0
+    e21: 0
+    e22: 1
+    e23: 0
+    e30: 0
+    e31: 0
+    e32: 0
+    e33: 1
+  sensorRotValueY: 0
+  colorCameraMode: 1
+  depthCameraMode: 3
+  cameraFPS: 2
+  deviceSyncMode: 0
+  subDeviceDelayUsec: 0
+  bodyTemporalSmoothing: 0
+  playbackPosSeconds: -1
+  loopPlayback: 0
+  bodyTrackingSensorOrientation: 0
+  bodyTrackingProcessingMode: 2
+  detectFloorForPoseEstimation: 1
+--- !u!4 &1957126696
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1957126694}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1070822672}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1966958963
 GameObject:
   m_ObjectHideFlags: 0
@@ -4452,7 +4263,7 @@ Transform:
   - {fileID: 938018415}
   - {fileID: 1744011810}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2080625619
 MonoBehaviour:
@@ -4498,109 +4309,40 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   deviceUses:
   - useName: SAND
-    sensorSelector: {fileID: 570609706}
+    deviceSelector: {fileID: 4217165191914503678}
     kinectManager: {fileID: 1070822671}
     kinect4AzureInterface: {fileID: 750476663}
-    displaySelector: {fileID: 308858748}
     camera: {fileID: 1203484405}
+    displayOK: 0
+    kinectOK: 0
   - useName: PARTIKEL I
-    sensorSelector: {fileID: 0}
+    deviceSelector: {fileID: 1650019280}
     kinectManager: {fileID: 0}
     kinect4AzureInterface: {fileID: 0}
-    displaySelector: {fileID: 1520498378}
     camera: {fileID: 660780621}
+    displayOK: 0
+    kinectOK: 0
   - useName: PARTIKEL II
-    sensorSelector: {fileID: 0}
+    deviceSelector: {fileID: 1855629416}
     kinectManager: {fileID: 0}
     kinect4AzureInterface: {fileID: 0}
-    displaySelector: {fileID: 858319403}
     camera: {fileID: 396125107}
+    displayOK: 0
+    kinectOK: 0
   - useName: AVATAR
-    sensorSelector: {fileID: 721172099}
-    kinectManager: {fileID: 1144000799}
-    kinect4AzureInterface: {fileID: 835338663}
-    displaySelector: {fileID: 885868144}
+    deviceSelector: {fileID: 1932959290}
+    kinectManager: {fileID: 1070822671}
+    kinect4AzureInterface: {fileID: 1957126695}
     camera: {fileID: 261647652}
+    displayOK: 0
+    kinectOK: 0
   - useName: "\xDCBERSICHT"
-    sensorSelector: {fileID: 0}
+    deviceSelector: {fileID: 1317377809}
     kinectManager: {fileID: 0}
     kinect4AzureInterface: {fileID: 0}
-    displaySelector: {fileID: 1235286689}
     camera: {fileID: 298644213}
---- !u!1 &2120492089
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2120492090}
-  - component: {fileID: 2120492091}
-  m_Layer: 0
-  m_Name: RealSense
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2120492090
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2120492089}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1144000800}
-  m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2120492091
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2120492089}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3c9bb53fec8f7ee47a021adfdc0ec203, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  deviceStreamingMode: 0
-  deviceIndex: 0
-  recordingFile: 
-  minDepthDistance: 0.5
-  maxDepthDistance: 2
-  pointCloudResolution: 0
-  pointCloudVertexTexture: {fileID: 0}
-  pointCloudColorTexture: {fileID: 0}
-  pointCloudPlayerList: 
-  frameSourceFlags: 0
-  depth2colorCamMat:
-    e00: 1
-    e01: 0
-    e02: 0
-    e03: 0
-    e10: 0
-    e11: 1
-    e12: 0
-    e13: 0
-    e20: 0
-    e21: 0
-    e22: 1
-    e23: 0
-    e30: 0
-    e31: 0
-    e32: 0
-    e33: 1
-  sensorRotValueY: 0
-  colorCameraMode: 35
-  depthCameraMode: 35
+    displayOK: 0
+    kinectOK: 0
 --- !u!1 &2144828916
 GameObject:
   m_ObjectHideFlags: 0
@@ -4947,7 +4689,7 @@ PrefabInstance:
       objectReference: {fileID: 2800000, guid: d13ed8d8fb25fa445ab1ef52985999ca, type: 3}
     - target: {fileID: 5588182168119531304, guid: 99af91987b8453d40922dc14783d268b, type: 3}
       propertyPath: m_RootOrder
-      value: 6
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 5588182168119531304, guid: 99af91987b8453d40922dc14783d268b, type: 3}
       propertyPath: m_LocalPosition.x
@@ -5148,6 +4890,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 971408845294800448, guid: d7bf7c4a9fd0163469000f6c4b83303b, type: 3}
   m_PrefabInstance: {fileID: 4217165191914503676}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &4217165191914503678 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3702514321118814967, guid: d7bf7c4a9fd0163469000f6c4b83303b, type: 3}
+  m_PrefabInstance: {fileID: 4217165191914503676}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b36ac6ad37d37d4eb2f62356fdcbaeb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &4642490708292458250
 RectTransform:
   m_ObjectHideFlags: 0

@@ -10,13 +10,19 @@ public class UnityEventInt : UnityEvent<int> {}
 
 public class DeviceSelector : MonoBehaviour
 {
-    [SerializeField] TextMeshProUGUI displayTMP;
+    [SerializeField] TextMeshProUGUI TitelTMP;
 
-    [SerializeField] TMP_Dropdown dropdown;
+    [SerializeField] TMP_Dropdown displayDropdown;
 
-    [SerializeField] Color displayActiveColor;
+    [SerializeField] TextMeshProUGUI displayDropdownLabel;
 
-    [SerializeField] Color displayInactiveColor;
+    [SerializeField] TMP_Dropdown sensorDropdown;
+
+    [SerializeField] TextMeshProUGUI sensorDropdownLabel;
+
+    [SerializeField] Color validColor;
+
+    [SerializeField] Color invalidColor;
 
     //[SerializeField] UnityEventInt onDisplayPatchChanged;
 
@@ -32,16 +38,40 @@ public class DeviceSelector : MonoBehaviour
         
     }
 
-    public int GetDropdownValue()
+    ////
+
+    public int GetDisplayDropdownValue()
     {
-        if(dropdown == null) return -1;
-        return dropdown.value;
+        if(displayDropdown == null) return -1;
+        return displayDropdown.value;
     }
 
-    public void SetDeviceActiveColor(bool value)
+    public void SetDisplayActiveColor(bool value)
     {
-        displayTMP.color = value ? displayActiveColor : displayInactiveColor;
+        displayDropdownLabel.color = value ? validColor : invalidColor;
     }
+
+    ////
+
+    public int GetSensorDropdownValue()
+    {
+        if(displayDropdown == null) return -1;
+        return displayDropdown.value;
+    }
+
+    public void SetSensorActiveColor(bool value)
+    {
+        sensorDropdownLabel.color = value ? validColor : invalidColor;
+    }
+
+    ////
+
+    public void SetSetupCompleteColor(bool value)
+    {
+        TitelTMP.color = value ? validColor : invalidColor;
+    }
+
+    
 
     // public void OnDropdownValueChanged(int index)
     // {
