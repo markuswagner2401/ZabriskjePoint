@@ -73,15 +73,15 @@ Material:
     - _AlphaDstBlend: 0
     - _AlphaSrcBlend: 1
     - _BlendMode: 0
-    - _ChangingAreaSize: 0.36
+    - _ChangingAreaSize: 0.5
     - _ChangingAreaSmoothness: 0.3
     - _ChangingPosX: 0.5
-    - _ChangingPosY: 0
-    - _ColorTextureStrength: 0.54
+    - _ChangingPosY: 0.5
+    - _ColorTextureStrength: 0
     - _ConservativeDepthOffsetEnable: 0
     - _CullMode: 2
     - _CullModeForward: 2
-    - _DefaultTextureBlend: -0.26
+    - _DefaultTextureBlend: 0.612
     - _DepthOffsetEnable: 0
     - _Displacement: 6.24
     - _Distort: -0.05

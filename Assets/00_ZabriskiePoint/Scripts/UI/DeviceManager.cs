@@ -10,6 +10,8 @@ public class DeviceManager : MonoBehaviour
     public struct DeviceUse
     {
         public string useName;
+
+        
         public DeviceSelector deviceSelector;
         public KinectManager kinectManager;
         public Kinect4AzureInterface kinect4AzureInterface;
@@ -28,15 +30,26 @@ public class DeviceManager : MonoBehaviour
 
     private void Start()
     {
+        DeactivateUnused();
         UpdateDisplayCameraPatch();
         SetupKinect();
+    }
 
-
+    void DeactivateUnused()
+    {
+        for (int i = 0; i < deviceUses.Length; i++)
+        {
+            if(deviceUses[i].camera == null)
+            {
+                deviceUses[i].deviceSelector.gameObject.SetActive(false);
+            }
+        }
     }
 
 
 
     // Displays
+
 
     public void UpdateDisplayCameraPatch()
     {
@@ -66,6 +79,8 @@ public class DeviceManager : MonoBehaviour
 
         for (int i = 0; i < deviceUses.Length; i++)
         {
+            if(deviceUses[i].camera == null) continue;
+
             int displayIndex = deviceUses[i].deviceSelector.GetDisplayDropdownValue();
             if (displayIndex >= displayCount)
             {
@@ -96,6 +111,8 @@ public class DeviceManager : MonoBehaviour
     {
         for (int i = 0; i < deviceUses.Length; i++)
         {
+            if(deviceUses[i].camera == null) continue;
+
             if (deviceUses[i].kinectManager == null)
             {
                 deviceUses[i].kinectOK = true;
@@ -122,6 +139,8 @@ public class DeviceManager : MonoBehaviour
     {
         for (int i = 0; i < deviceUses.Length; i++)
         {
+            if(deviceUses[i].camera == null) continue;
+            
             // display
 
             if (deviceUses[i].displayOK)
