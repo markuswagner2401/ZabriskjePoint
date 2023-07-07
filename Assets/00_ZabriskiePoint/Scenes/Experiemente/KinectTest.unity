@@ -134,6 +134,8 @@ GameObject:
   - component: {fileID: 17019675}
   - component: {fileID: 17019674}
   - component: {fileID: 17019673}
+  - component: {fileID: 17019677}
+  - component: {fileID: 17019676}
   m_Layer: 0
   m_Name: TextureRelief
   m_TagString: Untagged
@@ -199,7 +201,7 @@ VisualEffect:
   m_PropertySheet:
     m_Float:
       m_Array:
-      - m_Value: 0.43
+      - m_Value: 0.35
         m_Name: GridOffset
         m_Overridden: 1
       - m_Value: 0.09
@@ -211,8 +213,29 @@ VisualEffect:
       - m_Value: 0.47
         m_Name: SizeByDepth
         m_Overridden: 1
+      - m_Value: 14.82
+        m_Name: _Distort
+        m_Overridden: 1
+      - m_Value: 1
+        m_Name: _DefaultTextureBlend
+        m_Overridden: 1
+      - m_Value: 0
+        m_Name: _Shift
+        m_Overridden: 1
+      - m_Value: 0.5
+        m_Name: _ChangingPosX
+        m_Overridden: 1
+      - m_Value: 0.5
+        m_Name: _ChangingPosY
+        m_Overridden: 1
     m_Vector2f:
-      m_Array: []
+      m_Array:
+      - m_Value: {x: 0, y: 1}
+        m_Name: _InMinMax
+        m_Overridden: 1
+      - m_Value: {x: 0, y: 1}
+        m_Name: _OutMinMax
+        m_Overridden: 1
     m_Vector3f:
       m_Array: []
     m_Vector4f:
@@ -229,8 +252,14 @@ VisualEffect:
       m_Array: []
     m_NamedObject:
       m_Array:
-      - m_Value: {fileID: 2800000, guid: 48fdaa04d79393f4397c2169edc3d591, type: 3}
+      - m_Value: {fileID: 2800000, guid: 59ff1665da6ce324fb0c2f2e4fddd3d4, type: 3}
         m_Name: Texture
+        m_Overridden: 1
+      - m_Value: {fileID: 2800000, guid: 343626959090fdd44a971603389d7f9d, type: 3}
+        m_Name: _Texture
+        m_Overridden: 1
+      - m_Value: {fileID: 2800000, guid: 276d9e395ae18fe40a9b4988549f2349, type: 3}
+        m_Name: _ColorTexture
         m_Overridden: 1
     m_Bool:
       m_Array: []
@@ -249,6 +278,321 @@ Transform:
   m_Father: {fileID: 369795027}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &17019676
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 17019672}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f46f4a28ae8df1c49be9ca8437238bed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  doOnStart:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 17019676}
+        m_TargetAssemblyTypeName: VFXParameterAnimator, Assembly-CSharp
+        m_MethodName: ChangeFloat
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: StartDistrot
+          m_BoolArgument: 0
+        m_CallState: 2
+  vfx: {fileID: 17019674}
+  floatChangers:
+  - note: StartDistort
+    propRef: _Distort
+    targetValue: 0.005
+    randomRangeMin: 0.005
+    randomRangeMax: 0.005
+    duration: 0.1
+    pushFactor: 0
+    playFloat: 0
+    playSpeed: 0
+    curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    interrupted: 1
+    automaticlyPlayNext: 0
+    waitTime: 0
+    playDaumenkino: 0
+  - note: DistortIn
+    propRef: _Distort
+    targetValue: 1
+    randomRangeMin: 1
+    randomRangeMax: 1
+    duration: 2
+    pushFactor: 0
+    playFloat: 0
+    playSpeed: 0
+    curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    interrupted: 1
+    automaticlyPlayNext: 0
+    waitTime: 0
+    playDaumenkino: 0
+  - note: DistortOut
+    propRef: _Distort
+    targetValue: 0.02
+    randomRangeMin: 0.02
+    randomRangeMax: 0.02
+    duration: 5
+    pushFactor: 0
+    playFloat: 0
+    playSpeed: 0
+    curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 2
+        outSlope: 2
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    interrupted: 0
+    automaticlyPlayNext: 0
+    waitTime: 0
+    playDaumenkino: 0
+  - note: DefaultTextureIn
+    propRef: _DefaultTextureBlend
+    targetValue: 0.98
+    randomRangeMin: 0.98
+    randomRangeMax: 0.98
+    duration: 1
+    pushFactor: 0
+    playFloat: 0
+    playSpeed: 0
+    curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 2
+        outSlope: 2
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    interrupted: 0
+    automaticlyPlayNext: 1
+    waitTime: 0
+    playDaumenkino: 0
+  - note: DefaultTextureOut
+    propRef: _DefaultTextureBlend
+    targetValue: 0
+    randomRangeMin: 0
+    randomRangeMax: 0
+    duration: 3
+    pushFactor: 0
+    playFloat: 0
+    playSpeed: 0
+    curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    interrupted: 0
+    automaticlyPlayNext: 1
+    waitTime: 0
+    playDaumenkino: 0
+  floatUpdaters:
+  - name: PosX
+    startValue: 0
+    propRef: _ChangingPosX
+    smoothing: 0.01
+  - name: PosY
+    startValue: 0
+    propRef: _ChangingPosY
+    smoothing: 0.01
+--- !u!114 &17019677
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 17019672}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c8e86e848a9edb4ba2a26f1962a6f33, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sensorIndex: 0
+  onDepthChangingEnd:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 17019676}
+        m_TargetAssemblyTypeName: VFXParameterAnimator, Assembly-CSharp
+        m_MethodName: ChangeFloat
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: DistortOut
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 17019676}
+        m_TargetAssemblyTypeName: VFXParameterAnimator, Assembly-CSharp
+        m_MethodName: ChangeFloat
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: DefaultTextureIn
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 660780623}
+        m_TargetAssemblyTypeName: VideoControl, Assembly-CSharp
+        m_MethodName: Integrate
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  onDepthChangingStart:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 17019676}
+        m_TargetAssemblyTypeName: VFXParameterAnimator, Assembly-CSharp
+        m_MethodName: ChangeFloat
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: DistortIn
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 660780623}
+        m_TargetAssemblyTypeName: VideoControl, Assembly-CSharp
+        m_MethodName: Desintegrate
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Outro
+          m_BoolArgument: 0
+        m_CallState: 2
+  triggerDelayIn: 20
+  triggerDelayOut: 7
+  changingBar: 0
+  distChangeThreshold: 10
+  distanceChecckFrequency: 0.1
+  heightSegments: 2
+  widthSegments: 2
+  materialPropertiesFader_2: {fileID: 0}
+  vFXParameterAnimator: {fileID: 17019676}
+  receiverMaterial: {fileID: 0}
+  vfx: {fileID: 17019674}
+  depthTextureRef: _Texture
+  colorTextureRef: _ColorTexture
 --- !u!1 &95745744
 GameObject:
   m_ObjectHideFlags: 0
@@ -400,7 +744,9 @@ MonoBehaviour:
   heightSegments: 2
   widthSegments: 2
   materialPropertiesFader_2: {fileID: 0}
+  vFXParameterAnimator: {fileID: 0}
   receiverMaterial: {fileID: 2100000, guid: 548ae71cefcc0e5468920c1aa417fe58, type: 2}
+  vfx: {fileID: 0}
   depthTextureRef: _Texture
   colorTextureRef: _ColorTexture
 --- !u!114 &95745751
@@ -895,7 +1241,9 @@ MonoBehaviour:
   heightSegments: 2
   widthSegments: 2
   materialPropertiesFader_2: {fileID: 207321067}
+  vFXParameterAnimator: {fileID: 0}
   receiverMaterial: {fileID: 2100000, guid: 548ae71cefcc0e5468920c1aa417fe58, type: 2}
+  vfx: {fileID: 0}
   depthTextureRef: _Texture
   colorTextureRef: _ColorTexture
 --- !u!23 &207321069 stripped
@@ -1898,7 +2246,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   deviceStreamingMode: 1
-  deviceIndex: 1
+  deviceIndex: 0
   recordingFile: 
   minDepthDistance: 0.5
   maxDepthDistance: 2
@@ -2953,23 +3301,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e45f12ec1dbbaef4c859b3da1860cac9, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -0.0023732185
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e45f12ec1dbbaef4c859b3da1860cac9, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.38398004
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e45f12ec1dbbaef4c859b3da1860cac9, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -0.0050640106
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e45f12ec1dbbaef4c859b3da1860cac9, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e45f12ec1dbbaef4c859b3da1860cac9, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e45f12ec1dbbaef4c859b3da1860cac9, type: 3}
       propertyPath: m_LocalRotation.y
@@ -2981,7 +3329,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e45f12ec1dbbaef4c859b3da1860cac9, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
+      value: -90
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e45f12ec1dbbaef4c859b3da1860cac9, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y

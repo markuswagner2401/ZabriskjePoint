@@ -4,6 +4,7 @@ using UnityEngine;
 using com.rfilkov.kinect;
 using System;
 using UnityEngine.Events;
+using UnityEngine.VFX;
 
 public class ColorCamDepthTextureProvider : MonoBehaviour
 {
@@ -62,18 +63,27 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
 
     Vector2 changingPosition = new Vector2();
 
-    [SerializeField] MaterialPropertiesFader_2 materialPropertiesFader_2;
+    [Tooltip("Set null to disable")]
+    [SerializeField] MaterialPropertiesFader_2 materialPropertiesFader_2 = null;
+
+    [Tooltip("Set null to disable")]
+    [SerializeField] VFXParameterAnimator vFXParameterAnimator = null;
 
     ////
 
 
 
+    [Tooltip("Set null to disable")]
+    public Material receiverMaterial = null;
 
-    public Material receiverMaterial;
+    [Tooltip("Set null to disable")]
+    public VisualEffect vfx = null;
 
     public String depthTextureRef = "_Texture";
 
     public String colorTextureRef = "_ColorTexture";
+
+    bool colorTextureSet = false;
 
 
 
@@ -114,19 +124,19 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
     {
         Initialize();
 
-        if(materialPropertiesFader_2 == null)
-        {
-            materialPropertiesFader_2 = GetComponent<MaterialPropertiesFader_2>();
-        }
+        // if (materialPropertiesFader_2 == null)
+        // {
+        //     materialPropertiesFader_2 = GetComponent<MaterialPropertiesFader_2>();
+        // }
 
     }
 
     void Initialize()
     {
-        if (receiverMaterial == null)
-        {
-            receiverMaterial = GetComponent<Material>();
-        }
+        // if (receiverMaterial == null)
+        // {
+        //     receiverMaterial = GetComponent<Material>();
+        // }
 
         kinectManager = KinectManager.Instance;
         sensorData = kinectManager != null ? kinectManager.GetSensorData(sensorIndex) : null;
@@ -150,10 +160,24 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
 
         }
 
-        if (receiverMaterial && depthImageTexture != null)
+        if (depthImageTexture != null)
         {
-            receiverMaterial.SetTexture(depthTextureRef, depthImageTexture);
+            if (receiverMaterial != null)
+            {
+                receiverMaterial.SetTexture(depthTextureRef, depthImageTexture);
+            }
+
+            if (vfx != null)
+            {
+                vfx.SetTexture(depthTextureRef, depthImageTexture);
+                print("depth image texture resolution: " + depthImageTexture.width + " " + depthImageTexture.height);
+                vfx.Reinit();
+            }
         }
+
+
+
+
 
         frameLen = sensorData.colorCamDepthImage.Length;
 
@@ -208,8 +232,22 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
             }
 
 
+            // for debugging, disable later to safe performance
+            if (!colorTextureSet)
+            {
+                if (receiverMaterial != null)
+                {
+                    receiverMaterial.SetTexture(colorTextureRef, kinectManager.GetColorImageTex(sensorIndex));
+                }
 
-            receiverMaterial.SetTexture(colorTextureRef, kinectManager.GetColorImageTex(sensorIndex));
+                if (vfx != null)
+                {
+                    vfx.SetTexture(colorTextureRef, kinectManager.GetColorImageTex(sensorIndex));
+                }
+
+                colorTextureSet = true;
+            }
+
         }
 
         if (nearestDistanceChanging)
@@ -244,10 +282,20 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
             }
         }
 
-        if(changingPosition != Vector2.zero)
+        if (changingPosition != Vector2.zero)
         {
-            materialPropertiesFader_2.UpdateFloat(0, changingPosition.x);
-            materialPropertiesFader_2.UpdateFloat(1, changingPosition.y);
+            if (materialPropertiesFader_2 != null)
+            {
+                materialPropertiesFader_2?.UpdateFloat(0, changingPosition.x);
+                materialPropertiesFader_2?.UpdateFloat(1, changingPosition.y);
+            }
+
+            if (vFXParameterAnimator != null)
+            {
+                vFXParameterAnimator?.UpdateFloat(0, changingPosition.x);
+                vFXParameterAnimator?.UpdateFloat(1, changingPosition.y);
+            }
+
         }
 
 
@@ -317,12 +365,12 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
                     int x = closestPointsInSegments[j].PixelIndex % depthImageTexture.width; // column index
                     int y = closestPointsInSegments[j].PixelIndex / depthImageTexture.width; // row index
 
-                    float uvX = (float)x/(float)depthImageTexture.width;
-                    float uvY = (float)y/(float)depthImageTexture.height;
+                    float uvX = (float)x / (float)depthImageTexture.width;
+                    float uvY = (float)y / (float)depthImageTexture.height;
 
-                    
 
-                    changingPosition = new Vector2 (uvX,uvY);
+
+                    changingPosition = new Vector2(uvX, uvY);
 
                     print("Changing position: " + changingPosition);
 
