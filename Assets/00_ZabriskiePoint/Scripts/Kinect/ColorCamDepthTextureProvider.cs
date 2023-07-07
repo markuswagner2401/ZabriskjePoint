@@ -372,7 +372,7 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
 
                     changingPosition = new Vector2(uvX, uvY);
 
-                    print("Changing position: " + changingPosition);
+                    //print("Changing position: " + changingPosition);
 
 
                 }
