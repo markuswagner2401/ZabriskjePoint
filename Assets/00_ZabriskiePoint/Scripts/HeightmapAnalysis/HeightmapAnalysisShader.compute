@@ -1,0 +1,101 @@
+#pragma kernel FindHillsAndTroughs
+
+RWTexture2D<float4> Heightmap;
+RWStructuredBuffer<float3> HillsBuffer;
+RWStructuredBuffer<float3> TroughsBuffer;
+RWTexture2D<float4> ColorMap;
+
+uint HeightmapWidth;
+uint HeightmapHeight;
+
+// A function to check if a pixel is part of a hill or trough boundary or not
+    bool isBoundary(uint2 pos, float elevation)
+    {
+        for (int dy = -1; dy <= 1; dy++)
+        {
+            for (int dx = -1; dx <= 1; dx++)
+            {
+                // Make sure the neighbour pixel is not out of bounds
+                if ((pos.x + dx < HeightmapWidth) && (pos.y + dy < HeightmapHeight) &&
+                    (pos.x + dx >= 0) && (pos.y + dy >= 0) && !(dx == 0 && dy == 0))
+                {
+                    float4 neighbour = Heightmap[pos + int2(dx, dy)];
+                    if(neighbour.r != elevation) return true;  // If there's a neighbour with different elevation, then it's a boundary pixel
+                }
+            }
+        }
+        return false;  // If all the neighbours have the same elevation, then it's not a boundary pixel
+    }
+
+// Compute shader to find hills and troughs in a heightmap.
+[numthreads(8, 8, 1)]
+void FindHillsAndTroughs(uint3 id : SV_DispatchThreadID)
+{
+    // Make sure we're not accessing out-of-bounds data
+    if (id.x >= HeightmapWidth || id.y >= HeightmapHeight) return;
+
+    // Retrieve the current pixel value
+    float4 center = Heightmap[id.xy];
+    float maxNeighbour = -10000.0;
+    float minNeighbour = 10000.0;
+
+    if(center.r != 0) // skip if black pixel
+    {
+        // Search in a 12x12 neighborhood
+        for (int dy = -64; dy <= 64; dy++)
+        {
+            for (int dx = -64; dx <= 64; dx++)
+            {
+                // Make sure the neighbour pixel is not out of bounds
+                if ((id.x + dx < HeightmapWidth) && (id.y + dy < HeightmapHeight) &&
+                    (id.x + dx >= 0) && (id.y + dy >= 0))
+                {
+                    float4 neighbour = Heightmap[id.xy + int2(dx, dy)];
+                    if(neighbour.r > maxNeighbour) maxNeighbour = neighbour.r;
+                    if(neighbour.r < minNeighbour) minNeighbour = neighbour.r;
+                }
+            }
+        }
+
+    }
+
+    
+
+    
+
+    // Output the result
+    bool isHill = false;
+    bool isTrough = false;
+
+    uint bufferIndex = id.y * HeightmapWidth + id.x;
+
+    if (center.r == maxNeighbour && maxNeighbour != minNeighbour)
+    {
+        if(isBoundary(id.xy, center.r))
+        {
+            isHill = true;
+
+            HillsBuffer[bufferIndex] = float3(id.xy, center.r);  // Write the position and value to the hills buffer
+            ColorMap[id.xy] = float4(center.r, 0, 0, 1);  // Set pixel color to red for hill boundaries
+        }
+    }
+    else if (center.r == minNeighbour && maxNeighbour != minNeighbour)
+    {
+        if(isBoundary(id.xy, center.r))
+        {
+            isTrough = true;
+
+            TroughsBuffer[bufferIndex] = float3(id.xy, 1 - center.r);  // Write the position and value to the troughs buffer
+            ColorMap[id.xy] = float4(0, 1 - center.r, 0, 1);  // Set pixel color to green for trough boundaries
+        }
+    }
+
+    if(!isHill && !isTrough)
+    {
+        ColorMap[id.xy] = float4(0, 0, 0, 1);  // Set pixel color to black for anything else
+        TroughsBuffer[bufferIndex] = float3(id.xy, -1);
+        HillsBuffer[bufferIndex] = float3(id.xy, -1);  
+    }
+}
+
+

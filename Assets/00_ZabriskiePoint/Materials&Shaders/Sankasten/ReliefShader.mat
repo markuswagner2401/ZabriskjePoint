@@ -83,8 +83,8 @@ Material:
     - _CullModeForward: 2
     - _DefaultTextureBlend: 0.612
     - _DepthOffsetEnable: 0
-    - _Displacement: 6.24
-    - _Distort: -0.05
+    - _Displacement: -101.5
+    - _Distort: 0
     - _DistortSpeed: 0.001
     - _DoubleSidedEnable: 0
     - _DoubleSidedGIMode: 0
@@ -92,8 +92,8 @@ Material:
     - _DstBlend: 0
     - _EnableBlendModePreserveSpecularLighting: 0
     - _EnableFogOnTransparent: 1
-    - _LayerStrength: 1
-    - _LineSrength: 1.21
+    - _LayerStrength: 0.4
+    - _LineSrength: 0.22
     - _OpaqueCullMode: 2
     - _QueueControl: 1
     - _QueueOffset: 0
@@ -103,7 +103,7 @@ Material:
     - _RefractionModel: 0
     - _RenderQueueType: 1
     - _RequireSplitLighting: 0
-    - _Saturation: 0.5
+    - _Saturation: 0.73
     - _Shift: -0.33
     - _SrcBlend: 1
     - _StencilRef: 0
@@ -137,8 +137,9 @@ Material:
     - _ChangingPosition: {r: 0.5, g: 0.5, b: 0, a: 0}
     - _DoubleSidedConstants: {r: 1, g: 1, b: -1, a: 0}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
-    - _InMinMax: {r: 0, g: 1, b: 0, a: 0}
-    - _OutMinMax: {r: 0, g: 1, b: 0, a: 0}
+    - _InMinMax: {r: -1, g: 1, b: 0, a: 0}
+    - _OutMinMax: {r: -0.33, g: 1, b: 0, a: 0}
+    - _Tiling: {r: 1, g: 1, b: 0, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &4272481946539972639
 MonoBehaviour:

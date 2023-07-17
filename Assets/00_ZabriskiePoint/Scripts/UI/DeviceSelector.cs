@@ -55,8 +55,8 @@ public class DeviceSelector : MonoBehaviour
 
     public int GetSensorDropdownValue()
     {
-        if(displayDropdown == null) return -1;
-        return displayDropdown.value;
+        if(sensorDropdown == null) return -1;
+        return sensorDropdown.value;
     }
 
     public void SetSensorActiveColor(bool value)

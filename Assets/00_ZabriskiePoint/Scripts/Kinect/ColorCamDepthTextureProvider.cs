@@ -122,7 +122,7 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
 
     void Start()
     {
-        Initialize();
+        //Initialize();
 
         // if (materialPropertiesFader_2 == null)
         // {
@@ -131,8 +131,9 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
 
     }
 
-    void Initialize()
+    public void Initialize()
     {
+        //sensorIndex = currentSensorIndex;
         // if (receiverMaterial == null)
         // {
         //     receiverMaterial = GetComponent<Material>();
@@ -143,6 +144,7 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
 
         if (sensorData != null)
         {
+            print("sensor data != null");
             // enable the color camera aligned depth frames 
             sensorData.sensorInterface.EnableColorCameraDepthFrame(sensorData, true);
 
@@ -165,6 +167,7 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
             if (receiverMaterial != null)
             {
                 receiverMaterial.SetTexture(depthTextureRef, depthImageTexture);
+                print("Set Texture at receiver material");
             }
 
             if (vfx != null)
@@ -185,6 +188,54 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
 
         CreatePixelSegmentLookup(depthImageTexture.width, depthImageTexture.height);
 
+    }
+
+    public void Deinitialize()
+    {
+        StopAllCoroutines();
+
+        if (depthImageTexture)
+        {
+            if (receiverMaterial != null)
+            {
+                receiverMaterial.SetTexture(depthTextureRef, null);
+                receiverMaterial.SetTexture(colorTextureRef, null);
+                print("Release Texture at receiver material");
+            }
+
+            if (vfx != null)
+            {
+                vfx.SetTexture(depthTextureRef, null);
+
+                print("Release Texture at VFX");
+
+            }
+
+            depthImageTexture.Release();
+            depthImageTexture = null;
+        }
+
+        if (depthImageBuffer != null)
+        {
+            depthImageBuffer.Dispose();
+            depthImageBuffer = null;
+        }
+
+        if (depthHistBuffer != null)
+        {
+            depthHistBuffer.Dispose();
+            depthHistBuffer = null;
+        }
+
+        if (sensorData != null)
+        {
+            // disable the color camera aligned depth frames 
+            sensorData.sensorInterface.EnableColorCameraDepthFrame(sensorData, false);
+        }
+
+        colorTextureSet = false;
+
+        lookupPixelSegment.Clear();
 
     }
 
@@ -214,6 +265,8 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
             // disable the color camera aligned depth frames 
             sensorData.sensorInterface.EnableColorCameraDepthFrame(sensorData, false);
         }
+
+        lookupPixelSegment.Clear();
     }
 
 
@@ -223,6 +276,7 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
     {
         if (kinectManager && kinectManager.IsInitialized() && sensorData != null)
         {
+
             UpdateTextureWithNewFrame();
 
             if (!closestPointTriggerRunning)
@@ -265,9 +319,13 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
             changingEndEventTriggered = false;
             if (!changingEventTriggered)
             {
-                changingEventTriggered = true;
-                onDepthChangingStart.Invoke();
-                // print("trigger changing");
+                if (gameObject.activeInHierarchy)
+                {
+                    changingEventTriggered = true;
+                    onDepthChangingStart.Invoke();
+                    // print("trigger changing");
+                }
+
             }
         }
 
@@ -276,21 +334,25 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
             changingEventTriggered = false;
             if (!changingEndEventTriggered)
             {
-                changingEndEventTriggered = true;
-                onDepthChangingEnd.Invoke();
+                if (gameObject.activeInHierarchy)
+                {
+                    changingEndEventTriggered = true;
+                    onDepthChangingEnd.Invoke();
+                }
+
                 //print("trigger changing end");
             }
         }
 
         if (changingPosition != Vector2.zero)
         {
-            if (materialPropertiesFader_2 != null)
+            if (materialPropertiesFader_2 != null && materialPropertiesFader_2.gameObject.activeInHierarchy)
             {
                 materialPropertiesFader_2?.UpdateFloat(0, changingPosition.x);
                 materialPropertiesFader_2?.UpdateFloat(1, changingPosition.y);
             }
 
-            if (vFXParameterAnimator != null)
+            if (vFXParameterAnimator != null && vFXParameterAnimator.gameObject.activeInHierarchy)
             {
                 vFXParameterAnimator?.UpdateFloat(0, changingPosition.x);
                 vFXParameterAnimator?.UpdateFloat(1, changingPosition.y);
@@ -397,12 +459,19 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
         if (sensorData == null || sensorData.sensorInterface == null || sensorData.colorCamDepthImage == null)
             return;
 
+        if (depthImageTexture == null) return;
+
+        //print("update texture with new frame");
+
+
 
         // get the updated depth frame
         if (lastColorCamDepthFrameTime != sensorData.lastColorCamDepthFrameTime)
         {
 
+
             lastColorCamDepthFrameTime = sensorData.lastColorCamDepthFrameTime;
+
 
             if (depthImageTexture.width != sensorData.colorImageWidth || depthImageTexture.height != sensorData.colorImageHeight)
             {

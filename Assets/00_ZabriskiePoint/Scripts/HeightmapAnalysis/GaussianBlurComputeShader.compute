@@ -1,0 +1,109 @@
+/*Gaussian blur kernel divided into two passes
+* The first pass output is input for the second one
+* The blur kernel is stored in weights, KS = size of kernel
+*/
+
+#pragma kernel GaussianBlur
+
+RWStructuredBuffer<float> inputBuffer; //data to be blurred
+RWStructuredBuffer<float> outputBuffer; //result of blurring
+
+//Texture data
+#define CAMERA //toggle used for quickly swapping between preset width and height
+#define WIDTH 512
+#define HEIGHT 512
+#if !defined(CAMERA)
+static const uint width = WIDTH; //change to "uint width" if will be set from Unity
+static const uint height = HEIGHT; //change to "uint height" if will be set from Unity
+#else
+uint width, height;
+#endif
+
+//----------------------GAUSSIAN KERNELS DATA------------------------------------//
+
+#define KS 9 //updated kernel size
+#define DN KS/2 //negative kernel delta
+#define DP KS/2 + 1 //possitive kernel delta
+
+//Gaussian kernel weights for 9x9 kernel with sigma = 2.0, values may vary depending on sigma
+static const float weights[KS] = {
+    0.031827, 0.075648, 0.123825, 0.173103, 0.202273, 0.173103, 0.123825, 0.075648, 0.031827
+};
+
+bool Horizontal; //determines if this is vertical or horizontal pass
+
+//---------------------
+// backup
+
+// #define KS 5 //kernel size
+// #define DN KS/2 //negative kernel delta
+// #define DP KS/2 + 1 //possitive kernel delta
+
+// //Gaussian kernel, sigma 1.4; for quick gaussian kernel testing go to <a href="http://dev.theomader.com/gaussian-kernel-calculator/"></a>
+// // static const float weights[KS] = {
+// // 0.113318, 0.236003, 0.301360, 0.236003, 0.113318
+// // };
+// // stronger
+// static const float weights[KS] = {
+//     0.06136, 0.24477, 0.38774, 0.24477, 0.06136
+// };
+
+// bool Horizontal; //determines if this is vertical or horizontal pass
+
+//----------------------KERNELS-------------------------------------------------//
+
+[numthreads(64, 1, 1)]
+void GaussianBlur(uint groupIndex : SV_GroupIndex, uint3 id : SV_DispatchThreadID)
+{
+	//TODO: algorithm could be improved by utilization of groupshared memory
+
+	uint threadIndex = id.y * width + id.x;
+	//uint maxLength = width * height;
+	float sum = 0;
+	
+	// reducing
+	
+
+	//horizontal pass
+	if (Horizontal) {
+		[unroll]
+		for (int i = -DN, j = 0; i < DP; i++, j++)
+		{
+			/*
+			This method of handling edges should be avoided due to divergence, should be used only for testing
+			uint index = (id.y + i) * width + id.x;
+			if (index < maxIndex)
+			{
+				sum += inputBuffer[index] * weights[j];
+			}
+			*/
+
+			//utlizes fact that DX returns 0 for out of bounds pixels
+			//sum += inputBuffer[(id.y + i) * width + id.x] * weights[j];
+
+			sum += inputBuffer[id.y * width + (id.x + i)] * weights[j];  // i added to id.x
+		}
+	}
+	//vertical pass
+	else {
+		[unroll]
+		for (int i = -DN, j = 0; i < DP; i++, j++)
+		{
+			/*
+			This method of handling edges should be avoided due to divergence, should be used only for testing
+			uint index = id.y * width + (id.x + j);
+			if (index < maxIndex)
+			{
+				sum += inputBuffer[index] * weights[j];
+			}
+			*/
+
+			//utlizes fact that DX returns 0 for out of bounds pixels
+			//sum += inputBuffer[id.y * width + (id.x + j)] * weights[j];
+
+			sum += inputBuffer[(id.y + i) * width + id.x] * weights[j];  // i added to id.y
+		}
+	}
+
+	outputBuffer[threadIndex] = sum;
+}

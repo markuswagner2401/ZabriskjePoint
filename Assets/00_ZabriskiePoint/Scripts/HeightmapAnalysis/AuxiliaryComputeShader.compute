@@ -1,0 +1,133 @@
+/*
+* Shader contains miscallaneus methods likes clearing buffers or convertion buffer <-> texture
+*/
+
+// Each #kernel tells which function to compile; you can have many kernels
+#pragma kernel ClearBuffer
+#pragma kernel TextureToBuffer
+#pragma kernel TextureToBufferBinary
+#pragma kernel BufferToTexture
+#pragma kernel DrawLines
+
+//Texture data
+#define CAMERA //toggle used for quickly swapping between preset width and height
+#define WIDTH 512
+#define HEIGHT 512
+#if !defined(CAMERA)
+static const uint width = WIDTH; //change to "uint width" if will be set from Unity
+static const uint height = HEIGHT; //change to "uint height" if will be set from Unity
+#else
+uint width, height;
+#endif
+
+//--------------------------------------------------------------------------------------//
+
+// Texture and Buffer
+RWTexture2D<float4> InputTexture; //Input RenderTexture used in DrawLines
+RWTexture2D<float4> OutputTexture; //Output RenderTexture used in DrawLines
+RWTexture2D<float4> Texture; // RenderTexture used in Buffer <-> Texture conversion
+RWStructuredBuffer<float> buffer; //ComputeBuffer, new ComputeBuffer(width*height, sizeof(float),24);
+RWStructuredBuffer<float> MaxValueBuffer; //Buffer used for normalization for texture generation
+
+//--------------------------------------------------------------------------------------//
+
+//Line drawing algorithm taken from<a href="https://forum.unity.com/threads/compute-shader-for-line-drawing.599989/">Compute Shader for line drawing</a>
+float LineData(float2 p, float2 a, float2 b)
+{
+	float2 pa = p - a, ba = b - a;
+	float h = saturate(dot(pa, ba) / dot(ba, ba));
+	float2 d = pa - ba * h;
+	return dot(d, d);
+};
+
+//struct used to represent a line with start and stop position
+struct Line
+{
+	float2 start;
+	float2 end;
+};
+
+RWStructuredBuffer<Line> Lines; //Buffer holding lines for drawing
+#define MAXLINES 40 //maximum number of lines to be drawn
+
+//----------------------KERNELS------------------------------------------//
+
+//Clear input buffer, used mostly for reseting between passes
+[numthreads(64, 1, 1)]
+void ClearBuffer(uint3 id : SV_DispatchThreadID)
+{
+	buffer[id.y * width + id.x] = 0;
+}
+
+// Converts texture into a RWStructuredBuffer containing grayscale values
+[numthreads(64, 1, 1)]
+void TextureToBuffer(uint3 id : SV_DispatchThreadID)
+{
+	//Luminance = 0.2126*R + 0.7152*G + 0.0722*B
+	float3 color = Texture[id.xy].rgb;
+	float luminance = 0.2126 * color.r + 0.7152 * color.g + 0.0722 * color.b;
+	buffer[id.y * width + id.x] = luminance;
+}
+
+// Converts texture into a RWStructuredBuffer containing binarized pixels
+[numthreads(64, 1, 1)]
+void TextureToBufferBinary(uint3 id : SV_DispatchThreadID)
+{
+	//Luminance = 0.2126*R + 0.7152*G + 0.0722*B
+	float3 color = Texture[id.xy].rgb;
+	float luminance = 0.2126 * color.r + 0.7152 * color.g + 0.0722 * color.b;
+	if (luminance > 0.5)
+	{
+		luminance = 1;
+	}
+	else {
+		luminance = 0;
+	}
+	buffer[id.y * width + id.x] = luminance;
+}
+
+//Converts RWStructuredBuffer containing grayscale information into a Texture
+[numthreads(64, 1, 1)]
+void BufferToTexture(uint3 id : SV_DispatchThreadID)
+{
+	float gray = buffer[id.y * width + id.x];
+
+	Texture[id.xy] = float4(gray, gray, gray, 1);
+}
+
+//Line drawing algorithm taken from<a href="https://forum.unity.com/threads/compute-shader-for-line-drawing.599989/">Compute Shader for line drawing</a>
+[numthreads(64, 1, 1)]
+void DrawLines(uint3 id : SV_DispatchThreadID)
+
+{
+	//Copy input to outputexture, can be removed when overlay is not necessary
+	OutputTexture[id.xy] = InputTexture[id.xy];
+
+	/* USED FOR DRAWING GRID
+	if (id.x % 8 == 0)
+	{
+		OutputTexture[id.xy] = float4(0, 0, 1, 1);
+	}
+
+	if (id.y % 8 == 0)
+	{
+		OutputTexture[id.xy] = float4(0, 0, 1, 1);
+	}
+	*/
+
+	//Draw lines
+	[unroll]
+	for (int i = 0; i < MAXLINES; i++)
+	{
+		float k = LineData(float2((float)id.x / width, (float)id.y / height), Lines[i].start, Lines[i].end);
+		float thickness = 0.000005; //how thick the drawn lines should be
+		float4 value = lerp(float4(1, 0, 0, 1), float4(0, 0, 0, 1), smoothstep(0.0, thickness, k));
+		float sum = value.r + value.g + value.b;
+
+		//do not run for invalid lines (null lines, or blurred)
+		if (sum > 0.9)
+		{
+			OutputTexture[id.xy] = value;
+		}
+	}
+}

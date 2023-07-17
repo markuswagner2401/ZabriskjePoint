@@ -81,6 +81,7 @@ public class VFXParameterAnimator : MonoBehaviour
 
     public void ChangeFloat(string name)
     {
+        if(!gameObject.activeInHierarchy) return;
         int index = GetFloatChangerIndexOfName(name);
 
         if (index >= 0)
@@ -98,6 +99,7 @@ public class VFXParameterAnimator : MonoBehaviour
 
     public void ChangeFloat(int index)
     {
+        if(!gameObject.activeInHierarchy) return;
         if (index < floatChangers.Length)
 
             StartCoroutine(InterruptAndChangeFloatR(index));
@@ -177,6 +179,7 @@ public class VFXParameterAnimator : MonoBehaviour
 
     public void UpdateFloat(int index, float newValue)
         {
+            if(!gameObject.activeInHierarchy) return;
 
             float currentValue = vfx.GetFloat(floatUpdaters[index].propRef);
             float smoothedValue = Mathf.Lerp(currentValue, newValue, floatUpdaters[index].smoothing);

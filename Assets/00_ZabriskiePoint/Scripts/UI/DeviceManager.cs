@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using com.rfilkov.kinect;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class DeviceManager : MonoBehaviour
 {
@@ -11,10 +12,14 @@ public class DeviceManager : MonoBehaviour
     {
         public string useName;
 
-        
+
         public DeviceSelector deviceSelector;
         public KinectManager kinectManager;
         public Kinect4AzureInterface kinect4AzureInterface;
+
+        public float minDepthDistance;
+
+        public float maxDepthDistance;
         public Camera camera;
 
         public bool displayOK;
@@ -25,6 +30,8 @@ public class DeviceManager : MonoBehaviour
     [SerializeField] DeviceUse[] deviceUses;
 
     int displayCount;
+
+    
 
     List<Camera> activeCameras = new List<Camera>();
 
@@ -39,7 +46,7 @@ public class DeviceManager : MonoBehaviour
     {
         for (int i = 0; i < deviceUses.Length; i++)
         {
-            if(deviceUses[i].camera == null)
+            if (deviceUses[i].camera == null)
             {
                 deviceUses[i].deviceSelector.gameObject.SetActive(false);
             }
@@ -79,7 +86,7 @@ public class DeviceManager : MonoBehaviour
 
         for (int i = 0; i < deviceUses.Length; i++)
         {
-            if(deviceUses[i].camera == null) continue;
+            if (deviceUses[i].camera == null) continue;
 
             int displayIndex = deviceUses[i].deviceSelector.GetDisplayDropdownValue();
             if (displayIndex >= displayCount)
@@ -107,20 +114,59 @@ public class DeviceManager : MonoBehaviour
 
     // Kinect
 
-    public void SetupKinect()
+    public void ActivateKinects(bool value)
+    {
+        if (!value)
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+
+            // StopKinects();
+            // InitializeDepthTextureProvider(false);
+        }
+
+        else
+        {
+            StartCoroutine(SetupKinectsRoutine());
+        }
+    }
+
+    IEnumerator SetupKinectsRoutine()
+    {
+
+        SetupKinect();
+
+        yield return new WaitForSeconds(0.2f);
+
+        StartKinects();
+
+        yield return new WaitForSeconds(1f);
+
+        InitializeDepthTextureProvider(true);
+
+        yield return new WaitForSeconds(0.2f);
+
+        UpdateValidColors();
+
+        yield break;
+
+    }
+
+
+
+    private void SetupKinect()
     {
         for (int i = 0; i < deviceUses.Length; i++)
         {
-            if(deviceUses[i].camera == null) continue;
+            if (deviceUses[i].camera == null || deviceUses[i].kinect4AzureInterface == null) continue;
 
-            if (deviceUses[i].kinectManager == null)
-            {
-                deviceUses[i].kinectOK = true;
-                continue;
-            }
             int kinectIndex = deviceUses[i].deviceSelector.GetSensorDropdownValue();
 
+            
+
+            Debug.Log("Setting Sensor Index for " + deviceUses[i].useName + " to: " + kinectIndex);
+
             List<KinectInterop.SensorDeviceInfo> alSensors = deviceUses[i].kinect4AzureInterface.GetAvailableSensors();
+            MyConsole.Instance.Print("Vefügbare Sensoren (Kinects): " + alSensors.Count);
             if (kinectIndex >= alSensors.Count)
             {
                 deviceUses[i].kinectOK = false;
@@ -129,18 +175,22 @@ public class DeviceManager : MonoBehaviour
             {
                 deviceUses[i].kinectOK = true;
                 deviceUses[i].kinect4AzureInterface.deviceIndex = kinectIndex;
+                deviceUses[i].kinect4AzureInterface.minDepthDistance = deviceUses[i].minDepthDistance;
+                deviceUses[i].kinect4AzureInterface.maxDepthDistance = deviceUses[i].maxDepthDistance;
+
+
             }
         }
 
-        UpdateValidColors();
+
     }
 
-    void UpdateValidColors()
+    private void UpdateValidColors()
     {
         for (int i = 0; i < deviceUses.Length; i++)
         {
-            if(deviceUses[i].camera == null) continue;
-            
+            if (deviceUses[i].camera == null) continue;
+
             // display
 
             if (deviceUses[i].displayOK)
@@ -175,6 +225,33 @@ public class DeviceManager : MonoBehaviour
             {
                 deviceUses[i].deviceSelector.SetSetupCompleteColor(false);
             }
+        }
+    }
+
+    private void StartKinects()
+    {
+        KinectManager.Instance.StartDepthSensors();
+    }
+
+    public void StopKinects()
+    {
+        KinectManager.Instance.StopDepthSensors();
+    }
+
+    private void InitializeDepthTextureProvider(bool value)
+    {
+        ColorCamDepthTextureProvider[] depthTextureProviders = FindObjectsByType<ColorCamDepthTextureProvider>(FindObjectsSortMode.None);
+        foreach (var item in depthTextureProviders)
+        {
+            if(value)
+            {
+                item.Initialize();
+            }
+            else
+            {
+                item.Deinitialize();
+            }
+            
         }
     }
 
