@@ -134,7 +134,6 @@ GameObject:
   - component: {fileID: 17019675}
   - component: {fileID: 17019674}
   - component: {fileID: 17019673}
-  - component: {fileID: 17019677}
   - component: {fileID: 17019676}
   m_Layer: 0
   m_Name: TextureRelief
@@ -204,16 +203,16 @@ VisualEffect:
       - m_Value: 0.35
         m_Name: GridOffset
         m_Overridden: 1
-      - m_Value: 0.09
+      - m_Value: 0.24
         m_Name: ParticleBaseSize
         m_Overridden: 1
-      - m_Value: -60
+      - m_Value: -52.31
         m_Name: Elevation
         m_Overridden: 1
-      - m_Value: 0.47
+      - m_Value: 0.32
         m_Name: SizeByDepth
         m_Overridden: 1
-      - m_Value: 14.82
+      - m_Value: 0.6
         m_Name: _Distort
         m_Overridden: 1
       - m_Value: 1
@@ -236,6 +235,18 @@ VisualEffect:
         m_Overridden: 1
       - m_Value: 0.3
         m_Name: _ChangingAreaSmoothness
+        m_Overridden: 1
+      - m_Value: 10
+        m_Name: _Steps
+        m_Overridden: 1
+      - m_Value: 0.5
+        m_Name: _MixLayers
+        m_Overridden: 1
+      - m_Value: 0.2
+        m_Name: _MixLines
+        m_Overridden: 1
+      - m_Value: -0.11
+        m_Name: ChangingAreaParticleSize
         m_Overridden: 1
     m_Vector2f:
       m_Array:
@@ -265,7 +276,7 @@ VisualEffect:
           key1: {r: 0.17144115, g: 0.045186214, b: 0.1441285, a: 1}
           key2: {r: 0.3467041, g: 0.38642952, b: 0.5209957, a: 0}
           key3: {r: 0.8879232, g: 0.5647117, b: 0.3515327, a: 0}
-          key4: {r: 0.8879232, g: 0.28563336, b: 0.19725819, a: 0}
+          key4: {r: 0.8879232, g: 0.27467737, b: 0.19120172, a: 0}
           key5: {r: 0, g: 0, b: 0, a: 0}
           key6: {r: 0, g: 0, b: 0, a: 0}
           key7: {r: 0, g: 0, b: 0, a: 0}
@@ -273,7 +284,7 @@ VisualEffect:
           ctime1: 16115
           ctime2: 29298
           ctime3: 45468
-          ctime4: 64777
+          ctime4: 65535
           ctime5: 65535
           ctime6: 0
           ctime7: 0
@@ -287,7 +298,7 @@ VisualEffect:
           atime7: 0
           m_Mode: 0
           m_ColorSpace: 1
-          m_NumColorKeys: 6
+          m_NumColorKeys: 5
           m_NumAlphaKeys: 2
         m_Name: Gradient
         m_Overridden: 1
@@ -542,98 +553,6 @@ MonoBehaviour:
     startValue: 0
     propRef: _ChangingPosY
     smoothing: 0.01
---- !u!114 &17019677
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 17019672}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0c8e86e848a9edb4ba2a26f1962a6f33, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sensorIndex: 0
-  onDepthChangingEnd:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 17019676}
-        m_TargetAssemblyTypeName: VFXParameterAnimator, Assembly-CSharp
-        m_MethodName: ChangeFloat
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: DistortOut
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 17019676}
-        m_TargetAssemblyTypeName: VFXParameterAnimator, Assembly-CSharp
-        m_MethodName: ChangeFloat
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: DefaultTextureIn
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 660780623}
-        m_TargetAssemblyTypeName: VideoControl, Assembly-CSharp
-        m_MethodName: Integrate
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  onDepthChangingStart:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 17019676}
-        m_TargetAssemblyTypeName: VFXParameterAnimator, Assembly-CSharp
-        m_MethodName: ChangeFloat
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: DistortIn
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 660780623}
-        m_TargetAssemblyTypeName: VideoControl, Assembly-CSharp
-        m_MethodName: Desintegrate
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: Outro
-          m_BoolArgument: 0
-        m_CallState: 2
-  triggerDelayIn: 20
-  triggerDelayOut: 7
-  changingBar: 0
-  distChangeThreshold: 10
-  distanceChecckFrequency: 0.1
-  heightSegments: 2
-  widthSegments: 2
-  materialPropertiesFader_2: {fileID: 0}
-  vFXParameterAnimator: {fileID: 17019676}
-  receiverMaterial: {fileID: 0}
-  vfx: {fileID: 17019674}
-  depthTextureRef: _Texture
-  colorTextureRef: _ColorTexture
 --- !u!1 &95745744
 GameObject:
   m_ObjectHideFlags: 0
@@ -2660,6 +2579,10 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
+    - target: {fileID: 9186052675161691326, guid: 4618867bff22436449478594343f3d00, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3552,7 +3475,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: e45f12ec1dbbaef4c859b3da1860cac9, type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: e45f12ec1dbbaef4c859b3da1860cac9, type: 3}
       propertyPath: m_Materials.Array.data[0]

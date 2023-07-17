@@ -323,7 +323,7 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
                 {
                     changingEventTriggered = true;
                     onDepthChangingStart.Invoke();
-                    // print("trigger changing");
+                    print("trigger changing");
                 }
 
             }
@@ -340,7 +340,7 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
                     onDepthChangingEnd.Invoke();
                 }
 
-                //print("trigger changing end");
+                print("trigger changing end");
             }
         }
 
