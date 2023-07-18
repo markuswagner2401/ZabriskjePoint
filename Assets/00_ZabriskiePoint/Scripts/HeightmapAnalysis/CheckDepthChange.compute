@@ -4,6 +4,7 @@ RWStructuredBuffer<int> currentDepthData;
 StructuredBuffer<int> prevDepthData;
 RWStructuredBuffer<int> changeData;
 RWTexture2D<float4> changePointsDebug;
+int distanceChangeThreshold;
 int depthImageWidth;
 int maxDepthDistance;
 
@@ -33,7 +34,7 @@ void CheckDepthChange (uint3 id : SV_DispatchThreadID)
     
 
     // Check if the difference is greater than threshold (2mm)
-    if (diff > 20)
+    if (diff > distanceChangeThreshold)
     {
         changeData[id.x] = 1;
         changePointsDebug[pixelPos] = float4(1, 0, 0, 1);; // Red

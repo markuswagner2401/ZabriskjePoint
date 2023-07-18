@@ -13,6 +13,8 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
 
     // Trigger
 
+    [SerializeField] bool kickstart = true;
+
     // DephsCheck
 
     public ComputeShader depthCheckShader;
@@ -37,11 +39,11 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
 
     //
 
-    public struct SegmentInfo
-    {
-        public int ClosestLength;
-        public int PixelIndex;
-    }
+    // public struct SegmentInfo
+    // {
+    //     public int ClosestLength;
+    //     public int PixelIndex;
+    // }
 
 
     int nearestPointDistance = 9999999;
@@ -76,14 +78,14 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
 
     //
 
-    Dictionary<int, int> lookupPixelSegment = new Dictionary<int, int>();
+    // Dictionary<int, int> lookupPixelSegment = new Dictionary<int, int>();
 
-    SegmentInfo[] closestPointsInSegments;
+    // SegmentInfo[] closestPointsInSegments;
 
-    SegmentInfo[] lastClosestPointsInSegments;
+    // SegmentInfo[] lastClosestPointsInSegments;
 
-    [SerializeField] int heightSegments = 2;
-    [SerializeField] int widthSegments = 2;
+    // [SerializeField] int heightSegments = 2;
+    // [SerializeField] int widthSegments = 2;
 
     Vector2 changingPosition = new Vector2();
 
@@ -246,6 +248,16 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
         writableDepthChangeDebug.enableRandomWrite = true;
         writableDepthChangeDebug.Create();
 
+        // Copying data
+        for (int i = 0; i < sensorData.colorCamDepthImage.Length; i++)
+        {
+            currentDepthData[i] = sensorData.colorCamDepthImage[i];
+        }
+
+        System.Array.Copy(currentDepthData, prevDepthData, currentDepthData.Length);
+
+
+
         // Initializing
 
         // depthCheckKernel = depthCheckShader.FindKernel("CheckDepthChange");
@@ -271,7 +283,7 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
 
         ///
 
-        CreatePixelSegmentLookup(depthImageTexture.width, depthImageTexture.height);
+        // CreatePixelSegmentLookup(depthImageTexture.width, depthImageTexture.height);
 
     }
 
@@ -320,7 +332,7 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
 
         colorTextureSet = false;
 
-        lookupPixelSegment.Clear();
+        //lookupPixelSegment.Clear();
 
     }
 
@@ -351,7 +363,7 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
             sensorData.sensorInterface.EnableColorCameraDepthFrame(sensorData, false);
         }
 
-        lookupPixelSegment.Clear();
+        //lookupPixelSegment.Clear();
 
         currentDepthBuffer?.Release();
         prevDepthBuffer?.Release();
@@ -454,99 +466,104 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
 
     }
 
-    IEnumerator ClosestPointTriggerRoutine()
-    {
-        //CreatePixelSegmentLookup(depthImageTexture.width, depthImageTexture.height);
+    // IEnumerator ClosestPointTriggerRoutine()
+    // {
+    //     //CreatePixelSegmentLookup(depthImageTexture.width, depthImageTexture.height);
 
 
 
-        SegmentInfo[] closestPointsInSegments = new SegmentInfo[heightSegments * widthSegments];
-        SegmentInfo[] lastClosestPointsInSegments = new SegmentInfo[heightSegments * widthSegments];
+    //     SegmentInfo[] closestPointsInSegments = new SegmentInfo[heightSegments * widthSegments];
+    //     SegmentInfo[] lastClosestPointsInSegments = new SegmentInfo[heightSegments * widthSegments];
 
 
 
-        while (true)
-        {
-            if (sensorData == null || sensorData.sensorInterface == null || sensorData.colorCamDepthImage == null)
-                yield return null;
+    //     while (true)
+    //     {
+    //         if (sensorData == null || sensorData.sensorInterface == null || sensorData.colorCamDepthImage == null)
+    //             yield return null;
 
-            //int frameLen = sensorData.colorCamDepthImage.Length;
+    //         //int frameLen = sensorData.colorCamDepthImage.Length;
 
-            // local copy for consistency
+    //         // local copy for consistency
 
-            // int[] localDepthImage = new int[frameLen];
-            // Array.Copy(sensorData.colorCamDepthImage, localDepthImage, frameLen);
+    //         // int[] localDepthImage = new int[frameLen];
+    //         // Array.Copy(sensorData.colorCamDepthImage, localDepthImage, frameLen);
 
-            //
+    //         //
 
-            //currentDepthImage = sensorData.colorCamDepthImage;
-
-
-
-            Array.Copy(sensorData.colorCamDepthImage, currentDepthImage, sensorData.colorCamDepthImage.Length);
-
-            for (int i = 0; i < closestPointsInSegments.Length; i++)
-            {
-                closestPointsInSegments[i] = new SegmentInfo { ClosestLength = 100000, PixelIndex = closestPointsInSegments[i].PixelIndex };
-            }
-
-            nearestDistanceChanging = false;
-            changingPosition = Vector2.zero;
-
-            for (int i = 0; i < frameLen; i++)
-            {
-                //int depth = sensorData.colorCamDepthImage[i];
-
-                int depth = currentDepthImage[i];
-
-                int limDepth = (depth <= DepthSensorBase.MAX_DEPTH_DISTANCE_MM) ? depth : 0;
-
-                int currentTriggerSegment = lookupPixelSegment[i];
-
-                if (limDepth > 0 && limDepth < closestPointsInSegments[currentTriggerSegment].ClosestLength)
-                {
-                    closestPointsInSegments[currentTriggerSegment] = new SegmentInfo { ClosestLength = limDepth, PixelIndex = i };
-                }
-            }
-
-            for (int j = 0; j < closestPointsInSegments.Length; j++)
-            {
-                if (Mathf.Abs(closestPointsInSegments[j].ClosestLength - lastClosestPointsInSegments[j].ClosestLength) > distChangeThreshold)
-                {
-                    nearestDistanceChanging = true;
-                    lastClosestPointsInSegments[j] = closestPointsInSegments[j];
-
-                    int x = closestPointsInSegments[j].PixelIndex % depthImageTexture.width; // column index
-                    int y = closestPointsInSegments[j].PixelIndex / depthImageTexture.width; // row index
-
-                    float uvX = (float)x / (float)depthImageTexture.width;
-                    float uvY = (float)y / (float)depthImageTexture.height;
+    //         //currentDepthImage = sensorData.colorCamDepthImage;
 
 
 
-                    changingPosition = new Vector2(uvX, uvY);
+    //         Array.Copy(sensorData.colorCamDepthImage, currentDepthImage, sensorData.colorCamDepthImage.Length);
 
-                    //print("Changing position: " + changingPosition);
+    //         for (int i = 0; i < closestPointsInSegments.Length; i++)
+    //         {
+    //             closestPointsInSegments[i] = new SegmentInfo { ClosestLength = 100000, PixelIndex = closestPointsInSegments[i].PixelIndex };
+    //         }
+
+    //         nearestDistanceChanging = false;
+    //         changingPosition = Vector2.zero;
+
+    //         for (int i = 0; i < frameLen; i++)
+    //         {
+    //             //int depth = sensorData.colorCamDepthImage[i];
+
+    //             int depth = currentDepthImage[i];
+
+    //             int limDepth = (depth <= DepthSensorBase.MAX_DEPTH_DISTANCE_MM) ? depth : 0;
+
+    //             int currentTriggerSegment = lookupPixelSegment[i];
+
+    //             if (limDepth > 0 && limDepth < closestPointsInSegments[currentTriggerSegment].ClosestLength)
+    //             {
+    //                 closestPointsInSegments[currentTriggerSegment] = new SegmentInfo { ClosestLength = limDepth, PixelIndex = i };
+    //             }
+    //         }
+
+    //         for (int j = 0; j < closestPointsInSegments.Length; j++)
+    //         {
+    //             if (Mathf.Abs(closestPointsInSegments[j].ClosestLength - lastClosestPointsInSegments[j].ClosestLength) > distChangeThreshold)
+    //             {
+    //                 nearestDistanceChanging = true;
+    //                 lastClosestPointsInSegments[j] = closestPointsInSegments[j];
+
+    //                 int x = closestPointsInSegments[j].PixelIndex % depthImageTexture.width; // column index
+    //                 int y = closestPointsInSegments[j].PixelIndex / depthImageTexture.width; // row index
+
+    //                 float uvX = (float)x / (float)depthImageTexture.width;
+    //                 float uvY = (float)y / (float)depthImageTexture.height;
 
 
-                }
-            }
+
+    //                 changingPosition = new Vector2(uvX, uvY);
+
+    //                 //print("Changing position: " + changingPosition);
+
+
+    //             }
+    //         }
 
 
 
-            yield return new WaitForSeconds(distanceChecckFrequency);
+    //         yield return new WaitForSeconds(distanceChecckFrequency);
 
 
-        }
+    //     }
 
 
 
 
-    }
+    // }
 
     // compute shader way
+
+    
     IEnumerator DepthsCheckRoutine()
     {
+        
+        bool kickstart = true;
+
         while (true)
         {
             if (sensorData == null || sensorData.sensorInterface == null || sensorData.colorCamDepthImage == null)
@@ -560,6 +577,8 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
                 currentDepthData[i] = sensorData.colorCamDepthImage[i];
             }
 
+            
+
 
 
             currentDepthBuffer.SetData(currentDepthData);
@@ -572,6 +591,7 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
             depthCheckShader.SetBuffer(depthCheckKernel, "changeData", changeDataBuffer);
             depthCheckShader.SetInt("depthImageWidth", depthImageTexture.width);
             depthCheckShader.SetInt("maxDepthDistance", DepthSensorBase.MAX_DEPTH_DISTANCE_MM);
+            depthCheckShader.SetInt("distanceChangeThreshold", distChangeThreshold);
 
             depthCheckShader.SetTexture(depthCheckKernel, "changePointsDebug", writableDepthChangeDebug);
 
@@ -599,29 +619,35 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
                 int limDepth = (changeData[i] <= DepthSensorBase.MAX_DEPTH_DISTANCE_MM) ? changeData[i] : 0;
                 if (limDepth == 1)
                 {
-                    // print("change happened");
-                    //     break;
+
 
                     changingPixels += 1;
                     if (changingPixels > pixelChangeThreshold)
                     {
                         nearestDistanceChanging = true;
-                        //break;
+
                     }
                     sumPosX += (i % depthImageTexture.width);
                     sumPosY += (i / depthImageTexture.width);
+
+                    prevDepthData[i] = currentDepthData[i]; // only change prevDeppthBuffer for changing pixels.
                 }
             }
 
-            if(nearestDistanceChanging)
+            if (nearestDistanceChanging)
             {
-                
+
                 float uvX = (float)(sumPosX / changingPixels) / (float)depthImageTexture.width;
                 float uvY = (float)(sumPosY / changingPixels) / (float)depthImageTexture.height;
 
                 changingPosition.x = uvX;
                 changingPosition.y = uvY;
-                //print("change Happened: " + changingPosition);
+
+                kickstart = false;
+
+                
+
+
             }
 
             else
@@ -629,8 +655,17 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
                 changingPosition = Vector3.zero;
             }
 
-            // Set current depth data as previous depth data for the next frame.
-            System.Array.Copy(currentDepthData, prevDepthData, currentDepthData.Length);
+            if (kickstart)
+            {
+                System.Array.Copy(currentDepthData, prevDepthData, currentDepthData.Length);
+            }
+
+            // else
+            // {
+            //     System.Array.Copy(prevDepthData, prevDepthData, currentDepthData.Length);
+            // }
+
+            //System.Array.Copy(currentDepthData, prevDepthData, currentDepthData.Length); // ... but it has to be here
 
             yield return new WaitForSeconds(distanceChecckFrequency);
         }
@@ -742,45 +777,45 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
 
     }
 
-    private void CreatePixelSegmentLookup(int imageWidth, int imageHeight)
-    {
+    // private void CreatePixelSegmentLookup(int imageWidth, int imageHeight)
+    // {
 
-        int segmentHeight = imageHeight / heightSegments; // height of each segment
-        int segmentWidth = imageWidth / widthSegments; // width of each segment
+    //     int segmentHeight = imageHeight / heightSegments; // height of each segment
+    //     int segmentWidth = imageWidth / widthSegments; // width of each segment
 
-        // Check if the image height and width are evenly divisible by the number of segments
-        if (imageHeight % heightSegments != 0 || imageWidth % widthSegments != 0)
-        {
-            Debug.LogError("The image dimensions are not evenly divisible by the number of segments. This can cause Problems");
-        }
+    //     // Check if the image height and width are evenly divisible by the number of segments
+    //     if (imageHeight % heightSegments != 0 || imageWidth % widthSegments != 0)
+    //     {
+    //         Debug.LogError("The image dimensions are not evenly divisible by the number of segments. This can cause Problems");
+    //     }
 
-        int totalPixels = imageHeight * imageWidth;
-        for (int i = 0; i < totalPixels; i++)
-        {
-            int row = i / imageWidth; // calculate row of the pixel
-            int col = i % imageWidth; // calculate column of the pixel
+    //     int totalPixels = imageHeight * imageWidth;
+    //     for (int i = 0; i < totalPixels; i++)
+    //     {
+    //         int row = i / imageWidth; // calculate row of the pixel
+    //         int col = i % imageWidth; // calculate column of the pixel
 
-            int segmentRow = row / segmentHeight; // calculate segment row
-            int segmentCol = col / segmentWidth; // calculate segment column
+    //         int segmentRow = row / segmentHeight; // calculate segment row
+    //         int segmentCol = col / segmentWidth; // calculate segment column
 
-            // calculate unique segment number
-            int segmentNumber = segmentRow * widthSegments + segmentCol;
+    //         // calculate unique segment number
+    //         int segmentNumber = segmentRow * widthSegments + segmentCol;
 
-            lookupPixelSegment.Add(i, segmentNumber);
-        }
-    }
+    //         lookupPixelSegment.Add(i, segmentNumber);
+    //     }
+    // }
 
 
 
-    int[] CreateClosestPointsStartArray()
-    {
-        int[] newArray = new int[heightSegments * widthSegments];
-        for (int i = 0; i < newArray.Length; i++)
-        {
-            newArray[i] = 10000;
-        }
-        return newArray;
-    }
+    // int[] CreateClosestPointsStartArray()
+    // {
+    //     int[] newArray = new int[heightSegments * widthSegments];
+    //     for (int i = 0; i < newArray.Length; i++)
+    //     {
+    //         newArray[i] = 10000;
+    //     }
+    //     return newArray;
+    // }
 }
 
 
