@@ -13,13 +13,18 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
 
     // Trigger
 
-    [SerializeField] bool kickstart = true;
+
 
     // DephsCheck
 
     public ComputeShader depthCheckShader;
-
     private int depthCheckKernel;
+
+    public ComputeShader fillRectangelShader;
+
+    private int fillRectangleKernel;
+
+
     private ComputeBuffer currentDepthBuffer;
     private ComputeBuffer prevDepthBuffer;
     private ComputeBuffer changeDataBuffer;
@@ -34,8 +39,26 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
 
 
     [SerializeField] RenderTexture depthChangeDebug = null;
-
     RenderTexture writableDepthChangeDebug;
+
+    [SerializeField] RenderTexture changingRectangleDebug = null;
+    RenderTexture writableRectangleDebug;
+
+    [SerializeField] int changingRectEdgeWidth = 10;
+
+    [SerializeField] float changingAreaSmoothing = 0.1f;
+
+    [SerializeField] int upperPercentile = 95;
+    [SerializeField] int lowerPercentile = 5;
+
+    int rightMost;
+    int lastRightMost;
+    int leftMost;
+    int lastLeftMost;
+    int upMost;
+    int lastUpMost;
+    int downMost;
+    int lastDownMost;
 
     //
 
@@ -248,6 +271,10 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
         writableDepthChangeDebug.enableRandomWrite = true;
         writableDepthChangeDebug.Create();
 
+        writableRectangleDebug = new RenderTexture(depthImageTexture.width, depthImageTexture.height, 24);
+        writableRectangleDebug.enableRandomWrite = true;
+        writableRectangleDebug.Create();
+
         // Copying data
         for (int i = 0; i < sensorData.colorCamDepthImage.Length; i++)
         {
@@ -255,6 +282,11 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
         }
 
         System.Array.Copy(currentDepthData, prevDepthData, currentDepthData.Length);
+
+        // Fill Changing Rectangle
+
+        fillRectangleKernel = fillRectangelShader.FindKernel("FillRectangle");
+
 
 
 
@@ -558,10 +590,10 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
 
     // compute shader way
 
-    
+
     IEnumerator DepthsCheckRoutine()
     {
-        
+
         bool kickstart = true;
 
         while (true)
@@ -577,7 +609,7 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
                 currentDepthData[i] = sensorData.colorCamDepthImage[i];
             }
 
-            
+
 
 
 
@@ -614,12 +646,21 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
             int sumPosX = 0;
             int sumPosY = 0;
             int changingPixels = 0;
+
+            // changinArea
+            // rightMost = depthImageTexture.width;
+            // leftMost = -1;
+            // upMost = depthImageTexture.height;
+            // downMost = -1;
+
+            List<int> posXList = new List<int>();
+            List<int> posYList = new List<int>();
+
             for (int i = 0; i < changeData.Length; i++)
             {
                 int limDepth = (changeData[i] <= DepthSensorBase.MAX_DEPTH_DISTANCE_MM) ? changeData[i] : 0;
                 if (limDepth == 1)
                 {
-
 
                     changingPixels += 1;
                     if (changingPixels > pixelChangeThreshold)
@@ -627,8 +668,23 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
                         nearestDistanceChanging = true;
 
                     }
-                    sumPosX += (i % depthImageTexture.width);
-                    sumPosY += (i / depthImageTexture.width);
+
+                    int posX = i % depthImageTexture.width;
+                    int posY = i / depthImageTexture.width;
+
+                    posXList.Add(posX);
+                    posYList.Add(posY);
+
+                    // Check for outermost changing pixels
+                    // rightMost = Mathf.Min(rightMost, posX);
+                    // leftMost = Mathf.Max(leftMost, posX);
+                    // upMost = Mathf.Min(upMost, posY);
+                    // downMost = Mathf.Max(downMost, posY);
+
+
+                    // caluclating of avarage changing position
+                    sumPosX += posX;
+                    sumPosY += posY;
 
                     prevDepthData[i] = currentDepthData[i]; // only change prevDeppthBuffer for changing pixels.
                 }
@@ -636,23 +692,74 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
 
             if (nearestDistanceChanging)
             {
+                // changing rectangle
 
+                
+
+                posXList.Sort();
+                posYList.Sort();
+
+                int lowerPercentileIndex = posXList.Count * lowerPercentile / 100; // lowerPercentile is an int between 0 and 100
+                int upperPercentileIndex = posXList.Count * upperPercentile / 100; // upperPercentile is an int between 0 and 100
+
+                
+
+                leftMost = posXList[upperPercentileIndex];
+                rightMost = posXList[lowerPercentileIndex];
+                upMost = posYList[lowerPercentileIndex];
+                downMost = posYList[upperPercentileIndex];
+
+                rightMost = (int)Mathf.Floor(Mathf.Lerp(lastRightMost, rightMost, changingAreaSmoothing));
+                leftMost = (int)Mathf.Floor(Mathf.Lerp(lastLeftMost, leftMost, changingAreaSmoothing));
+                upMost = (int)Mathf.Floor(Mathf.Lerp(lastUpMost, upMost, changingAreaSmoothing));
+                downMost = (int)Mathf.Floor(Mathf.Lerp(lastDownMost, downMost, changingAreaSmoothing));
+
+                lastRightMost = rightMost;
+                lastLeftMost = leftMost;
+                lastUpMost = upMost;
+                lastDownMost = downMost;
+
+               
+
+
+                fillRectangelShader.SetTexture(fillRectangleKernel, "outputTexture", writableRectangleDebug);
+                fillRectangelShader.SetInt("left", leftMost);
+                fillRectangelShader.SetInt("right", rightMost);
+                fillRectangelShader.SetInt("up", upMost);
+                fillRectangelShader.SetInt("down", downMost);
+                fillRectangelShader.SetInt("edgeWidth", changingRectEdgeWidth);  // Set edge width
+                fillRectangelShader.SetInts("textureSize", new int[2] { writableRectangleDebug.width, writableRectangleDebug.height });
+
+                fillRectangelShader.Dispatch(fillRectangleKernel, writableRectangleDebug.width / 8, writableRectangleDebug.height / 8, 1);
+
+                if (writableRectangleDebug.width == changingRectangleDebug.width && writableRectangleDebug.height == changingRectangleDebug.height)
+                {
+                    Graphics.Blit(writableRectangleDebug, changingRectangleDebug);
+                   
+                }
+                else
+                {
+                    Debug.LogError("Texture Resolution Mismach: writableRectangleDebug, changingRectangleDebug");
+                }
+
+
+
+
+                // changing position
                 float uvX = (float)(sumPosX / changingPixels) / (float)depthImageTexture.width;
                 float uvY = (float)(sumPosY / changingPixels) / (float)depthImageTexture.height;
 
                 changingPosition.x = uvX;
                 changingPosition.y = uvY;
 
-                kickstart = false;
-
-                
-
+                kickstart = false; // after the a changing was detected the system is running and we only set prevDepthData for changing pixels
 
             }
 
             else
             {
                 changingPosition = Vector3.zero;
+                // 
             }
 
             if (kickstart)
@@ -660,12 +767,6 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
                 System.Array.Copy(currentDepthData, prevDepthData, currentDepthData.Length);
             }
 
-            // else
-            // {
-            //     System.Array.Copy(prevDepthData, prevDepthData, currentDepthData.Length);
-            // }
-
-            //System.Array.Copy(currentDepthData, prevDepthData, currentDepthData.Length); // ... but it has to be here
 
             yield return new WaitForSeconds(distanceChecckFrequency);
         }

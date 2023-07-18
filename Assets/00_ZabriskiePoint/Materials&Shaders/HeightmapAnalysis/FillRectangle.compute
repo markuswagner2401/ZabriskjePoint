@@ -1,0 +1,28 @@
+#pragma kernel FillRectangle
+
+RWTexture2D<float4> outputTexture;
+int2 textureSize;
+int left;
+int right;
+int up;
+int down;
+int edgeWidth;
+
+[numthreads(8,8,1)]
+void FillRectangle (uint3 id : SV_DispatchThreadID)
+{
+    // First, let's move the edges outward by the edgeWidth
+    int adjustedRight = right - edgeWidth;
+    int adjustedLeft = left + edgeWidth;
+    int adjustedUp = up - edgeWidth;
+    int adjustedDown = down + edgeWidth;
+
+    float r = smoothstep(adjustedRight, adjustedRight + edgeWidth, id.x);
+    float l = 1 - smoothstep(adjustedLeft, adjustedLeft + edgeWidth, id.x);
+    float u = smoothstep(adjustedUp, adjustedUp + edgeWidth, id.y);
+    float d = 1 - smoothstep(adjustedDown, adjustedDown + edgeWidth, id.y);
+
+    float v = r*l*u*d;
+
+    outputTexture[id.xy] = float4(v,v,v,1);
+}
