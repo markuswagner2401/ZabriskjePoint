@@ -1,0 +1,46 @@
+#pragma kernel CheckDepthChange
+
+RWStructuredBuffer<int> currentDepthData;
+StructuredBuffer<int> prevDepthData;
+RWStructuredBuffer<int> changeData;
+RWTexture2D<float4> changePointsDebug;
+int depthImageWidth;
+int maxDepthDistance;
+
+[numthreads(256, 1, 1)]
+void CheckDepthChange (uint3 id : SV_DispatchThreadID)
+{
+    if (id.x >= currentDepthData.Length)
+        return;
+
+    int2 pixelPos = int2(id.x % depthImageWidth, id.x / depthImageWidth);
+
+    int limDepthCurrent = (currentDepthData[id.x] <= maxDepthDistance) ? currentDepthData[id.x] : 0;
+
+    int limDepthPrevious = (prevDepthData[id.x] <= maxDepthDistance) ? prevDepthData[id.x] : 0;
+
+    
+
+    if(limDepthPrevious == 0 || limDepthCurrent == 0 || limDepthCurrent > 1500)
+    {
+        changeData[id.x] = 0;
+        changePointsDebug[pixelPos] = float4(0, 0, 0, 1); // Black
+        return;
+    } 
+
+    int diff = abs(currentDepthData[id.x] - prevDepthData[id.x]);
+
+    
+
+    // Check if the difference is greater than threshold (2mm)
+    if (diff > 20)
+    {
+        changeData[id.x] = 1;
+        changePointsDebug[pixelPos] = float4(1, 0, 0, 1);; // Red
+    }
+    else
+    {
+        changeData[id.x] = 0;
+        changePointsDebug[pixelPos] = float4(0, 0, 0, 1); // Black
+    }
+}

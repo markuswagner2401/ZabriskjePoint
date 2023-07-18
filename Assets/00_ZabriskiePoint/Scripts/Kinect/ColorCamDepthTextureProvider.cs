@@ -13,6 +13,30 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
 
     // Trigger
 
+    // DephsCheck
+
+    public ComputeShader depthCheckShader;
+
+    private int depthCheckKernel;
+    private ComputeBuffer currentDepthBuffer;
+    private ComputeBuffer prevDepthBuffer;
+    private ComputeBuffer changeDataBuffer;
+    private int[] currentDepthData;
+
+    private int currentColorCamPixel;
+    private int[] prevDepthData;
+    private int[] changeData;
+
+    [SerializeField] int pixelChangeThreshold = 100;
+
+
+
+    [SerializeField] RenderTexture depthChangeDebug = null;
+
+    RenderTexture writableDepthChangeDebug;
+
+    //
+
     public struct SegmentInfo
     {
         public int ClosestLength;
@@ -117,7 +141,11 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
 
     ushort[] currentDepthImage;
 
+    ushort[] previousDepthImage;
+
     int frameLen;
+
+    int rawDepthImageLength;
 
 
     void Start()
@@ -160,6 +188,11 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
             depthHistBufferData = new int[DepthSensorBase.MAX_DEPTH_DISTANCE_MM + 1];
             equalHistBufferData = new int[DepthSensorBase.MAX_DEPTH_DISTANCE_MM + 1];
 
+
+
+
+
+
         }
 
         if (depthImageTexture != null)
@@ -185,6 +218,58 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
         frameLen = sensorData.colorCamDepthImage.Length;
 
         currentDepthImage = new ushort[frameLen];
+
+        previousDepthImage = new ushort[frameLen];
+
+        // depths check compute shader 
+
+
+
+
+        //Initializing
+        depthCheckKernel = depthCheckShader.FindKernel("CheckDepthChange");
+
+
+
+        currentDepthData = new int[frameLen];
+        prevDepthData = new int[frameLen];
+        changeData = new int[frameLen];
+
+
+
+        currentDepthBuffer = new ComputeBuffer(frameLen, sizeof(int));
+        prevDepthBuffer = new ComputeBuffer(frameLen, sizeof(int));
+        changeDataBuffer = new ComputeBuffer(frameLen, sizeof(int));
+
+
+        writableDepthChangeDebug = new RenderTexture(depthImageTexture.width, depthImageTexture.height, 24);
+        writableDepthChangeDebug.enableRandomWrite = true;
+        writableDepthChangeDebug.Create();
+
+        // Initializing
+
+        // depthCheckKernel = depthCheckShader.FindKernel("CheckDepthChange");
+
+        // rawDepthImageLength = sensorData.depthImage.Length;
+
+        // currentDepthData = new int[rawDepthImageLength];
+        // prevDepthData = new int[rawDepthImageLength];
+        // changeData = new int[rawDepthImageLength];
+
+
+
+
+        // currentDepthBuffer = new ComputeBuffer(rawDepthImageLength, sizeof(int));
+        // prevDepthBuffer = new ComputeBuffer(rawDepthImageLength, sizeof(int));
+        // changeDataBuffer = new ComputeBuffer(rawDepthImageLength, sizeof(int));
+
+
+        // writableDepthChangeDebug = new RenderTexture(depthImageTexture.width, depthImageTexture.height, 24);
+        // writableDepthChangeDebug.enableRandomWrite = true;
+        // writableDepthChangeDebug.Create();
+
+
+        ///
 
         CreatePixelSegmentLookup(depthImageTexture.width, depthImageTexture.height);
 
@@ -267,6 +352,10 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
         }
 
         lookupPixelSegment.Clear();
+
+        currentDepthBuffer?.Release();
+        prevDepthBuffer?.Release();
+        changeDataBuffer?.Release();
     }
 
 
@@ -281,7 +370,8 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
 
             if (!closestPointTriggerRunning)
             {
-                StartCoroutine(ClosestPointTriggerRoutine());
+                //StartCoroutine(ClosestPointTriggerRoutine()); old
+                StartCoroutine(DepthsCheckRoutine()); // new with compute shader
                 closestPointTriggerRunning = true;
             }
 
@@ -391,6 +481,8 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
 
             //currentDepthImage = sensorData.colorCamDepthImage;
 
+
+
             Array.Copy(sensorData.colorCamDepthImage, currentDepthImage, sensorData.colorCamDepthImage.Length);
 
             for (int i = 0; i < closestPointsInSegments.Length; i++)
@@ -452,6 +544,97 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
 
     }
 
+    // compute shader way
+    IEnumerator DepthsCheckRoutine()
+    {
+        while (true)
+        {
+            if (sensorData == null || sensorData.sensorInterface == null || sensorData.colorCamDepthImage == null)
+            {
+                yield return null;
+            }
+
+            // Copying data
+            for (int i = 0; i < sensorData.colorCamDepthImage.Length; i++)
+            {
+                currentDepthData[i] = sensorData.colorCamDepthImage[i];
+            }
+
+
+
+            currentDepthBuffer.SetData(currentDepthData);
+            prevDepthBuffer.SetData(prevDepthData);
+            changeDataBuffer.SetData(changeData);
+
+
+            depthCheckShader.SetBuffer(depthCheckKernel, "currentDepthData", currentDepthBuffer);
+            depthCheckShader.SetBuffer(depthCheckKernel, "prevDepthData", prevDepthBuffer);
+            depthCheckShader.SetBuffer(depthCheckKernel, "changeData", changeDataBuffer);
+            depthCheckShader.SetInt("depthImageWidth", depthImageTexture.width);
+            depthCheckShader.SetInt("maxDepthDistance", DepthSensorBase.MAX_DEPTH_DISTANCE_MM);
+
+            depthCheckShader.SetTexture(depthCheckKernel, "changePointsDebug", writableDepthChangeDebug);
+
+            //depthCheckShader.Dispatch(depthCheckKernel, Mathf.CeilToInt((float)currentDepthData.Length * 2 / 256), 1, 1);
+            depthCheckShader.Dispatch(depthCheckKernel, Mathf.CeilToInt((float)currentDepthData.Length / 256), 1, 1);
+
+            changeDataBuffer.GetData(changeData);
+            if (depthChangeDebug.width == writableDepthChangeDebug.width && depthChangeDebug.height == writableDepthChangeDebug.height)
+            {
+                Graphics.Blit(writableDepthChangeDebug, depthChangeDebug);
+            }
+            else
+            {
+                Debug.LogError("Rendertexture Resolution mismatch: depthChangeDebug and writableDepthChangeDebug");
+            }
+
+
+            // TODO: Check changeData array for any changes and perform necessary actions.
+            nearestDistanceChanging = false;
+            int sumPosX = 0;
+            int sumPosY = 0;
+            int changingPixels = 0;
+            for (int i = 0; i < changeData.Length; i++)
+            {
+                int limDepth = (changeData[i] <= DepthSensorBase.MAX_DEPTH_DISTANCE_MM) ? changeData[i] : 0;
+                if (limDepth == 1)
+                {
+                    // print("change happened");
+                    //     break;
+
+                    changingPixels += 1;
+                    if (changingPixels > pixelChangeThreshold)
+                    {
+                        nearestDistanceChanging = true;
+                        //break;
+                    }
+                    sumPosX += (i % depthImageTexture.width);
+                    sumPosY += (i / depthImageTexture.width);
+                }
+            }
+
+            if(nearestDistanceChanging)
+            {
+                
+                float uvX = (float)(sumPosX / changingPixels) / (float)depthImageTexture.width;
+                float uvY = (float)(sumPosY / changingPixels) / (float)depthImageTexture.height;
+
+                changingPosition.x = uvX;
+                changingPosition.y = uvY;
+                //print("change Happened: " + changingPosition);
+            }
+
+            else
+            {
+                changingPosition = Vector3.zero;
+            }
+
+            // Set current depth data as previous depth data for the next frame.
+            System.Array.Copy(currentDepthData, prevDepthData, currentDepthData.Length);
+
+            yield return new WaitForSeconds(distanceChecckFrequency);
+        }
+    }
 
     // checks for new color-camera aligned frames, and composes an updated body-index texture, if needed
     private void UpdateTextureWithNewFrame()
