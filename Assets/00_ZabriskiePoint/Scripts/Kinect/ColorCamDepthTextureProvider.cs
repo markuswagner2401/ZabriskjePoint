@@ -362,6 +362,16 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
             sensorData.sensorInterface.EnableColorCameraDepthFrame(sensorData, false);
         }
 
+        currentDepthBuffer?.Dispose();
+        prevDepthBuffer?.Dispose();
+        changeDataBuffer?.Dispose();
+
+        writableDepthChangeDebug.Release();
+
+        writableRectangleDebug.Release();
+
+
+
         colorTextureSet = false;
 
         //lookupPixelSegment.Clear();
@@ -441,11 +451,33 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
         if (nearestDistanceChanging)
         {
             changingBar = Mathf.Lerp(changingBar, 1f, Time.deltaTime * triggerDelayIn);
+
+            if (materialPropertiesFader_2 != null && materialPropertiesFader_2.gameObject.activeInHierarchy)
+            {
+                materialPropertiesFader_2.UpdateFloat(2, 0.98f);
+            }
+
+            if (vFXParameterAnimator != null && vFXParameterAnimator.gameObject.activeInHierarchy)
+            {
+                vFXParameterAnimator.UpdateFloat(2, 0.98f);
+            }
+
         }
 
         else
         {
             changingBar = Mathf.Lerp(changingBar, 0f, Time.deltaTime * triggerDelayOut);
+            if (materialPropertiesFader_2 != null && materialPropertiesFader_2.gameObject.activeInHierarchy)
+            {
+                materialPropertiesFader_2.UpdateFloat(2, 0f);
+            }
+
+            if (vFXParameterAnimator != null && vFXParameterAnimator.gameObject.activeInHierarchy)
+            {
+                vFXParameterAnimator.UpdateFloat(2, 0f);
+            }
+
+
         }
 
         if (changingBar > 0.1f)
@@ -478,21 +510,21 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
             }
         }
 
-        if (changingPosition != Vector2.zero)
-        {
-            if (materialPropertiesFader_2 != null && materialPropertiesFader_2.gameObject.activeInHierarchy)
-            {
-                materialPropertiesFader_2?.UpdateFloat(0, changingPosition.x);
-                materialPropertiesFader_2?.UpdateFloat(1, changingPosition.y);
-            }
+        // if (changingPosition != Vector2.zero)
+        // {
+        //     if (materialPropertiesFader_2 != null && materialPropertiesFader_2.gameObject.activeInHierarchy)
+        //     {
+        //         materialPropertiesFader_2?.UpdateFloat(0, changingPosition.x);
+        //         materialPropertiesFader_2?.UpdateFloat(1, changingPosition.y);
+        //     }
 
-            if (vFXParameterAnimator != null && vFXParameterAnimator.gameObject.activeInHierarchy)
-            {
-                vFXParameterAnimator?.UpdateFloat(0, changingPosition.x);
-                vFXParameterAnimator?.UpdateFloat(1, changingPosition.y);
-            }
+        //     if (vFXParameterAnimator != null && vFXParameterAnimator.gameObject.activeInHierarchy)
+        //     {
+        //         vFXParameterAnimator?.UpdateFloat(0, changingPosition.x);
+        //         vFXParameterAnimator?.UpdateFloat(1, changingPosition.y);
+        //     }
 
-        }
+        // }
 
 
 
@@ -694,7 +726,7 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
             {
                 // changing rectangle
 
-                
+
 
                 posXList.Sort();
                 posYList.Sort();
@@ -702,7 +734,7 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
                 int lowerPercentileIndex = posXList.Count * lowerPercentile / 100; // lowerPercentile is an int between 0 and 100
                 int upperPercentileIndex = posXList.Count * upperPercentile / 100; // upperPercentile is an int between 0 and 100
 
-                
+
 
                 leftMost = posXList[upperPercentileIndex];
                 rightMost = posXList[lowerPercentileIndex];
@@ -719,7 +751,7 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
                 lastUpMost = upMost;
                 lastDownMost = downMost;
 
-               
+
 
 
                 fillRectangelShader.SetTexture(fillRectangleKernel, "outputTexture", writableRectangleDebug);
@@ -735,7 +767,7 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
                 if (writableRectangleDebug.width == changingRectangleDebug.width && writableRectangleDebug.height == changingRectangleDebug.height)
                 {
                     Graphics.Blit(writableRectangleDebug, changingRectangleDebug);
-                   
+
                 }
                 else
                 {
@@ -746,11 +778,11 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
 
 
                 // changing position
-                float uvX = (float)(sumPosX / changingPixels) / (float)depthImageTexture.width;
-                float uvY = (float)(sumPosY / changingPixels) / (float)depthImageTexture.height;
+                // float uvX = (float)(sumPosX / changingPixels) / (float)depthImageTexture.width;
+                // float uvY = (float)(sumPosY / changingPixels) / (float)depthImageTexture.height;
 
-                changingPosition.x = uvX;
-                changingPosition.y = uvY;
+                // changingPosition.x = uvX;
+                // changingPosition.y = uvY;
 
                 kickstart = false; // after the a changing was detected the system is running and we only set prevDepthData for changing pixels
 
@@ -758,7 +790,7 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
 
             else
             {
-                changingPosition = Vector3.zero;
+                // changingPosition = Vector3.zero;
                 // 
             }
 

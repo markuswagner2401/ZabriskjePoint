@@ -14,7 +14,11 @@ void CheckDepthChange (uint3 id : SV_DispatchThreadID)
     if (id.x >= currentDepthData.Length)
         return;
 
+        
+
     int2 pixelPos = int2(id.x % depthImageWidth, id.x / depthImageWidth);
+
+    
 
     int limDepthCurrent = (currentDepthData[id.x] <= maxDepthDistance) ? currentDepthData[id.x] : 0;
 
@@ -28,6 +32,9 @@ void CheckDepthChange (uint3 id : SV_DispatchThreadID)
         changePointsDebug[pixelPos] = float4(0, 0, 0, 1); // Black
         return;
     } 
+
+    // changePointsDebug[pixelPos] = float4(1, 0, 0, 1);; // Red
+    // return;
 
     int diff = abs(currentDepthData[id.x] - prevDepthData[id.x]);
 

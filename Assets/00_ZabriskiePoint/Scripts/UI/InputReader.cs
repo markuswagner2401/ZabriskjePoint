@@ -41,6 +41,10 @@ public class InputReader : MonoBehaviour, ZabrPointControls.IMenueActions
         foreach (var item in displayManagerUIGos)
         {
             item.SetActive(!item.activeInHierarchy);
+            if(item.activeInHierarchy)
+            {
+                GetComponent<DeviceManager>().Initialize();
+            }
         }
     }
 

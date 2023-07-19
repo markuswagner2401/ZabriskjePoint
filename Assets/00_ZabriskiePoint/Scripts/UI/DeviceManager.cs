@@ -31,15 +31,23 @@ public class DeviceManager : MonoBehaviour
 
     int displayCount;
 
-    
+
 
     List<Camera> activeCameras = new List<Camera>();
 
     private void Start()
     {
+        Initialize();
+    }
+
+    
+
+    public void Initialize()
+    {
         DeactivateUnused();
         UpdateDisplayCameraPatch();
         SetupKinect();
+
     }
 
     void DeactivateUnused()
@@ -161,7 +169,7 @@ public class DeviceManager : MonoBehaviour
 
             int kinectIndex = deviceUses[i].deviceSelector.GetSensorDropdownValue();
 
-            
+
 
             Debug.Log("Setting Sensor Index for " + deviceUses[i].useName + " to: " + kinectIndex);
 
@@ -243,7 +251,7 @@ public class DeviceManager : MonoBehaviour
         ColorCamDepthTextureProvider[] depthTextureProviders = FindObjectsByType<ColorCamDepthTextureProvider>(FindObjectsSortMode.None);
         foreach (var item in depthTextureProviders)
         {
-            if(value)
+            if (value)
             {
                 item.Initialize();
             }
@@ -251,7 +259,7 @@ public class DeviceManager : MonoBehaviour
             {
                 item.Deinitialize();
             }
-            
+
         }
     }
 

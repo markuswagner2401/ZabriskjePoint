@@ -227,7 +227,7 @@ VisualEffect:
       - m_Value: 0.5
         m_Name: _ChangingPosY
         m_Overridden: 1
-      - m_Value: 0.17
+      - m_Value: 0.09
         m_Name: _ChangingAreaDistortion
         m_Overridden: 1
       - m_Value: 0.45
@@ -593,6 +593,10 @@ MonoBehaviour:
     startValue: 0
     propRef: _ChangingPosY
     smoothing: 0.01
+  - name: ChangingNoise
+    startValue: 0
+    propRef: _DefaultTextureBlend
+    smoothing: 0.05
 --- !u!1001 &52039794
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1276,6 +1280,10 @@ MonoBehaviour:
     startValue: 0
     propRef: _ChangingPosY
     smoothing: 0.01
+  - name: ChangingNoise
+    startValue: 0
+    propRef: _DefaultTextureBlend
+    smoothing: 0.05
   daumenkinoTimingMin: 1
   daumenkinoChangeMax: 2
   setFloatsToCurrent: 0
@@ -1416,7 +1424,7 @@ MonoBehaviour:
           m_StringArgument: DistortIn
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 17019676}
+      - m_Target: {fileID: 17019672}
         m_TargetAssemblyTypeName: VFXParameterAnimator, Assembly-CSharp
         m_MethodName: ChangeFloat
         m_Mode: 5
@@ -1425,7 +1433,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: DefaultTextureIn
+          m_StringArgument: DistortIn
           m_BoolArgument: 0
         m_CallState: 2
   triggerDelayIn: 20

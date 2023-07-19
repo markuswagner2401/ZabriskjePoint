@@ -81,7 +81,7 @@ Material:
     - _ChangingAreaSmoothness: 0.3
     - _ChangingPosX: 0.5
     - _ChangingPosY: 0.5
-    - _ColorTextureStrength: 0
+    - _ColorTextureStrength: 0.27
     - _ConservativeDepthOffsetEnable: 0
     - _CullMode: 2
     - _CullModeForward: 2
