@@ -73,3 +73,22 @@ crashlytics-build.properties
 
 Assets/00_ZabriskiePoint/00_Ignore/
 Assets/AzureKinectExamples/
+cublas64_11.dll
+cublasLt64_11.dll
+cudnn_cnn_infer64_8.dll
+cudnn_ops_infer64_8.dll
+cufft64_10.dll
+dnn_model_2_0_op11.onnx
+nvinfer_plugin.dll
+cudart64_110.dll
+cudnn64_8.dll
+directml.dll
+nvinfer.dll
+nvrtc64_112_0.dll
+nvrtc-builtins64_114.dll
+onnxruntime.dll
+onnxruntime_providers_cuda.dll
+onnxruntime_providers_shared.dll
+onnxruntime_providers_tensorrt.dll
+ST-Kinect4Azure-000330930112-color-1920-1080.bin
+ST-Kinect4Azure-000330930112-depth-640-576.bin
