@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using System;
-
+using com.rfilkov.components;
 
 public class InputReader : MonoBehaviour, ZabrPointControls.IMenueActions
 {
@@ -53,5 +53,14 @@ public class InputReader : MonoBehaviour, ZabrPointControls.IMenueActions
         if(!context.performed) return;
 
         GetComponent<GameManager>().ShowQuitUI(true);
+    }
+
+    public void OnCaptureDefaultTexture(InputAction.CallbackContext context)
+    {
+        if(!context.performed) return;
+
+        print("on capture");
+
+        FindObjectOfType<ColorCamUserImageProvider>()?.CaptureDefaultTexture();
     }
 }

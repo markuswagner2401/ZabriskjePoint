@@ -44,6 +44,15 @@ public partial class @ZabrPointControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""CaptureDefaultTexture"",
+                    ""type"": ""Button"",
+                    ""id"": ""14218cf1-6887-4032-93c4-25b4ddf26cf4"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -66,6 +75,17 @@ public partial class @ZabrPointControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""Mouse&Keyboard"",
                     ""action"": ""Quit"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ed794bc8-1134-4db7-82a8-6dc7df204272"",
+                    ""path"": ""<Keyboard>/c"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Mouse&Keyboard"",
+                    ""action"": ""CaptureDefaultTexture"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -95,6 +115,7 @@ public partial class @ZabrPointControls: IInputActionCollection2, IDisposable
         m_Menue = asset.FindActionMap("Menue", throwIfNotFound: true);
         m_Menue_ToggleDisplayManager = m_Menue.FindAction("ToggleDisplayManager", throwIfNotFound: true);
         m_Menue_Quit = m_Menue.FindAction("Quit", throwIfNotFound: true);
+        m_Menue_CaptureDefaultTexture = m_Menue.FindAction("CaptureDefaultTexture", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -158,12 +179,14 @@ public partial class @ZabrPointControls: IInputActionCollection2, IDisposable
     private List<IMenueActions> m_MenueActionsCallbackInterfaces = new List<IMenueActions>();
     private readonly InputAction m_Menue_ToggleDisplayManager;
     private readonly InputAction m_Menue_Quit;
+    private readonly InputAction m_Menue_CaptureDefaultTexture;
     public struct MenueActions
     {
         private @ZabrPointControls m_Wrapper;
         public MenueActions(@ZabrPointControls wrapper) { m_Wrapper = wrapper; }
         public InputAction @ToggleDisplayManager => m_Wrapper.m_Menue_ToggleDisplayManager;
         public InputAction @Quit => m_Wrapper.m_Menue_Quit;
+        public InputAction @CaptureDefaultTexture => m_Wrapper.m_Menue_CaptureDefaultTexture;
         public InputActionMap Get() { return m_Wrapper.m_Menue; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -179,6 +202,9 @@ public partial class @ZabrPointControls: IInputActionCollection2, IDisposable
             @Quit.started += instance.OnQuit;
             @Quit.performed += instance.OnQuit;
             @Quit.canceled += instance.OnQuit;
+            @CaptureDefaultTexture.started += instance.OnCaptureDefaultTexture;
+            @CaptureDefaultTexture.performed += instance.OnCaptureDefaultTexture;
+            @CaptureDefaultTexture.canceled += instance.OnCaptureDefaultTexture;
         }
 
         private void UnregisterCallbacks(IMenueActions instance)
@@ -189,6 +215,9 @@ public partial class @ZabrPointControls: IInputActionCollection2, IDisposable
             @Quit.started -= instance.OnQuit;
             @Quit.performed -= instance.OnQuit;
             @Quit.canceled -= instance.OnQuit;
+            @CaptureDefaultTexture.started -= instance.OnCaptureDefaultTexture;
+            @CaptureDefaultTexture.performed -= instance.OnCaptureDefaultTexture;
+            @CaptureDefaultTexture.canceled -= instance.OnCaptureDefaultTexture;
         }
 
         public void RemoveCallbacks(IMenueActions instance)
@@ -219,5 +248,6 @@ public partial class @ZabrPointControls: IInputActionCollection2, IDisposable
     {
         void OnToggleDisplayManager(InputAction.CallbackContext context);
         void OnQuit(InputAction.CallbackContext context);
+        void OnCaptureDefaultTexture(InputAction.CallbackContext context);
     }
 }

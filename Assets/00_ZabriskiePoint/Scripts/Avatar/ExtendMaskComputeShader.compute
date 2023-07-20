@@ -1,0 +1,62 @@
+#pragma kernel ExtendMask
+
+// Define the input texture (mask)
+Texture2D<float4> _InputMask;
+
+// Define the output texture
+RWTexture2D<float4> _Output;
+
+// Define the offset
+int _OffsetMask;
+
+// Define group sizes
+#define GROUP_SIZE 8
+
+[numthreads(GROUP_SIZE,GROUP_SIZE,1)]
+void ExtendMask (uint3 id : SV_DispatchThreadID) {
+
+    // Initialize the output as the original pixel
+    _Output[id.xy] = _InputMask[id.xy];
+    
+    // Define small check range
+    int checkRange = 1;
+
+    // Flag to identify border pixels
+    bool isBorder = false;
+
+    // Get texture dimensions
+    uint width, height;
+    _InputMask.GetDimensions(width, height);
+
+    // Check pixels within the check range
+    for(int i=-checkRange; i<=checkRange; i++){
+        for(int j=-checkRange; j<=checkRange; j++){
+            // Make sure not to go out of bounds
+            int2 currentPos = id.xy + int2(i, j);
+            currentPos = clamp(currentPos, 0, int2(width - 1, height - 1));
+
+            // If the pixel is not homogeneous (all white or all black), it's a border pixel
+            if(!all(_InputMask[currentPos] == 0) && !all(_InputMask[currentPos] == float4(1,1,1,1))){
+                isBorder = true;
+                break;
+            }
+        }
+        if(isBorder){
+            break;
+        }
+    }
+
+    // If it is a border pixel, extend the white pixels
+    if(isBorder){
+        for(int i=-_OffsetMask; i<=_OffsetMask; i++){
+            for(int j=-_OffsetMask; j<=_OffsetMask; j++){
+                // Make sure not to go out of bounds
+                int2 currentPos = id.xy + int2(i, j);
+                currentPos = clamp(currentPos, 0, int2(width - 1, height - 1));
+
+                // Paint the pixel white
+                _Output[currentPos] = float4(1, 1, 1, 1);
+            }
+        }
+    }
+}

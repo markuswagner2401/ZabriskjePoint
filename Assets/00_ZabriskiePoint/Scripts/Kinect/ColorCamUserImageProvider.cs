@@ -12,13 +12,21 @@ namespace com.rfilkov.components
     {
         [SerializeField] Material receiverMaterial;
 
-
-
-
-
         public String colorTextureRef = "_ColorTexture";
 
         public String bodyImageRef = "_UserImage";
+
+        public String userMaskRef = "_UserMask";
+
+        public String defaultTextureRef = "_DefaultTexture";
+
+        public RenderTexture defaultTexture;
+
+        public RenderTexture userMask;
+
+        public ExtendMask extendMask = null;
+
+        public int offsetMask = 5;
 
         bool colorTextureSet = false;
 
@@ -65,8 +73,12 @@ namespace com.rfilkov.components
 
         void Start()
         {
-            
 
+            if(extendMask == null)
+            {
+                extendMask = GetComponent<ExtendMask>();
+
+            }
             kinectManager = KinectManager.Instance;
             sensorData = kinectManager != null ? kinectManager.GetSensorData(sensorIndex) : null;
 
@@ -133,17 +145,33 @@ namespace com.rfilkov.components
             }
         }
 
+        public void CaptureDefaultTexture()
+        {
+            print("capture default texture");
+
+            if(kinectManager.GetColorImageTex(sensorIndex).width == defaultTexture.width && kinectManager.GetColorImageTex(sensorIndex).height == defaultTexture.height)
+            {
+                Graphics.Blit(kinectManager.GetColorImageTex(sensorIndex), defaultTexture);
+            }
+            else
+            {
+                Debug.LogError("Texture Resolution Mismatch: ColorImageTexture, defaultTexture");
+            }
+
+            receiverMaterial.SetTexture(defaultTextureRef, defaultTexture);
+            
+        }
 
         void Update()
         {
             if (kinectManager && kinectManager.IsInitialized() && sensorData != null)
             {
-                
+
 
                 // check for new color camera aligned frames
                 UpdateTextureWithNewFrame();
 
-                
+
 
 
                 //////
@@ -158,9 +186,9 @@ namespace com.rfilkov.components
                     colorTextureSet = true;
                 }
 
-                
+
             }
-           
+
         }
 
 
@@ -269,8 +297,18 @@ namespace com.rfilkov.components
                 bodyImageMaterial.SetColorArray("_BodyIndexColors", bodyIndexColors);
 
                 Graphics.Blit(null, bodyImageTexture, bodyImageMaterial);
+
+                // extended Mask
+                if(extendMask != null)
+                {
+                    Graphics.Blit(extendMask.GetExtendedMask(bodyImageTexture, offsetMask), userMask);
+                   
+                }
+
             }
         }
+
+
 
     }
 }
