@@ -974,10 +974,10 @@
     "m_Guid": {
         "m_GuidSerialized": "76c4b50a-b7b2-4e68-b8fe-bc30f874edc8"
     },
-    "m_Name": "DepthTexture",
+    "m_Name": "_UserImage",
     "m_DefaultRefNameVersion": 1,
-    "m_RefNameGeneratedByDisplayName": "DepthTexture",
-    "m_DefaultReferenceName": "_DepthTexture",
+    "m_RefNameGeneratedByDisplayName": "_UserImage",
+    "m_DefaultReferenceName": "_UserImage",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
     "m_UseCustomSlotLabel": false,

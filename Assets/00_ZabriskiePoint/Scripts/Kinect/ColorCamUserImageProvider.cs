@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 using com.rfilkov.kinect;
 using System;
+using UnityEngine.VFX;
 
 namespace com.rfilkov.components
 {
@@ -11,6 +12,8 @@ namespace com.rfilkov.components
     public class ColorCamUserImageProvider : MonoBehaviour
     {
         [SerializeField] Material receiverMaterial;
+
+        [SerializeField] public VisualEffect vfx = null;
 
         public String colorTextureRef = "_ColorTexture";
 
@@ -23,6 +26,10 @@ namespace com.rfilkov.components
         public RenderTexture defaultTexture;
 
         public RenderTexture userMask;
+
+        public RenderTexture colorImage;
+
+        public RenderTexture bodyImage;
 
         public ExtendMask extendMask = null;
 
@@ -59,6 +66,8 @@ namespace com.rfilkov.components
 
         // color-camera aligned texture and buffers
         private RenderTexture bodyImageTexture = null;
+
+      
         private Material bodyImageMaterial = null;
 
         private ComputeBuffer bodyIndexBuffer = null;
@@ -74,7 +83,7 @@ namespace com.rfilkov.components
         void Start()
         {
 
-            if(extendMask == null)
+            if (extendMask == null)
             {
                 extendMask = GetComponent<ExtendMask>();
 
@@ -84,6 +93,7 @@ namespace com.rfilkov.components
 
             if (sensorData != null)
             {
+                
                 // enable the color camera aligned depth & body-index frames 
                 sensorData.sensorInterface.EnableColorCameraDepthFrame(sensorData, true);
                 sensorData.sensorInterface.EnableColorCameraBodyIndexFrame(sensorData, true);
@@ -106,7 +116,11 @@ namespace com.rfilkov.components
                     print("Set Texture at receiver material");
                 }
 
-
+                // if (vfx != null)
+                // {
+                //     print("set body image at vfx");
+                //     vfx.SetTexture(bodyImageRef, bodyImageTexture);
+                // }
             }
         }
 
@@ -149,7 +163,7 @@ namespace com.rfilkov.components
         {
             print("capture default texture");
 
-            if(kinectManager.GetColorImageTex(sensorIndex).width == defaultTexture.width && kinectManager.GetColorImageTex(sensorIndex).height == defaultTexture.height)
+            if (kinectManager.GetColorImageTex(sensorIndex).width == defaultTexture.width && kinectManager.GetColorImageTex(sensorIndex).height == defaultTexture.height)
             {
                 Graphics.Blit(kinectManager.GetColorImageTex(sensorIndex), defaultTexture);
             }
@@ -159,7 +173,7 @@ namespace com.rfilkov.components
             }
 
             receiverMaterial.SetTexture(defaultTextureRef, defaultTexture);
-            
+
         }
 
         void Update()
@@ -182,6 +196,12 @@ namespace com.rfilkov.components
                     {
                         receiverMaterial.SetTexture(colorTextureRef, kinectManager.GetColorImageTex(sensorIndex));
                     }
+
+                    // if (vfx != null)
+                    // {
+                    //     vfx.SetTexture(colorTextureRef, colorImage);
+                    //     print(vfx.GetTexture(colorTextureRef).name);
+                    // }
 
                     colorTextureSet = true;
                 }
@@ -209,6 +229,11 @@ namespace com.rfilkov.components
                 if (bodyImageTexture == null || bodyImageTexture.width != sensorData.colorImageWidth || bodyImageTexture.height != sensorData.colorImageHeight)
                 {
                     bodyImageTexture = KinectInterop.CreateRenderTexture(bodyImageTexture, sensorData.colorImageWidth, sensorData.colorImageHeight);
+                    if (vfx != null)
+                    {
+                        print("set body image at vfx");
+                        vfx.SetTexture(bodyImageRef, bodyImageTexture);
+                    }
                 }
 
                 Array.Clear(depthBodyBufferData, 0, depthBodyBufferData.Length);
@@ -298,11 +323,14 @@ namespace com.rfilkov.components
 
                 Graphics.Blit(null, bodyImageTexture, bodyImageMaterial);
 
+                Graphics.Blit(bodyImageTexture, bodyImage); // workaround for vfx
+
+                Graphics.Blit(kinectManager.GetColorImageTex(0), colorImage);// workaround for vfx
+
                 // extended Mask
-                if(extendMask != null)
+                if (extendMask != null)
                 {
                     Graphics.Blit(extendMask.GetExtendedMask(bodyImageTexture, offsetMask), userMask);
-                   
                 }
 
             }
