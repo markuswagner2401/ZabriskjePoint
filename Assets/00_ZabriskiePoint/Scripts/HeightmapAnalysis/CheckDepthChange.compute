@@ -14,9 +14,15 @@ void CheckDepthChange (uint3 id : SV_DispatchThreadID)
     if (id.x >= currentDepthData.Length)
         return;
 
+    
+
         
 
     int2 pixelPos = int2(id.x % depthImageWidth, id.x / depthImageWidth);
+
+    // changePointsDebug[pixelPos] = float4(1, 0, 0, 1); return; // Red
+
+    
 
     
 

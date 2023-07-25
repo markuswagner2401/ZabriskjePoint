@@ -12,7 +12,7 @@ public class VideoControlEditor : Editor
 
         if(GUILayout.Button("Integrate"))
         {
-            videoControl.Integrate();
+            videoControl.Integrate("");
         }
 
         if(GUILayout.Button("Desintegrate"))

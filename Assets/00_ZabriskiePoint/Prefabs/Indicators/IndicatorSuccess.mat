@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: VideoShader_CRT_Screen1
-  m_Shader: {fileID: -6465566751694194690, guid: d121ec2845ec43a4ea74a8b9c7f4e830, type: 3}
+  m_Name: IndicatorSuccess
+  m_Shader: {fileID: -6465566751694194690, guid: 39f8668d9327da84ea8ba764b02e86dd, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -23,20 +23,35 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
-    - _ClipA:
-        m_Texture: {fileID: 8400000, guid: 7767dd1d11190f14b9427ee6a714cbbe, type: 2}
+    - unity_Lightmaps:
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _ClipB:
-        m_Texture: {fileID: 8400000, guid: 2f1443e7351be40478d92bcebd5f7349, type: 2}
+    - unity_LightmapsInd:
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _MainTex:
+    - unity_ShadowMasks:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _BlendAB: 1
-    m_Colors: []
+    - _QueueControl: 0
+    - _QueueOffset: 0
+    m_Colors:
+    - _Color: {r: 0.048891306, g: 1, b: 0, a: 1}
   m_BuildTextureStacks: []
+--- !u!114 &1431298171341078900
+MonoBehaviour:
+  m_ObjectHideFlags: 11
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0353a89b1f911e48b9e16bdc9f2e058, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 7

@@ -9,7 +9,7 @@ public class HeightmapAnalysis : MonoBehaviour
 
     // compute Shaders
     public ComputeShader hillAndTroughShader;
-   
+
     [SerializeField] int maxClusters = 10;
 
     RenderTexture inputRenderTexture;
@@ -51,6 +51,8 @@ public class HeightmapAnalysis : MonoBehaviour
 
     // Indicator spawning
 
+    public bool spawnDebugIndicators = true;
+
     public GameObject hillIndicator;
     public GameObject hillChainIndicator;
     public GameObject troughIndicator;
@@ -58,6 +60,10 @@ public class HeightmapAnalysis : MonoBehaviour
     public Transform uVOrigin;
     public GameObject meshObject;
     public float heightFactor = 5f;
+
+    //
+
+
 
 
     public struct StructuredCluster
@@ -114,7 +120,7 @@ public class HeightmapAnalysis : MonoBehaviour
             material = rend.material;
         }
 
-        
+
 
 
         meshWidth = mesh.bounds.size.x * scale.x;
@@ -130,26 +136,85 @@ public class HeightmapAnalysis : MonoBehaviour
 
     }
 
+    public int GetMainHillsCount()
+    {
+        return neighborHills.Count;
+    }
+
+    public Vector3[] GetMainHillsPositions()
+    {
+        Vector3[] positions = new Vector3[neighborHills.Count];
+        for (int i = 0; i < neighborHills.Count; i++)
+        {
+            Vector3 center = new Vector3();
+            center = TransposePosition(neighborHills[i].heighestPosition.x, neighborHills[i].heighestPosition.z, heightmap.width, heightmap.height, meshWidth, meshDepth, uVOrigin, neighborHills[i].heighestPosition.y);
+            positions[i] = center;
+        }
+        return positions;
+    }
+
+    public int GetMainTroughsCount()
+    {
+        return neighborTroughs.Count;
+    }
+
+    public Vector3[] GetMainTroughsPositions()
+    {
+        Vector3[] positions = new Vector3[neighborTroughs.Count];
+        for (int i = 0; i < neighborTroughs.Count; i++)
+        {
+            Vector3 center = new Vector3();
+            center = TransposePosition(neighborTroughs[i].heighestPosition.x, neighborTroughs[i].heighestPosition.z, heightmap.width, heightmap.height, meshWidth, meshDepth, uVOrigin, neighborTroughs[i].heighestPosition.y);
+            positions[i] = center;
+        }
+        return positions;
+    }
+
+    public float GetHeightOfHeighestHill()
+    {
+        float height = 0;
+        foreach (var item in neighborHills)
+        {
+            height = Mathf.Max(height, item.heighestPosition.y);
+        }
+
+        return height;
+    }
+
+    public float GetHeightOfLowestTrough()
+    {
+        float height = 100000;
+        foreach (var item in neighborTroughs)
+        {
+            height = Mathf.Min(height, item.heighestPosition.y);
+        }
+
+        return height;
+    }
+
+
+
     public void AnalyseHeightmap()
     {
         heightmap = material?.GetTexture(heightmapRef);
 
-            if(heightmap == null)
-            {
-                Debug.LogError("no heightmap found on material of renderer on " + gameObject.name + ". HeightmapAnalysis not working");
-            }
+        if (heightmap == null)
+        {
+            Debug.LogError("no heightmap found on material of renderer on " + gameObject.name + ". HeightmapAnalysis not working");
+            return;
+        }
 
-            inputRenderTexture = new RenderTexture(heightmap.width, heightmap.height, 0, RenderTextureFormat.ARGBFloat, RenderTextureReadWrite.Linear)
-            {
-                enableRandomWrite = true
-            };
+        inputRenderTexture = new RenderTexture(heightmap.width, heightmap.height, 0, RenderTextureFormat.ARGBFloat, RenderTextureReadWrite.Linear)
+        {
+            enableRandomWrite = true
+        };
 
-            inputRenderTexture.Create();
+        inputRenderTexture.Create();
 
-            Graphics.Blit(heightmap, inputRenderTexture);
-            //FindHillsAndTroughs(heightmap);
-            //StartCoroutine(BlurAndFindHillsAndTroughs(inputRenderTexture));
-            StartCoroutine(TextureStepssAndFindHillsAndTroughs(inputRenderTexture));
+        Graphics.Blit(heightmap, inputRenderTexture);
+        //FindHillsAndTroughs(heightmap);
+        //StartCoroutine(BlurAndFindHillsAndTroughs(inputRenderTexture));
+        StartCoroutine(TextureStepssAndFindHillsAndTroughs(inputRenderTexture));
     }
 
     private void OnDestroy()
@@ -228,8 +293,8 @@ public class HeightmapAnalysis : MonoBehaviour
         // GaussianBlur(writableHeightmap);
 
         // Debug: Check the result of the Gaussian Blur
-        
-        if(debugSource.width != inputRenderTexture.width)
+
+        if (debugSource.width != inputRenderTexture.width)
         {
             Debug.LogError("Resolution mismatch of debugSource Rendertexture and heighmap");
         }
@@ -237,7 +302,7 @@ public class HeightmapAnalysis : MonoBehaviour
         {
             Graphics.Blit(inputRenderTexture, debugSource);
         }
-        
+
 
         // Calculate the number of threads
         threadGroupsX = Mathf.CeilToInt(inputRenderTexture.width / 8f);
@@ -270,8 +335,8 @@ public class HeightmapAnalysis : MonoBehaviour
         troughsBuffer.GetData(troughs);
 
         //RenderTexture result = new RenderTexture(writableHeightmap.width, writableHeightmap.height, 0);
-        
-        if(debugResult.width != colorMap.width)
+
+        if (debugResult.width != colorMap.width)
         {
             Debug.LogError("Resolution mismatch of heightmap analysis colormap and debugResult Rendertexture");
         }
@@ -280,7 +345,7 @@ public class HeightmapAnalysis : MonoBehaviour
         {
             Graphics.Blit(colorMap, debugResult);
         }
-        
+
 
         // Filter Hills and Throughs (Filter out unused array elements)
 
@@ -331,7 +396,10 @@ public class HeightmapAnalysis : MonoBehaviour
             clusteredHills = RemoveBorderClusters(clusteredHills, border);
             Debug.Log("Clustered Hills: " + clusteredHills.Count);
             structuredHills = ConvertToStructuredHillArray(clusteredHills);
+
             neighborHills = ClusterNeighbous(structuredHills, neighborThreshold);
+
+            Debug.Log("Hill Chains: " + neighborHills.Count);
         }
 
 
@@ -342,6 +410,8 @@ public class HeightmapAnalysis : MonoBehaviour
             Debug.Log("Clustered Troughs: " + clusteredTroughs.Count);
             structuredTroughs = ConvertToStructuredHillArray(clusteredTroughs);
             neighborTroughs = ClusterNeighbous(structuredTroughs, neighborThreshold);
+
+            Debug.Log("Trough Chains: " + neighborTroughs.Count);
         }
 
 
@@ -605,6 +675,7 @@ public class HeightmapAnalysis : MonoBehaviour
 
     private void SpawnIndicators()
     {
+        if (!spawnDebugIndicators) return;
 
         foreach (var item in spawnedHillIndicators)
         {
@@ -736,7 +807,7 @@ public class HeightmapAnalysis : MonoBehaviour
     }
 
 
-    Vector3 TransposePosition(float idx, float idy, int textureWidth, int textureHeight, float meshWidth, float meshDepth, Transform origin, float yStrength)
+    public Vector3 TransposePosition(float idx, float idy, int textureWidth, int textureHeight, float meshWidth, float meshDepth, Transform origin, float yStrength)
     {
         float u = -(float)idx / textureWidth;
         float v = -(float)idy / textureHeight;
@@ -756,9 +827,9 @@ public class HeightmapAnalysis : MonoBehaviour
         position += origin.forward * (v * meshDepth);
 
         return position;
-        
 
-        
+
+
     }
 
     GameObject SpawnIndicator(Vector3 position, GameObject prefab, Transform parent)

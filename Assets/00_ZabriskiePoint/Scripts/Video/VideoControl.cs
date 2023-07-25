@@ -32,7 +32,12 @@ public class VideoControl : MonoBehaviour
     {
         public string name;
         public VideoClip videoClip;
-        public float fadeInDuration;
+
+        public AudioClip audioClip;
+
+        public float fadeInDurationVideo;
+
+        public float fadeInDurationAudio;
         public AnimationCurve animationCurve;
         public ClipEndBehaviour clipEndBehaviour;
 
@@ -56,6 +61,9 @@ public class VideoControl : MonoBehaviour
     public Material VideoShader;
     public VideoPlayer videoPlayerA;
     public VideoPlayer videoPlayerB;
+
+    public AudioSource audioSourceA;
+    public AudioSource audioSourceB;
 
 
     private bool isBlendingTransition;
@@ -95,11 +103,27 @@ public class VideoControl : MonoBehaviour
     //     }
     // }
 
-    
 
-    public void Integrate()
+
+    // public void Integrate()
+    // {
+    //     SetNextSequence();
+    //     PlayFirstVideoOfCurrentSequence();
+    // }
+
+    public void Integrate(string sequenceName) // gets called by HeightmapEvaluation
     {
-        SetNextSequence();
+        int nextIndex = -1;
+
+        if (sequenceName != "")
+        {
+            nextIndex = GetSequenceIndexByName(sequenceName);
+        }
+
+        if (nextIndex >= 0)
+        {
+            currentSequenceIndex = nextIndex;
+        }
         PlayFirstVideoOfCurrentSequence();
     }
 
@@ -112,7 +136,12 @@ public class VideoControl : MonoBehaviour
 
     public void SetCurrentSequence(string name)
     {
-        currentSequenceIndex = GetSequenceIndexByName(name);
+        int index = GetSequenceIndexByName(name);
+        if (index >= 0)
+        {
+            currentSequenceIndex = index;
+        }
+
     }
 
     public void SetNextSequence()
@@ -270,25 +299,42 @@ public class VideoControl : MonoBehaviour
         // Depending on the current blend, set next clip to either ClipA or ClipB
         if (currentBlend >= 0.9f)
         {
+            // audio
+            audioSourceA.clip = videoSequences[sequenceIndex].videoFaders[faderIndex].audioClip;
+            audioSourceA.time = 0f;
+
+            // video
             videoPlayerA.clip = videoSequences[sequenceIndex].videoFaders[faderIndex].videoClip;
             videoPlayerA.Prepare();
             videoPlayerA.time = 0f;
             targetBlend = 0;
+
+            //
             if (!interrupted)
             {
-                StartCoroutine(BlendingRoutine(sequenceIndex, faderIndex, currentBlend, 0f));
+                StartCoroutine(AudioBlendingRoutine(sequenceIndex, faderIndex, currentBlend, targetBlend));
+                StartCoroutine(BlendingRoutine(sequenceIndex, faderIndex, currentBlend, targetBlend));
             }
 
         }
         else
         {
+            // audio
+            audioSourceB.clip = videoSequences[sequenceIndex].videoFaders[faderIndex].audioClip;
+            audioSourceB.time = 0f;
+
+
+            // video
             videoPlayerB.clip = videoSequences[sequenceIndex].videoFaders[faderIndex].videoClip;
             videoPlayerB.Prepare();
             targetBlend = 1;
             videoPlayerB.time = 0f;
+
+            //
             if (!interrupted)
             {
-                StartCoroutine(BlendingRoutine(sequenceIndex, faderIndex, currentBlend, 1f));
+                StartCoroutine(AudioBlendingRoutine(sequenceIndex, faderIndex, currentBlend, targetBlend));
+                StartCoroutine(BlendingRoutine(sequenceIndex, faderIndex, currentBlend, targetBlend));
             }
 
         }
@@ -300,17 +346,20 @@ public class VideoControl : MonoBehaviour
 
     IEnumerator BlendingRoutine(int sequenceIndex, int faderIndex, float startValue, float endValue)
     {
-        //print("Blending Routine: seq:" + sequenceIndex + "faderIndex: " + faderIndex);
+
 
         float time = 0f;
-        float duration = videoSequences[sequenceIndex].videoFaders[faderIndex].fadeInDuration;
+        float duration = videoSequences[sequenceIndex].videoFaders[faderIndex].fadeInDurationVideo;
         AnimationCurve curve = videoSequences[sequenceIndex].videoFaders[faderIndex].animationCurve;
-
         double clipLength = videoSequences[sequenceIndex].videoFaders[faderIndex].videoClip.length;
 
+        // video
         VideoPlayer currentVideoPlayer = (endValue == 1f) ? videoPlayerB : videoPlayerA;
-
         currentVideoPlayer.Play();
+
+        // audio
+        AudioSource currentAudioSource = (endValue == 1f) ? audioSourceB : audioSourceA;
+        currentAudioSource.Play();
 
 
 
@@ -324,7 +373,7 @@ public class VideoControl : MonoBehaviour
             yield return null;
         }
 
-        if(!interrupted)
+        if (!interrupted)
         {
             VideoShader.SetFloat("_BlendAB", endValue);
         }
@@ -334,14 +383,14 @@ public class VideoControl : MonoBehaviour
             yield break;
         }
 
-        
+
 
         // clip end behaviour
 
         if (videoSequences[sequenceIndex].videoFaders[faderIndex].clipEndBehaviour == ClipEndBehaviour.PlayNext)
         {
             int nextFaderIndex = (faderIndex + 1) % videoSequences[sequenceIndex].videoFaders.Length;
-            float nextFadeInTime = videoSequences[sequenceIndex].videoFaders[nextFaderIndex].fadeInDuration;
+            float nextFadeInTime = videoSequences[sequenceIndex].videoFaders[nextFaderIndex].fadeInDurationVideo;
             double lastVideoPlayerTime = 0;
 
             while ((currentVideoPlayer.time < clipLength - nextFadeInTime || currentVideoPlayer.time != lastVideoPlayerTime) && !interrupted)
@@ -369,6 +418,35 @@ public class VideoControl : MonoBehaviour
         yield break;
 
 
+    }
+
+    IEnumerator AudioBlendingRoutine(int sequenceIndex, int faderIndex, float startValue, float endValue)
+    {
+        float time = 0f;
+        float duration = videoSequences[sequenceIndex].videoFaders[faderIndex].fadeInDurationAudio;
+        AnimationCurve curve = videoSequences[sequenceIndex].videoFaders[faderIndex].animationCurve;
+
+        AudioSource sourceA = (startValue == 0f) ? audioSourceA : audioSourceB;
+        AudioSource sourceB = (startValue == 0f) ? audioSourceB : audioSourceA;
+
+        while (time < duration && !interrupted)
+        {
+            time += Time.deltaTime;
+
+            float value = Mathf.Lerp(startValue, endValue, curve.Evaluate(time / duration));
+            sourceA.volume = 1f - value;
+            sourceB.volume = value;
+
+            yield return null;
+        }
+
+        if (!interrupted)
+        {
+            sourceA.volume = 1f - endValue;
+            sourceB.volume = endValue;
+        }
+
+        // Handle clip end behaviour the same way as in BlendingRoutine.
     }
 
 

@@ -203,19 +203,19 @@ VisualEffect:
       - m_Value: 0.35
         m_Name: GridOffset
         m_Overridden: 1
-      - m_Value: 0.24
+      - m_Value: 3.96
         m_Name: ParticleBaseSize
         m_Overridden: 1
       - m_Value: -52.31
         m_Name: Elevation
         m_Overridden: 1
-      - m_Value: 0.32
+      - m_Value: 0.22
         m_Name: SizeByDepth
         m_Overridden: 1
-      - m_Value: 0.6
+      - m_Value: 0.02
         m_Name: _Distort
         m_Overridden: 1
-      - m_Value: 1
+      - m_Value: 0
         m_Name: _DefaultTextureBlend
         m_Overridden: 1
       - m_Value: 0
@@ -230,7 +230,7 @@ VisualEffect:
       - m_Value: 0.09
         m_Name: _ChangingAreaDistortion
         m_Overridden: 1
-      - m_Value: 0.45
+      - m_Value: 1
         m_Name: _ChangingAreaSize
         m_Overridden: 1
       - m_Value: 0.3
@@ -245,7 +245,7 @@ VisualEffect:
       - m_Value: 0.2
         m_Name: _MixLines
         m_Overridden: 1
-      - m_Value: -0.11
+      - m_Value: -0.5
         m_Name: ChangingAreaParticleSize
         m_Overridden: 1
     m_Vector2f:
@@ -307,10 +307,10 @@ VisualEffect:
       - m_Value: {fileID: 2800000, guid: 59ff1665da6ce324fb0c2f2e4fddd3d4, type: 3}
         m_Name: Texture
         m_Overridden: 1
-      - m_Value: {fileID: 2800000, guid: 343626959090fdd44a971603389d7f9d, type: 3}
+      - m_Value: {fileID: 2800000, guid: 59ff1665da6ce324fb0c2f2e4fddd3d4, type: 3}
         m_Name: _Texture
         m_Overridden: 1
-      - m_Value: {fileID: 2800000, guid: 276d9e395ae18fe40a9b4988549f2349, type: 3}
+      - m_Value: {fileID: 0}
         m_Name: _ColorTexture
         m_Overridden: 1
       - m_Value: {fileID: 8400000, guid: 1c10780eb3db50243a0ee8d9bb22321e, type: 2}
@@ -327,7 +327,7 @@ Transform:
   m_GameObject: {fileID: 17019672}
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
   m_LocalPosition: {x: 0, y: -30, z: -0}
-  m_LocalScale: {x: 0.6526997, y: 0.65269977, z: 0.65269977}
+  m_LocalScale: {x: 0.7166499, y: 0.71664995, z: 0.71664995}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 207321073}
@@ -1115,9 +1115,9 @@ MonoBehaviour:
     playDaumenkino: 0
   - note: DistortOut
     propRef: _Distort
-    targetValue: 0.02
-    randomRangeMin: 0.02
-    randomRangeMax: 0.02
+    targetValue: 0.04
+    randomRangeMin: 0.04
+    randomRangeMax: 0.04
     duration: 5
     pushFactor: 0
     playFloat: 0
@@ -2233,8 +2233,8 @@ MonoBehaviour:
   videoSequences:
   - name: Pistole
     videoFaders:
-    - name: ConeIn
-      videoClip: {fileID: 32900000, guid: a02a81146a83506468d5659e5a9ed29e, type: 3}
+    - name: GoneIn
+      videoClip: {fileID: 32900000, guid: 331299b3fcb31b848a90d5e239c5e6f6, type: 3}
       audioClip: {fileID: 0}
       fadeInDurationVideo: 3
       fadeInDurationAudio: 3
@@ -2263,8 +2263,8 @@ MonoBehaviour:
         m_PostInfinity: 2
         m_RotationOrder: 4
       clipEndBehaviour: 1
-    - name: ConeLoop
-      videoClip: {fileID: 32900000, guid: cd6f32c666c209e46a80519153ee328b, type: 3}
+    - name: GunLoop
+      videoClip: {fileID: 32900000, guid: d93434a43351dfd42bb1669ca05e2aa8, type: 3}
       audioClip: {fileID: 0}
       fadeInDurationVideo: 3
       fadeInDurationAudio: 3
@@ -2294,7 +2294,7 @@ MonoBehaviour:
         m_RotationOrder: 4
       clipEndBehaviour: 2
     - name: Outro
-      videoClip: {fileID: 32900000, guid: 1458d1ccfb227324f82bf18f4555fe23, type: 3}
+      videoClip: {fileID: 32900000, guid: 369c5ccff394c9b46948f0efb94f524b, type: 3}
       audioClip: {fileID: 0}
       fadeInDurationVideo: 3
       fadeInDurationAudio: 3
@@ -2324,7 +2324,7 @@ MonoBehaviour:
         m_RotationOrder: 4
       clipEndBehaviour: 1
     - name: Transition
-      videoClip: {fileID: 32900000, guid: e2f6b38426c17c043bf14e65f8fbc510, type: 3}
+      videoClip: {fileID: 32900000, guid: b059765068af0494c893c3535bf33421, type: 3}
       audioClip: {fileID: 0}
       fadeInDurationVideo: 3
       fadeInDurationAudio: 3
@@ -5069,8 +5069,8 @@ Camera:
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 27
-  orthographic: 0
-  orthographic size: 5
+  orthographic: 1
+  orthographic size: 90.14
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2

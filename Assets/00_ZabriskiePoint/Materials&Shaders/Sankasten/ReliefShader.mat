@@ -47,11 +47,15 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _ChangingAreaTexture:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 8400000, guid: 1c10780eb3db50243a0ee8d9bb22321e, type: 2}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _ColorTexture:
         m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _HillsAndTroughsTexture:
+        m_Texture: {fileID: 8400000, guid: d50195fc875654f429b860313d2ac184, type: 2}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Texture:
@@ -79,23 +83,25 @@ Material:
     - _BlendMode: 0
     - _ChangingAreaSize: 0.5
     - _ChangingAreaSmoothness: 0.3
+    - _ChangingNoise: 0.2
     - _ChangingPosX: 0.5
     - _ChangingPosY: 0.5
-    - _ColorTextureStrength: 0.27
+    - _ColorTextureStrength: 0
     - _ConservativeDepthOffsetEnable: 0
     - _CullMode: 2
     - _CullModeForward: 2
-    - _DefaultTextureBlend: 0.612
+    - _DefaultTextureBlend: 1
     - _DepthOffsetEnable: 0
-    - _Displacement: -101.5
-    - _Distort: 0
-    - _DistortSpeed: 0.001
+    - _Displacement: 0
+    - _Distort: 0.18
+    - _DistortSpeed: 0.002
     - _DoubleSidedEnable: 0
     - _DoubleSidedGIMode: 0
     - _DoubleSidedNormalMode: 2
     - _DstBlend: 0
     - _EnableBlendModePreserveSpecularLighting: 0
     - _EnableFogOnTransparent: 1
+    - _HillsAndTroughsBlend: 0
     - _LayerStrength: 0.4
     - _LineSrength: 0.22
     - _OpaqueCullMode: 2
@@ -107,7 +113,7 @@ Material:
     - _RefractionModel: 0
     - _RenderQueueType: 1
     - _RequireSplitLighting: 0
-    - _Saturation: 0.73
+    - _Saturation: 1
     - _Shift: -0.33
     - _SrcBlend: 1
     - _StencilRef: 0
