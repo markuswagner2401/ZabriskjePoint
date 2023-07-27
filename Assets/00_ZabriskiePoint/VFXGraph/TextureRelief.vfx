@@ -255,8 +255,8 @@ MonoBehaviour:
     serializedVersion: 2
     x: -4875
     y: -941
-    width: 8495
-    height: 5355
+    width: 8493
+    height: 5354
 --- !u!114 &114350483966674976
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -407,6 +407,20 @@ MonoBehaviour:
         m_SerializableType: UnityEngine.Texture2D, UnityEngine.CoreModule, Version=0.0.0.0,
           Culture=neutral, PublicKeyToken=null
       m_SerializableObject: '{"obj":{"fileID":2800000,"guid":"276d9e395ae18fe40a9b4988549f2349","type":3}}'
+    min: -Infinity
+    max: Infinity
+    enumValues: []
+    descendantCount: 0
+  - name: TextBlend
+    path: TextBlend
+    tooltip: 
+    sheetType: m_Float
+    realType: Single
+    defaultValue:
+      m_Type:
+        m_SerializableType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+          PublicKeyToken=b77a5c561934e089
+      m_SerializableObject: 0
     min: -Infinity
     max: Infinity
     enumValues: []
@@ -715,20 +729,6 @@ MonoBehaviour:
         m_SerializableType: UnityEngine.Texture2D, UnityEngine.CoreModule, Version=0.0.0.0,
           Culture=neutral, PublicKeyToken=null
       m_SerializableObject: '{"obj":{"fileID":2800000,"guid":"276d9e395ae18fe40a9b4988549f2349","type":3}}'
-    min: -Infinity
-    max: Infinity
-    enumValues: []
-    descendantCount: 0
-  - name: TextBlend
-    path: TextBlend
-    tooltip: 
-    sheetType: m_Float
-    realType: Single
-    defaultValue:
-      m_Type:
-        m_SerializableType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
-          PublicKeyToken=b77a5c561934e089
-      m_SerializableObject: 0
     min: -Infinity
     max: Infinity
     enumValues: []
@@ -4032,7 +4032,7 @@ MonoBehaviour:
   - {fileID: 8926484042661614779}
   m_ExposedName: GridOffset
   m_Exposed: 1
-  m_Order: 2
+  m_Order: 3
   m_Category: 
   m_Min:
     m_Type:
@@ -4954,7 +4954,7 @@ MonoBehaviour:
   - {fileID: 8926484042661614832}
   m_ExposedName: ParticleBaseSize
   m_Exposed: 1
-  m_Order: 3
+  m_Order: 4
   m_Category: 
   m_Min:
     m_Type:
@@ -5767,7 +5767,7 @@ MonoBehaviour:
   - {fileID: 8926484042661614860}
   m_ExposedName: Elevation
   m_Exposed: 1
-  m_Order: 4
+  m_Order: 5
   m_Category: 
   m_Min:
     m_Type:
@@ -5914,7 +5914,7 @@ MonoBehaviour:
   - {fileID: 8926484042661614887}
   m_ExposedName: Gradient
   m_Exposed: 1
-  m_Order: 5
+  m_Order: 6
   m_Category: 
   m_Min:
     m_Type:
@@ -7162,7 +7162,7 @@ MonoBehaviour:
   - {fileID: 8926484042661614960}
   m_ExposedName: SizeByDepth
   m_Exposed: 1
-  m_Order: 6
+  m_Order: 7
   m_Category: 
   m_Min:
     m_Type:
@@ -7314,7 +7314,7 @@ MonoBehaviour:
   - {fileID: 8926484042661614986}
   m_ExposedName: _Distort
   m_Exposed: 1
-  m_Order: 7
+  m_Order: 8
   m_Category: 
   m_Min:
     m_Type:
@@ -7402,7 +7402,7 @@ MonoBehaviour:
   - {fileID: 8926484042661614988}
   m_ExposedName: _DefaultTextureBlend
   m_Exposed: 1
-  m_Order: 8
+  m_Order: 9
   m_Category: 
   m_Min:
     m_Type:
@@ -7490,7 +7490,7 @@ MonoBehaviour:
   - {fileID: 8926484042661614990}
   m_ExposedName: _InMinMax
   m_Exposed: 1
-  m_Order: 9
+  m_Order: 10
   m_Category: 
   m_Min:
     m_Type:
@@ -7638,7 +7638,7 @@ MonoBehaviour:
   - {fileID: 8926484042661614994}
   m_ExposedName: _OutMinMax
   m_Exposed: 1
-  m_Order: 10
+  m_Order: 11
   m_Category: 
   m_Min:
     m_Type:
@@ -7786,7 +7786,7 @@ MonoBehaviour:
   - {fileID: 8926484042661614998}
   m_ExposedName: _Shift
   m_Exposed: 1
-  m_Order: 11
+  m_Order: 12
   m_Category: 
   m_Min:
     m_Type:
@@ -7866,7 +7866,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615000}
   m_ExposedName: _ColorTexture
   m_Exposed: 1
-  m_Order: 12
+  m_Order: 13
   m_Category: 
   m_Min:
     m_Type:
@@ -7946,7 +7946,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615002}
   m_ExposedName: _ChangingPosX
   m_Exposed: 1
-  m_Order: 13
+  m_Order: 14
   m_Category: 
   m_Min:
     m_Type:
@@ -8034,7 +8034,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615004}
   m_ExposedName: _ChangingPosY
   m_Exposed: 1
-  m_Order: 14
+  m_Order: 15
   m_Category: 
   m_Min:
     m_Type:
@@ -9537,7 +9537,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615075}
   m_ExposedName: _ChangingAreaDistortion
   m_Exposed: 1
-  m_Order: 15
+  m_Order: 16
   m_Category: 
   m_Min:
     m_Type:
@@ -10028,7 +10028,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615094}
   m_ExposedName: _ChangingAreaSize
   m_Exposed: 1
-  m_Order: 16
+  m_Order: 17
   m_Category: 
   m_Min:
     m_Type:
@@ -10111,7 +10111,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615096}
   m_ExposedName: _ChangingAreaSmoothness
   m_Exposed: 1
-  m_Order: 17
+  m_Order: 18
   m_Category: 
   m_Min:
     m_Type:
@@ -11827,7 +11827,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615167}
   m_ExposedName: _DistortSpeed
   m_Exposed: 1
-  m_Order: 18
+  m_Order: 19
   m_Category: 
   m_Min:
     m_Type:
@@ -12818,7 +12818,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615213}
   m_ExposedName: _Steps
   m_Exposed: 1
-  m_Order: 19
+  m_Order: 20
   m_Category: 
   m_Min:
     m_Type:
@@ -16027,7 +16027,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615338}
   m_ExposedName: _MixLayers
   m_Exposed: 1
-  m_Order: 20
+  m_Order: 21
   m_Category: 
   m_Min:
     m_Type:
@@ -16107,7 +16107,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615340}
   m_ExposedName: _MixLines
   m_Exposed: 1
-  m_Order: 21
+  m_Order: 22
   m_Category: 
   m_Min:
     m_Type:
@@ -17518,7 +17518,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615388}
   m_ExposedName: ChangingAreaParticleSize
   m_Exposed: 1
-  m_Order: 22
+  m_Order: 23
   m_Category: 
   m_Min:
     m_Type:
@@ -17633,7 +17633,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615391}
   m_ExposedName: ChangingAreaTexture
   m_Exposed: 1
-  m_Order: 23
+  m_Order: 24
   m_Category: 
   m_Min:
     m_Type:
@@ -21942,7 +21942,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615602}
   m_ExposedName: TextBlend
   m_Exposed: 1
-  m_Order: 24
+  m_Order: 2
   m_Category: 
   m_Min:
     m_Type:

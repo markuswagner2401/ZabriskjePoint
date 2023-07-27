@@ -91,7 +91,7 @@ public class VFXParameterAnimator : MonoBehaviour
 
         else
         {
-            print("no float changer with this name found at" + gameObject.name);
+            print("no float changer with name " + name + " found at" + gameObject.name);
 
         }
 

@@ -184,6 +184,18 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
 
     }
 
+    // Debugging
+
+    public void DebugOnDephtsChangingEnd()
+    {
+        onDepthChangingEnd.Invoke();
+    }
+
+    public void DebugOnDepthChaningStart()
+    {
+        onDepthChangingStart.Invoke();
+    }
+
     public void Initialize()
     {
         //sensorIndex = currentSensorIndex;

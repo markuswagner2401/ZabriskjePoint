@@ -7,9 +7,13 @@ using UnityEngine.VFX;
 [RequireComponent(typeof(HeightmapAnalysis))]
 public class HeightmapEvaluation : MonoBehaviour
 {
+    [SerializeField] float resetDuration = 60f;
+
+    float resetTimer = 0;
+    [SerializeField] bool evaluationActive = true;
     [SerializeField] VideoControl videoControl = null;
 
-    [SerializeField] TextMeshProUGUI tmp;
+    [SerializeField] TextMeshPro tmp;
 
     [SerializeField] VisualEffect vfx;
     [SerializeField] string textBlendRef;
@@ -27,7 +31,8 @@ public class HeightmapEvaluation : MonoBehaviour
     {
         public string name;
 
-        public string text;
+        [TextArea(3,10)]
+        public string taskText;
 
         [Tooltip("-1 for not needed to fulfill task")]
         public int hills;
@@ -62,6 +67,8 @@ public class HeightmapEvaluation : MonoBehaviour
 
     bool evaluationInterrupted;
 
+    bool resetTimerInterruted;
+
     HeightmapAnalysis heightmapAnalysis;
 
     public int currentTaskIndex;
@@ -78,19 +85,84 @@ public class HeightmapEvaluation : MonoBehaviour
         }
     }
 
+
+
     // Update is called once per frame
     void Update()
     {
 
+        // Timer
+
+
     }
+
+    // Resetting
+
+    public void StartResetTimer()
+    {
+        print("reset");
+        StartCoroutine(InterruptAndRunResetTimer());
+    }
+
+    IEnumerator InterruptAndRunResetTimer()
+    {
+        resetTimerInterruted = true;
+        yield return new WaitForSeconds(0.1f);
+        resetTimerInterruted = false;
+        StartCoroutine(ResetTimerRoutine());
+        yield break;
+    }
+
+    IEnumerator ResetTimerRoutine()
+    {
+        float timer = 0;
+        while (timer < resetDuration && !resetTimerInterruted)
+        {
+            timer += Time.deltaTime;
+            yield return null;
+        }
+        if (!resetTimerInterruted)
+        {
+            Reset();
+
+        }
+        yield break;
+    }
+
+    public void Reset()
+    {
+        currentTaskIndex = 0;
+        videoControl.Integrate("Start");
+    }
+
+    ///
 
     public void EvaluatHeightmap()
     {
+        if (!evaluationActive) return;
+
+        print("evaluate heightmap");
         StartCoroutine(InterruptAndEvaluate());
+    }
+
+    public void ActivateEvaluation(bool value)
+    {
+        print("activate Evaluation: " + value);
+        evaluationActive = value;
+
+        if(value)
+        {
+            FadeInTaskText();
+        }
+        else
+        {
+            FadeOutText();
+        }
     }
 
     public void InterrutEvaluation()
     {
+        print("interrupt evaluation");
         evaluationInterrupted = true;
     }
 
@@ -128,26 +200,33 @@ public class HeightmapEvaluation : MonoBehaviour
 
         if (taskFulfilled)
         {
+            
             nextVideoName = tasks[currentTaskIndex].videoAtSuccess;
+
+            print("task fulfilled, next video " + nextVideoName);
+
+
             SpawnIndicators(true, currentTaskIndex);
 
+            if (videoControl != null)
+            {
+                videoControl.Integrate(nextVideoName);
+            }
+            else
+            {
+                Debug.LogError("No Video Control Component found in Heightmap Evaluation");
+            }
 
             currentTaskIndex++;
             currentTaskIndex %= tasks.Length;
         }
         else
         {
+            print("task NOT  fulfilled");
             SpawnIndicators(false, currentTaskIndex);
         }
 
-        if (videoControl != null)
-        {
-            videoControl.Integrate(nextVideoName);
-        }
-        else
-        {
-            Debug.LogError("No Video Control Component found in Heightmap Evaluation");
-        }
+
 
 
 
@@ -156,7 +235,7 @@ public class HeightmapEvaluation : MonoBehaviour
 
     bool EvaluateTask(int hillsCount, int troughsCount, float heighestHillHeight, float lowestTroughHeight)
     {
-
+        print("Evaluate Task: hills: " + hillsCount + " troughs: " + troughsCount + " heighestHill: " + heighestHillHeight + " lowestTrough: " + lowestTroughHeight);
         if (tasks[currentTaskIndex].hills >= 0)
         {
             if (hillsCount != tasks[currentTaskIndex].hills)
@@ -227,7 +306,7 @@ public class HeightmapEvaluation : MonoBehaviour
 
         }
 
-        
+
 
 
 
@@ -292,22 +371,78 @@ public class HeightmapEvaluation : MonoBehaviour
 
     }
 
-IEnumerator FadeText(float targetValue)
-{
-    float startValue = vfx.GetFloat(textBlendRef);
 
-    float timer = 0;
 
-    while (timer < textBlendDuration && !textBlendInterrupted )
+    public void FadeOutText()
     {
-        timer += Time.deltaTime;
-        float newValue = Mathf.Lerp(startValue, targetValue, textBlendCurve.Evaluate(timer / textBlendDuration));
-        
+        StartCoroutine(InterruptAndFadeOut());
     }
 
+    public void FadeInTaskText()
+    {
+        StartCoroutine(ChangeTextRoutine());
+    }
 
-    yield break;
-}
+    IEnumerator InterruptAndFadeOut()
+    {
+        print("fade out text");
+
+        textBlendInterrupted = true;
+        yield return new WaitForSeconds(0.01f);
+        textBlendInterrupted = false;
+
+        if (vfx.GetFloat(textBlendRef) > 0.001f)
+        {
+            StartCoroutine(FadeTextR(0, textBlendDuration));
+            yield return new WaitForSeconds(1f);
+        }
+
+        yield break;
+    }
+
+    IEnumerator ChangeTextRoutine()
+    {
+        //yield return InterruptAndFadeOut();
+
+        textBlendInterrupted = true;
+        yield return new WaitForSeconds(0.01f);
+        textBlendInterrupted = false;
+
+        if (vfx.GetFloat(textBlendRef) > 0.001)
+        {
+            StartCoroutine(FadeTextR(0, textBlendDuration));
+            yield return new WaitForSeconds(1f);
+        }
+
+        if (textBlendInterrupted) yield break;
+        tmp.text = tasks[currentTaskIndex].taskText;
+
+        print("Set Text: " + tasks[currentTaskIndex].taskText);
+
+        StartCoroutine(FadeTextR(1f, textBlendDuration));
+
+        yield break;
+    }
+
+    IEnumerator FadeTextR(float targetValue, float duration)
+    {
+        print("fade text: " + targetValue);
+
+        float startValue = vfx.GetFloat(textBlendRef);
+        float timer = 0;
+
+        while (timer < duration && !textBlendInterrupted)
+        {
+            timer += Time.deltaTime;
+            float newValue = Mathf.Lerp(startValue, targetValue, textBlendCurve.Evaluate(timer / duration));
+            //print("fading text: " + newValue);
+            vfx.SetFloat(textBlendRef, newValue);
+            yield return null;
+
+        }
+
+        yield break;
+    }
 
 
 

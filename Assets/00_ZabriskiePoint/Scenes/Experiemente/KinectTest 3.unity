@@ -248,7 +248,7 @@ VisualEffect:
       - m_Value: -0.5
         m_Name: ChangingAreaParticleSize
         m_Overridden: 1
-      - m_Value: 0.2
+      - m_Value: 1
         m_Name: TextBlend
         m_Overridden: 1
     m_Vector2f:
@@ -1485,18 +1485,6 @@ MonoBehaviour:
   onDepthChangingStart:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 660780623}
-        m_TargetAssemblyTypeName: VideoControl, Assembly-CSharp
-        m_MethodName: Desintegrate
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: Outro
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 207321067}
         m_TargetAssemblyTypeName: MaterialPropertiesFader_2, Assembly-CSharp
         m_MethodName: ChangeFloat
@@ -1627,10 +1615,41 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad5004f681c04dd41a8e71ffb4f9f15a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  resetDuration: 60
+  evaluationActive: 0
   videoControl: {fileID: 660780623}
+  tmp: {fileID: 824271285}
+  vfx: {fileID: 17019674}
+  textBlendRef: TextBlend
+  textBlendDuration: 5
+  textBlendCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   tasks:
-  - name: Pistole
-    hills: 1
+  - name: Start
+    taskText: "VER\xC4NDERT DIE LANDSCHAFT\nDANN ENTFERNT EURE H\xC4NDE"
+    hills: -1
     troughs: -1
     lowestTrough: -1
     highestHill: -1
@@ -1641,9 +1660,10 @@ MonoBehaviour:
     hillIndicatorAtNoSuccess: {fileID: 8770761004508411240, guid: 3b247c87d1cfc5e48b38c29d319cae73, type: 3}
     troughIndicatorAtSuccess: {fileID: 8770761004508411240, guid: 1b7989715a859d14bbe6199a53be9e51, type: 3}
     troughIndicatorAtNoSuccess: {fileID: 8770761004508411240, guid: b44679167d3f3be479e71813c0189c4c, type: 3}
-  - name: Flugzeug
+  - name: Pistole
+    taskText: "FORMT EINEN EBENE FL\xC4CHE\nDANN ENTFERNT EURE H\xC4NDE"
     hills: -1
-    troughs: 2
+    troughs: -1
     lowestTrough: -1
     highestHill: -1
     minimalHeightDifference: -1
@@ -1653,8 +1673,9 @@ MonoBehaviour:
     hillIndicatorAtNoSuccess: {fileID: 8770761004508411240, guid: 3b247c87d1cfc5e48b38c29d319cae73, type: 3}
     troughIndicatorAtSuccess: {fileID: 8770761004508411240, guid: 1b7989715a859d14bbe6199a53be9e51, type: 3}
     troughIndicatorAtNoSuccess: {fileID: 8770761004508411240, guid: b44679167d3f3be479e71813c0189c4c, type: 3}
-  - name: Valley
-    hills: 3
+  - name: Flugzeug
+    taskText: "FORMT MEHRERE T\xC4LER\nDANN ENTFERNT EURE H\xC4NDE"
+    hills: -1
     troughs: -1
     lowestTrough: -1
     highestHill: -1
@@ -1665,9 +1686,10 @@ MonoBehaviour:
     hillIndicatorAtNoSuccess: {fileID: 8770761004508411240, guid: 3b247c87d1cfc5e48b38c29d319cae73, type: 3}
     troughIndicatorAtSuccess: {fileID: 8770761004508411240, guid: 1b7989715a859d14bbe6199a53be9e51, type: 3}
     troughIndicatorAtNoSuccess: {fileID: 8770761004508411240, guid: b44679167d3f3be479e71813c0189c4c, type: 3}
-  - name: Auto
+  - name: Valley
+    taskText: "FORMT MEHRERE BERGE\nDANN ENTFERNT EURE H\xC4NDE"
     hills: -1
-    troughs: 4
+    troughs: -1
     lowestTrough: -1
     highestHill: -1
     minimalHeightDifference: -1
@@ -1677,14 +1699,28 @@ MonoBehaviour:
     hillIndicatorAtNoSuccess: {fileID: 8770761004508411240, guid: 3b247c87d1cfc5e48b38c29d319cae73, type: 3}
     troughIndicatorAtSuccess: {fileID: 8770761004508411240, guid: 1b7989715a859d14bbe6199a53be9e51, type: 3}
     troughIndicatorAtNoSuccess: {fileID: 8770761004508411240, guid: b44679167d3f3be479e71813c0189c4c, type: 3}
-  - name: Haus
+  - name: Auto
+    taskText: "FORMT EINEN HOHEN BERG\nDANN ENTFERNT EURE H\xC4NDE"
     hills: -1
-    troughs: 5
+    troughs: -1
     lowestTrough: -1
     highestHill: -1
     minimalHeightDifference: -1
     maximalHeightDifference: -1
     videoAtSuccess: Haus
+    hillIndicatorAtSuccess: {fileID: 8770761004508411240, guid: c865272683c385c47b63d1931e0452bc, type: 3}
+    hillIndicatorAtNoSuccess: {fileID: 8770761004508411240, guid: 3b247c87d1cfc5e48b38c29d319cae73, type: 3}
+    troughIndicatorAtSuccess: {fileID: 8770761004508411240, guid: 1b7989715a859d14bbe6199a53be9e51, type: 3}
+    troughIndicatorAtNoSuccess: {fileID: 8770761004508411240, guid: b44679167d3f3be479e71813c0189c4c, type: 3}
+  - name: Haus
+    taskText: "VER\xC4NDERT DIE LANDSCHAFT\nDANN ENTFERNT EURE H\xC4NDE"
+    hills: -1
+    troughs: -1
+    lowestTrough: -1
+    highestHill: -1
+    minimalHeightDifference: -1
+    maximalHeightDifference: -1
+    videoAtSuccess: Start
     hillIndicatorAtSuccess: {fileID: 8770761004508411240, guid: c865272683c385c47b63d1931e0452bc, type: 3}
     hillIndicatorAtNoSuccess: {fileID: 8770761004508411240, guid: 3b247c87d1cfc5e48b38c29d319cae73, type: 3}
     troughIndicatorAtSuccess: {fileID: 8770761004508411240, guid: 1b7989715a859d14bbe6199a53be9e51, type: 3}
@@ -2352,13 +2388,154 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentSequenceIndex: 0
   videoSequences:
+  - name: Start
+    audioClip: {fileID: 8300000, guid: 140b1fa51a6ae94469288ca4867f74c0, type: 3}
+    audioBlendCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    audioFadeDuration: 3
+    doOnAudioStart:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 207321076}
+          m_TargetAssemblyTypeName: HeightmapEvaluation, Assembly-CSharp
+          m_MethodName: ActivateEvaluation
+          m_Mode: 6
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+    doOnAudioEnd:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 207321076}
+          m_TargetAssemblyTypeName: HeightmapEvaluation, Assembly-CSharp
+          m_MethodName: ActivateEvaluation
+          m_Mode: 6
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 1
+          m_CallState: 2
+    videoFaders:
+    - name: Neutral
+      videoClip: {fileID: 32900000, guid: a1b67ce68a8cda349aa9af77a18de935, type: 3}
+      fadeInDurationVideo: 3
+      animationCurve:
+        serializedVersion: 2
+        m_Curve:
+        - serializedVersion: 3
+          time: 0
+          value: 0
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        - serializedVersion: 3
+          time: 1
+          value: 1
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      clipEndBehaviour: 2
+    currentFaderIndex: 0
   - name: Pistole
+    audioClip: {fileID: 8300000, guid: a9409f1f8ff66814ab0250e06ef8d72f, type: 3}
+    audioBlendCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    audioFadeDuration: 3
+    doOnAudioStart:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 207321076}
+          m_TargetAssemblyTypeName: HeightmapEvaluation, Assembly-CSharp
+          m_MethodName: ActivateEvaluation
+          m_Mode: 6
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+    doOnAudioEnd:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 207321076}
+          m_TargetAssemblyTypeName: HeightmapEvaluation, Assembly-CSharp
+          m_MethodName: ActivateEvaluation
+          m_Mode: 6
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 1
+          m_CallState: 2
     videoFaders:
     - name: GoneIn
       videoClip: {fileID: 32900000, guid: 331299b3fcb31b848a90d5e239c5e6f6, type: 3}
-      audioClip: {fileID: 0}
       fadeInDurationVideo: 3
-      fadeInDurationAudio: 3
       animationCurve:
         serializedVersion: 2
         m_Curve:
@@ -2384,47 +2561,9 @@ MonoBehaviour:
         m_PostInfinity: 2
         m_RotationOrder: 4
       clipEndBehaviour: 1
-      doOnClipEnd:
-        m_PersistentCalls:
-          m_Calls: []
     - name: GunLoop
       videoClip: {fileID: 32900000, guid: d93434a43351dfd42bb1669ca05e2aa8, type: 3}
-      audioClip: {fileID: 0}
       fadeInDurationVideo: 3
-      fadeInDurationAudio: 3
-      animationCurve:
-        serializedVersion: 2
-        m_Curve:
-        - serializedVersion: 3
-          time: 0
-          value: 0
-          inSlope: 0
-          outSlope: 0
-          tangentMode: 0
-          weightedMode: 0
-          inWeight: 0
-          outWeight: 0
-        - serializedVersion: 3
-          time: 1
-          value: 1
-          inSlope: 0
-          outSlope: 0
-          tangentMode: 0
-          weightedMode: 0
-          inWeight: 0
-          outWeight: 0
-        m_PreInfinity: 2
-        m_PostInfinity: 2
-        m_RotationOrder: 4
-      clipEndBehaviour: 2
-      doOnClipEnd:
-        m_PersistentCalls:
-          m_Calls: []
-    - name: Outro
-      videoClip: {fileID: 32900000, guid: 369c5ccff394c9b46948f0efb94f524b, type: 3}
-      audioClip: {fileID: 0}
-      fadeInDurationVideo: 3
-      fadeInDurationAudio: 3
       animationCurve:
         serializedVersion: 2
         m_Curve:
@@ -2450,14 +2589,37 @@ MonoBehaviour:
         m_PostInfinity: 2
         m_RotationOrder: 4
       clipEndBehaviour: 1
-      doOnClipEnd:
-        m_PersistentCalls:
-          m_Calls: []
+    - name: Outro
+      videoClip: {fileID: 32900000, guid: 369c5ccff394c9b46948f0efb94f524b, type: 3}
+      fadeInDurationVideo: 3
+      animationCurve:
+        serializedVersion: 2
+        m_Curve:
+        - serializedVersion: 3
+          time: 0
+          value: 0
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        - serializedVersion: 3
+          time: 1
+          value: 1
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      clipEndBehaviour: 1
     - name: Transition
       videoClip: {fileID: 32900000, guid: b059765068af0494c893c3535bf33421, type: 3}
-      audioClip: {fileID: 0}
       fadeInDurationVideo: 3
-      fadeInDurationAudio: 3
       animationCurve:
         serializedVersion: 2
         m_Curve:
@@ -2483,17 +2645,68 @@ MonoBehaviour:
         m_PostInfinity: 2
         m_RotationOrder: 4
       clipEndBehaviour: 2
-      doOnClipEnd:
-        m_PersistentCalls:
-          m_Calls: []
     currentFaderIndex: 0
   - name: Flugzeug
+    audioClip: {fileID: 8300000, guid: 596b4d8826e6b07488ce9e72a9dae8f8, type: 3}
+    audioBlendCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    audioFadeDuration: 3
+    doOnAudioStart:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 207321076}
+          m_TargetAssemblyTypeName: HeightmapEvaluation, Assembly-CSharp
+          m_MethodName: ActivateEvaluation
+          m_Mode: 6
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+    doOnAudioEnd:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 207321076}
+          m_TargetAssemblyTypeName: HeightmapEvaluation, Assembly-CSharp
+          m_MethodName: ActivateEvaluation
+          m_Mode: 6
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 1
+          m_CallState: 2
     videoFaders:
     - name: CubeIn
       videoClip: {fileID: 32900000, guid: 157132394d39f47429aa99a8fddf67b4, type: 3}
-      audioClip: {fileID: 0}
       fadeInDurationVideo: 3
-      fadeInDurationAudio: 3
       animationCurve:
         serializedVersion: 2
         m_Curve:
@@ -2519,14 +2732,9 @@ MonoBehaviour:
         m_PostInfinity: 2
         m_RotationOrder: 4
       clipEndBehaviour: 1
-      doOnClipEnd:
-        m_PersistentCalls:
-          m_Calls: []
     - name: CubeLoop
       videoClip: {fileID: 32900000, guid: 21a6698e2cb5bb94eb9f05667346ca98, type: 3}
-      audioClip: {fileID: 0}
       fadeInDurationVideo: 3
-      fadeInDurationAudio: 3
       animationCurve:
         serializedVersion: 2
         m_Curve:
@@ -2551,15 +2759,10 @@ MonoBehaviour:
         m_PreInfinity: 2
         m_PostInfinity: 2
         m_RotationOrder: 4
-      clipEndBehaviour: 2
-      doOnClipEnd:
-        m_PersistentCalls:
-          m_Calls: []
+      clipEndBehaviour: 1
     - name: Outro
       videoClip: {fileID: 32900000, guid: 352666a9ce7e27a41b2c3ab99f27a4c7, type: 3}
-      audioClip: {fileID: 0}
       fadeInDurationVideo: 3
-      fadeInDurationAudio: 3
       animationCurve:
         serializedVersion: 2
         m_Curve:
@@ -2585,14 +2788,9 @@ MonoBehaviour:
         m_PostInfinity: 2
         m_RotationOrder: 4
       clipEndBehaviour: 1
-      doOnClipEnd:
-        m_PersistentCalls:
-          m_Calls: []
     - name: Transition
       videoClip: {fileID: 32900000, guid: e2f6b38426c17c043bf14e65f8fbc510, type: 3}
-      audioClip: {fileID: 0}
       fadeInDurationVideo: 3
-      fadeInDurationAudio: 3
       animationCurve:
         serializedVersion: 2
         m_Curve:
@@ -2618,17 +2816,68 @@ MonoBehaviour:
         m_PostInfinity: 2
         m_RotationOrder: 4
       clipEndBehaviour: 2
-      doOnClipEnd:
-        m_PersistentCalls:
-          m_Calls: []
     currentFaderIndex: 0
   - name: Valley
+    audioClip: {fileID: 8300000, guid: 6c4dfafbcfb68094da8753386beaa6f4, type: 3}
+    audioBlendCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    audioFadeDuration: 3
+    doOnAudioStart:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 207321076}
+          m_TargetAssemblyTypeName: HeightmapEvaluation, Assembly-CSharp
+          m_MethodName: ActivateEvaluation
+          m_Mode: 6
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+    doOnAudioEnd:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 207321076}
+          m_TargetAssemblyTypeName: HeightmapEvaluation, Assembly-CSharp
+          m_MethodName: ActivateEvaluation
+          m_Mode: 6
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 1
+          m_CallState: 2
     videoFaders:
     - name: SphereIn
       videoClip: {fileID: 32900000, guid: 9ee07690b81edd84b9b36c350323bf2d, type: 3}
-      audioClip: {fileID: 0}
       fadeInDurationVideo: 3
-      fadeInDurationAudio: 3
       animationCurve:
         serializedVersion: 2
         m_Curve:
@@ -2654,47 +2903,9 @@ MonoBehaviour:
         m_PostInfinity: 2
         m_RotationOrder: 4
       clipEndBehaviour: 1
-      doOnClipEnd:
-        m_PersistentCalls:
-          m_Calls: []
     - name: SphereLoop
       videoClip: {fileID: 32900000, guid: 2602dccf390b9fc47a27c15833c63bbd, type: 3}
-      audioClip: {fileID: 0}
       fadeInDurationVideo: 3
-      fadeInDurationAudio: 3
-      animationCurve:
-        serializedVersion: 2
-        m_Curve:
-        - serializedVersion: 3
-          time: 0
-          value: 0
-          inSlope: 0
-          outSlope: 0
-          tangentMode: 0
-          weightedMode: 0
-          inWeight: 0
-          outWeight: 0
-        - serializedVersion: 3
-          time: 1
-          value: 1
-          inSlope: 0
-          outSlope: 0
-          tangentMode: 0
-          weightedMode: 0
-          inWeight: 0
-          outWeight: 0
-        m_PreInfinity: 2
-        m_PostInfinity: 2
-        m_RotationOrder: 4
-      clipEndBehaviour: 2
-      doOnClipEnd:
-        m_PersistentCalls:
-          m_Calls: []
-    - name: Outro
-      videoClip: {fileID: 32900000, guid: 66ad40eca12fc464fbaed791037fea70, type: 3}
-      audioClip: {fileID: 0}
-      fadeInDurationVideo: 3
-      fadeInDurationAudio: 3
       animationCurve:
         serializedVersion: 2
         m_Curve:
@@ -2720,14 +2931,37 @@ MonoBehaviour:
         m_PostInfinity: 2
         m_RotationOrder: 4
       clipEndBehaviour: 1
-      doOnClipEnd:
-        m_PersistentCalls:
-          m_Calls: []
+    - name: Outro
+      videoClip: {fileID: 32900000, guid: 66ad40eca12fc464fbaed791037fea70, type: 3}
+      fadeInDurationVideo: 3
+      animationCurve:
+        serializedVersion: 2
+        m_Curve:
+        - serializedVersion: 3
+          time: 0
+          value: 0
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        - serializedVersion: 3
+          time: 1
+          value: 1
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      clipEndBehaviour: 1
     - name: Transition
       videoClip: {fileID: 32900000, guid: e2f6b38426c17c043bf14e65f8fbc510, type: 3}
-      audioClip: {fileID: 0}
       fadeInDurationVideo: 3
-      fadeInDurationAudio: 3
       animationCurve:
         serializedVersion: 2
         m_Curve:
@@ -2753,17 +2987,68 @@ MonoBehaviour:
         m_PostInfinity: 2
         m_RotationOrder: 4
       clipEndBehaviour: 2
-      doOnClipEnd:
-        m_PersistentCalls:
-          m_Calls: []
     currentFaderIndex: 0
   - name: Auto
+    audioClip: {fileID: 8300000, guid: 0b40797078ad07144b7af9d027a99fc4, type: 3}
+    audioBlendCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    audioFadeDuration: 3
+    doOnAudioStart:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 207321076}
+          m_TargetAssemblyTypeName: HeightmapEvaluation, Assembly-CSharp
+          m_MethodName: ActivateEvaluation
+          m_Mode: 6
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+    doOnAudioEnd:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 207321076}
+          m_TargetAssemblyTypeName: HeightmapEvaluation, Assembly-CSharp
+          m_MethodName: ActivateEvaluation
+          m_Mode: 6
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 1
+          m_CallState: 2
     videoFaders:
     - name: SphereIn
       videoClip: {fileID: 32900000, guid: 9ee07690b81edd84b9b36c350323bf2d, type: 3}
-      audioClip: {fileID: 0}
       fadeInDurationVideo: 3
-      fadeInDurationAudio: 3
       animationCurve:
         serializedVersion: 2
         m_Curve:
@@ -2789,47 +3074,9 @@ MonoBehaviour:
         m_PostInfinity: 2
         m_RotationOrder: 4
       clipEndBehaviour: 1
-      doOnClipEnd:
-        m_PersistentCalls:
-          m_Calls: []
     - name: SphereLoop
       videoClip: {fileID: 32900000, guid: 2602dccf390b9fc47a27c15833c63bbd, type: 3}
-      audioClip: {fileID: 0}
       fadeInDurationVideo: 3
-      fadeInDurationAudio: 3
-      animationCurve:
-        serializedVersion: 2
-        m_Curve:
-        - serializedVersion: 3
-          time: 0
-          value: 0
-          inSlope: 0
-          outSlope: 0
-          tangentMode: 0
-          weightedMode: 0
-          inWeight: 0
-          outWeight: 0
-        - serializedVersion: 3
-          time: 1
-          value: 1
-          inSlope: 0
-          outSlope: 0
-          tangentMode: 0
-          weightedMode: 0
-          inWeight: 0
-          outWeight: 0
-        m_PreInfinity: 2
-        m_PostInfinity: 2
-        m_RotationOrder: 4
-      clipEndBehaviour: 2
-      doOnClipEnd:
-        m_PersistentCalls:
-          m_Calls: []
-    - name: Outro
-      videoClip: {fileID: 32900000, guid: 66ad40eca12fc464fbaed791037fea70, type: 3}
-      audioClip: {fileID: 0}
-      fadeInDurationVideo: 3
-      fadeInDurationAudio: 3
       animationCurve:
         serializedVersion: 2
         m_Curve:
@@ -2855,14 +3102,37 @@ MonoBehaviour:
         m_PostInfinity: 2
         m_RotationOrder: 4
       clipEndBehaviour: 1
-      doOnClipEnd:
-        m_PersistentCalls:
-          m_Calls: []
+    - name: Outro
+      videoClip: {fileID: 32900000, guid: 66ad40eca12fc464fbaed791037fea70, type: 3}
+      fadeInDurationVideo: 3
+      animationCurve:
+        serializedVersion: 2
+        m_Curve:
+        - serializedVersion: 3
+          time: 0
+          value: 0
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        - serializedVersion: 3
+          time: 1
+          value: 1
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      clipEndBehaviour: 1
     - name: Transition
       videoClip: {fileID: 32900000, guid: e2f6b38426c17c043bf14e65f8fbc510, type: 3}
-      audioClip: {fileID: 0}
       fadeInDurationVideo: 3
-      fadeInDurationAudio: 3
       animationCurve:
         serializedVersion: 2
         m_Curve:
@@ -2888,17 +3158,68 @@ MonoBehaviour:
         m_PostInfinity: 2
         m_RotationOrder: 4
       clipEndBehaviour: 2
-      doOnClipEnd:
-        m_PersistentCalls:
-          m_Calls: []
     currentFaderIndex: 0
   - name: Haus
+    audioClip: {fileID: 8300000, guid: b5bfdac299e837f4cb70aefb56b1da72, type: 3}
+    audioBlendCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    audioFadeDuration: 3
+    doOnAudioStart:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 207321076}
+          m_TargetAssemblyTypeName: HeightmapEvaluation, Assembly-CSharp
+          m_MethodName: ActivateEvaluation
+          m_Mode: 6
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+    doOnAudioEnd:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 207321076}
+          m_TargetAssemblyTypeName: HeightmapEvaluation, Assembly-CSharp
+          m_MethodName: ActivateEvaluation
+          m_Mode: 6
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 1
+          m_CallState: 2
     videoFaders:
     - name: SphereIn
       videoClip: {fileID: 32900000, guid: 9ee07690b81edd84b9b36c350323bf2d, type: 3}
-      audioClip: {fileID: 0}
       fadeInDurationVideo: 3
-      fadeInDurationAudio: 3
       animationCurve:
         serializedVersion: 2
         m_Curve:
@@ -2924,47 +3245,9 @@ MonoBehaviour:
         m_PostInfinity: 2
         m_RotationOrder: 4
       clipEndBehaviour: 1
-      doOnClipEnd:
-        m_PersistentCalls:
-          m_Calls: []
     - name: SphereLoop
       videoClip: {fileID: 32900000, guid: 2602dccf390b9fc47a27c15833c63bbd, type: 3}
-      audioClip: {fileID: 0}
       fadeInDurationVideo: 3
-      fadeInDurationAudio: 3
-      animationCurve:
-        serializedVersion: 2
-        m_Curve:
-        - serializedVersion: 3
-          time: 0
-          value: 0
-          inSlope: 0
-          outSlope: 0
-          tangentMode: 0
-          weightedMode: 0
-          inWeight: 0
-          outWeight: 0
-        - serializedVersion: 3
-          time: 1
-          value: 1
-          inSlope: 0
-          outSlope: 0
-          tangentMode: 0
-          weightedMode: 0
-          inWeight: 0
-          outWeight: 0
-        m_PreInfinity: 2
-        m_PostInfinity: 2
-        m_RotationOrder: 4
-      clipEndBehaviour: 2
-      doOnClipEnd:
-        m_PersistentCalls:
-          m_Calls: []
-    - name: Outro
-      videoClip: {fileID: 32900000, guid: 66ad40eca12fc464fbaed791037fea70, type: 3}
-      audioClip: {fileID: 0}
-      fadeInDurationVideo: 3
-      fadeInDurationAudio: 3
       animationCurve:
         serializedVersion: 2
         m_Curve:
@@ -2990,14 +3273,37 @@ MonoBehaviour:
         m_PostInfinity: 2
         m_RotationOrder: 4
       clipEndBehaviour: 1
-      doOnClipEnd:
-        m_PersistentCalls:
-          m_Calls: []
+    - name: Outro
+      videoClip: {fileID: 32900000, guid: 66ad40eca12fc464fbaed791037fea70, type: 3}
+      fadeInDurationVideo: 3
+      animationCurve:
+        serializedVersion: 2
+        m_Curve:
+        - serializedVersion: 3
+          time: 0
+          value: 0
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        - serializedVersion: 3
+          time: 1
+          value: 1
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      clipEndBehaviour: 1
     - name: Transition
       videoClip: {fileID: 32900000, guid: e2f6b38426c17c043bf14e65f8fbc510, type: 3}
-      audioClip: {fileID: 0}
       fadeInDurationVideo: 3
-      fadeInDurationAudio: 3
       animationCurve:
         serializedVersion: 2
         m_Curve:
@@ -3023,9 +3329,6 @@ MonoBehaviour:
         m_PostInfinity: 2
         m_RotationOrder: 4
       clipEndBehaviour: 2
-      doOnClipEnd:
-        m_PersistentCalls:
-          m_Calls: []
     currentFaderIndex: 0
   VideoShader: {fileID: 2100000, guid: b1f6605e3cec7c04fbf0fb360b39013b, type: 2}
   videoPlayerA: {fileID: 1008732364}
@@ -3417,8 +3720,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -120.00003, y: 0}
+  m_AnchoredPosition: {x: 0, y: -25.100006}
+  m_SizeDelta: {x: -120.00003, y: -50.19999}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &824271285
 MonoBehaviour:
@@ -3440,7 +3743,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "FORMEN SIE EINE FL\xC4CHE "
+  m_text: "FORMT MEHRERE BERGE\nDANN ENTFERNT EURE H\xC4NDE"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5302535af1044152a457ed104f1f4b91, type: 2}
   m_sharedMaterial: {fileID: 2164040, guid: 5302535af1044152a457ed104f1f4b91, type: 2}
@@ -3467,15 +3770,15 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 1114.9
-  m_fontSizeBase: 524.5
+  m_fontSize: 636.82
+  m_fontSizeBase: 636.82
   m_fontWeight: 400
-  m_enableAutoSizing: 1
+  m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 1114.9
   m_fontStyle: 0
   m_HorizontalAlignment: 1
-  m_VerticalAlignment: 512
+  m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -4012,7 +4315,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1089365912}
   - component: {fileID: 1089365909}
-  - component: {fileID: 1089365911}
   - component: {fileID: 1089365910}
   m_Layer: 0
   m_Name: TextCamera
@@ -4116,14 +4418,6 @@ MonoBehaviour:
     mipBias: 0
     varianceClampScale: 0.9
     contrastAdaptiveSharpening: 0
---- !u!81 &1089365911
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1089365908}
-  m_Enabled: 1
 --- !u!4 &1089365912
 Transform:
   m_ObjectHideFlags: 0
@@ -4212,12 +4506,24 @@ MonoBehaviour:
   currentSequenceIndex: 0
   videoSequences:
   - name: Cone
+    audioClip: {fileID: 0}
+    audioBlendCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    audioFadeDuration: 0
+    doOnAudioStart:
+      m_PersistentCalls:
+        m_Calls: []
+    doOnAudioEnd:
+      m_PersistentCalls:
+        m_Calls: []
     videoFaders:
     - name: ConeIn
       videoClip: {fileID: 32900000, guid: a02a81146a83506468d5659e5a9ed29e, type: 3}
-      audioClip: {fileID: 0}
       fadeInDurationVideo: 0
-      fadeInDurationAudio: 0
       animationCurve:
         serializedVersion: 2
         m_Curve:
@@ -4243,14 +4549,9 @@ MonoBehaviour:
         m_PostInfinity: 2
         m_RotationOrder: 4
       clipEndBehaviour: 1
-      doOnClipEnd:
-        m_PersistentCalls:
-          m_Calls: []
     - name: ConeLoop
       videoClip: {fileID: 32900000, guid: cd6f32c666c209e46a80519153ee328b, type: 3}
-      audioClip: {fileID: 0}
       fadeInDurationVideo: 0
-      fadeInDurationAudio: 0
       animationCurve:
         serializedVersion: 2
         m_Curve:
@@ -4276,14 +4577,9 @@ MonoBehaviour:
         m_PostInfinity: 2
         m_RotationOrder: 4
       clipEndBehaviour: 2
-      doOnClipEnd:
-        m_PersistentCalls:
-          m_Calls: []
     - name: Outro
       videoClip: {fileID: 32900000, guid: 1458d1ccfb227324f82bf18f4555fe23, type: 3}
-      audioClip: {fileID: 0}
       fadeInDurationVideo: 0
-      fadeInDurationAudio: 0
       animationCurve:
         serializedVersion: 2
         m_Curve:
@@ -4309,14 +4605,9 @@ MonoBehaviour:
         m_PostInfinity: 2
         m_RotationOrder: 4
       clipEndBehaviour: 1
-      doOnClipEnd:
-        m_PersistentCalls:
-          m_Calls: []
     - name: Transition
       videoClip: {fileID: 32900000, guid: e2f6b38426c17c043bf14e65f8fbc510, type: 3}
-      audioClip: {fileID: 0}
       fadeInDurationVideo: 0
-      fadeInDurationAudio: 0
       animationCurve:
         serializedVersion: 2
         m_Curve:
@@ -4342,17 +4633,26 @@ MonoBehaviour:
         m_PostInfinity: 2
         m_RotationOrder: 4
       clipEndBehaviour: 2
-      doOnClipEnd:
-        m_PersistentCalls:
-          m_Calls: []
     currentFaderIndex: 0
   - name: Cube
+    audioClip: {fileID: 0}
+    audioBlendCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    audioFadeDuration: 0
+    doOnAudioStart:
+      m_PersistentCalls:
+        m_Calls: []
+    doOnAudioEnd:
+      m_PersistentCalls:
+        m_Calls: []
     videoFaders:
     - name: CubeIn
       videoClip: {fileID: 32900000, guid: 157132394d39f47429aa99a8fddf67b4, type: 3}
-      audioClip: {fileID: 0}
       fadeInDurationVideo: 0
-      fadeInDurationAudio: 0
       animationCurve:
         serializedVersion: 2
         m_Curve:
@@ -4378,14 +4678,9 @@ MonoBehaviour:
         m_PostInfinity: 2
         m_RotationOrder: 4
       clipEndBehaviour: 1
-      doOnClipEnd:
-        m_PersistentCalls:
-          m_Calls: []
     - name: CubeLoop
       videoClip: {fileID: 32900000, guid: 21a6698e2cb5bb94eb9f05667346ca98, type: 3}
-      audioClip: {fileID: 0}
       fadeInDurationVideo: 0
-      fadeInDurationAudio: 0
       animationCurve:
         serializedVersion: 2
         m_Curve:
@@ -4411,14 +4706,9 @@ MonoBehaviour:
         m_PostInfinity: 2
         m_RotationOrder: 4
       clipEndBehaviour: 2
-      doOnClipEnd:
-        m_PersistentCalls:
-          m_Calls: []
     - name: Outro
       videoClip: {fileID: 32900000, guid: 352666a9ce7e27a41b2c3ab99f27a4c7, type: 3}
-      audioClip: {fileID: 0}
       fadeInDurationVideo: 0
-      fadeInDurationAudio: 0
       animationCurve:
         serializedVersion: 2
         m_Curve:
@@ -4444,14 +4734,9 @@ MonoBehaviour:
         m_PostInfinity: 2
         m_RotationOrder: 4
       clipEndBehaviour: 1
-      doOnClipEnd:
-        m_PersistentCalls:
-          m_Calls: []
     - name: Transition
       videoClip: {fileID: 32900000, guid: e2f6b38426c17c043bf14e65f8fbc510, type: 3}
-      audioClip: {fileID: 0}
       fadeInDurationVideo: 0
-      fadeInDurationAudio: 0
       animationCurve:
         serializedVersion: 2
         m_Curve:
@@ -4477,17 +4762,26 @@ MonoBehaviour:
         m_PostInfinity: 2
         m_RotationOrder: 4
       clipEndBehaviour: 2
-      doOnClipEnd:
-        m_PersistentCalls:
-          m_Calls: []
     currentFaderIndex: 0
   - name: Sphere
+    audioClip: {fileID: 0}
+    audioBlendCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    audioFadeDuration: 0
+    doOnAudioStart:
+      m_PersistentCalls:
+        m_Calls: []
+    doOnAudioEnd:
+      m_PersistentCalls:
+        m_Calls: []
     videoFaders:
     - name: SphereIn
       videoClip: {fileID: 32900000, guid: 9ee07690b81edd84b9b36c350323bf2d, type: 3}
-      audioClip: {fileID: 0}
       fadeInDurationVideo: 0
-      fadeInDurationAudio: 0
       animationCurve:
         serializedVersion: 2
         m_Curve:
@@ -4513,14 +4807,9 @@ MonoBehaviour:
         m_PostInfinity: 2
         m_RotationOrder: 4
       clipEndBehaviour: 1
-      doOnClipEnd:
-        m_PersistentCalls:
-          m_Calls: []
     - name: SphereLoop
       videoClip: {fileID: 32900000, guid: 2602dccf390b9fc47a27c15833c63bbd, type: 3}
-      audioClip: {fileID: 0}
       fadeInDurationVideo: 0
-      fadeInDurationAudio: 0
       animationCurve:
         serializedVersion: 2
         m_Curve:
@@ -4546,14 +4835,9 @@ MonoBehaviour:
         m_PostInfinity: 2
         m_RotationOrder: 4
       clipEndBehaviour: 2
-      doOnClipEnd:
-        m_PersistentCalls:
-          m_Calls: []
     - name: Outro
       videoClip: {fileID: 32900000, guid: 66ad40eca12fc464fbaed791037fea70, type: 3}
-      audioClip: {fileID: 0}
       fadeInDurationVideo: 0
-      fadeInDurationAudio: 0
       animationCurve:
         serializedVersion: 2
         m_Curve:
@@ -4579,14 +4863,9 @@ MonoBehaviour:
         m_PostInfinity: 2
         m_RotationOrder: 4
       clipEndBehaviour: 1
-      doOnClipEnd:
-        m_PersistentCalls:
-          m_Calls: []
     - name: Transition
       videoClip: {fileID: 32900000, guid: e2f6b38426c17c043bf14e65f8fbc510, type: 3}
-      audioClip: {fileID: 0}
       fadeInDurationVideo: 0
-      fadeInDurationAudio: 0
       animationCurve:
         serializedVersion: 2
         m_Curve:
@@ -4612,9 +4891,6 @@ MonoBehaviour:
         m_PostInfinity: 2
         m_RotationOrder: 4
       clipEndBehaviour: 2
-      doOnClipEnd:
-        m_PersistentCalls:
-          m_Calls: []
     currentFaderIndex: 0
   VideoShader: {fileID: 2100000, guid: b1f6605e3cec7c04fbf0fb360b39013b, type: 2}
   videoPlayerA: {fileID: 702141839}
