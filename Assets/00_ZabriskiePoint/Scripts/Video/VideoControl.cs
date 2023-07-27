@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Video;
+using UnityEngine.Events;
 
 
 
@@ -41,6 +42,8 @@ public class VideoControl : MonoBehaviour
         public AnimationCurve animationCurve;
         public ClipEndBehaviour clipEndBehaviour;
 
+        public UnityEvent doOnClipEnd;
+
 
     }
 
@@ -51,6 +54,8 @@ public class VideoControl : MonoBehaviour
         public VideoFader[] videoFaders;
         public int currentFaderIndex;
     }
+
+
 
 
 
@@ -296,12 +301,20 @@ public class VideoControl : MonoBehaviour
 
         float currentBlend = VideoShader.GetFloat("_BlendAB");
 
+        bool changeAudio = false;
         // Depending on the current blend, set next clip to either ClipA or ClipB
         if (currentBlend >= 0.9f)
         {
             // audio
-            audioSourceA.clip = videoSequences[sequenceIndex].videoFaders[faderIndex].audioClip;
-            audioSourceA.time = 0f;
+            AudioClip nextClip = videoSequences[sequenceIndex].videoFaders[faderIndex].audioClip;
+            if (nextClip != null)
+            {
+                changeAudio = true;
+                audioSourceA.clip = nextClip;
+                audioSourceA.time = 0f;
+
+            }
+
 
             // video
             videoPlayerA.clip = videoSequences[sequenceIndex].videoFaders[faderIndex].videoClip;
@@ -312,7 +325,11 @@ public class VideoControl : MonoBehaviour
             //
             if (!interrupted)
             {
-                StartCoroutine(AudioBlendingRoutine(sequenceIndex, faderIndex, currentBlend, targetBlend));
+                if (changeAudio)
+                {
+                    StartCoroutine(AudioBlendingRoutine(sequenceIndex, faderIndex, currentBlend, targetBlend));
+                }
+
                 StartCoroutine(BlendingRoutine(sequenceIndex, faderIndex, currentBlend, targetBlend));
             }
 
@@ -320,8 +337,14 @@ public class VideoControl : MonoBehaviour
         else
         {
             // audio
-            audioSourceB.clip = videoSequences[sequenceIndex].videoFaders[faderIndex].audioClip;
-            audioSourceB.time = 0f;
+            AudioClip nextClip = videoSequences[sequenceIndex].videoFaders[faderIndex].audioClip;
+            if (nextClip != null)
+            {
+                changeAudio = true;
+                audioSourceB.clip = nextClip;
+                audioSourceB.time = 0f;
+            }
+
 
 
             // video
@@ -333,7 +356,11 @@ public class VideoControl : MonoBehaviour
             //
             if (!interrupted)
             {
-                StartCoroutine(AudioBlendingRoutine(sequenceIndex, faderIndex, currentBlend, targetBlend));
+                if(changeAudio)
+                {
+                    StartCoroutine(AudioBlendingRoutine(sequenceIndex, faderIndex, currentBlend, targetBlend));
+                }
+                
                 StartCoroutine(BlendingRoutine(sequenceIndex, faderIndex, currentBlend, targetBlend));
             }
 

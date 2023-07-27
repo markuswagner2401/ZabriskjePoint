@@ -1,11 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
+using UnityEngine.VFX;
 
 [RequireComponent(typeof(HeightmapAnalysis))]
 public class HeightmapEvaluation : MonoBehaviour
 {
     [SerializeField] VideoControl videoControl = null;
+
+    [SerializeField] TextMeshProUGUI tmp;
+
+    [SerializeField] VisualEffect vfx;
+    [SerializeField] string textBlendRef;
+
+    [SerializeField] float textBlendDuration;
+
+    [SerializeField] AnimationCurve textBlendCurve;
+
+    bool textBlendInterrupted = false;
 
     [SerializeField] Task[] tasks;
 
@@ -13,6 +26,9 @@ public class HeightmapEvaluation : MonoBehaviour
     public struct Task
     {
         public string name;
+
+        public string text;
+
         [Tooltip("-1 for not needed to fulfill task")]
         public int hills;
 
@@ -71,6 +87,11 @@ public class HeightmapEvaluation : MonoBehaviour
     public void EvaluatHeightmap()
     {
         StartCoroutine(InterruptAndEvaluate());
+    }
+
+    public void InterrutEvaluation()
+    {
+        evaluationInterrupted = true;
     }
 
     IEnumerator InterruptAndEvaluate()
@@ -270,4 +291,24 @@ public class HeightmapEvaluation : MonoBehaviour
 
 
     }
+
+IEnumerator FadeText(float targetValue)
+{
+    float startValue = vfx.GetFloat(textBlendRef);
+
+    float timer = 0;
+
+    while (timer < textBlendDuration && !textBlendInterrupted )
+    {
+        timer += Time.deltaTime;
+        float newValue = Mathf.Lerp(startValue, targetValue, textBlendCurve.Evaluate(timer / textBlendDuration));
+        
+    }
+
+
+    yield break;
+}
+
+
+
 }
