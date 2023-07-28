@@ -31,7 +31,7 @@ public class HeightmapEvaluation : MonoBehaviour
     {
         public string name;
 
-        [TextArea(3,10)]
+        [TextArea(3, 10)]
         public string taskText;
 
         [Tooltip("-1 for not needed to fulfill task")]
@@ -71,6 +71,8 @@ public class HeightmapEvaluation : MonoBehaviour
 
     HeightmapAnalysis heightmapAnalysis;
 
+    [SerializeField] RippleShaderController rippleShaderController;
+
     public int currentTaskIndex;
 
     List<GameObject> spawnedIndicators = new List<GameObject>();
@@ -83,6 +85,11 @@ public class HeightmapEvaluation : MonoBehaviour
         {
             videoControl = FindObjectOfType<VideoControl>();
         }
+
+        
+        
+        rippleShaderController = GetComponent<RippleShaderController>();
+        
     }
 
 
@@ -92,6 +99,11 @@ public class HeightmapEvaluation : MonoBehaviour
     {
 
         // Timer
+
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            ShowRipples();
+        }
 
 
     }
@@ -137,6 +149,40 @@ public class HeightmapEvaluation : MonoBehaviour
 
     ///
 
+    public void ActivateEvaluation(bool value)
+    {
+        // print("activate Evaluation: " + value);
+        // evaluationActive = value;
+
+        if (value)
+        {
+            FadeInTaskText();
+            StartCoroutine(WaitAndActivateEvaluation(true, textBlendDuration + 1f));
+        }
+        else
+        {
+            evaluationActive = false;
+            FadeOutText();
+        }
+    }
+
+    IEnumerator WaitAndActivateEvaluation(bool value, float waitTime)
+    {
+        yield return new WaitForSeconds(waitTime);
+
+        print("activate Evaluation: " + value);
+        evaluationActive = value;
+
+
+        yield break;
+    }
+
+    public void InterrutEvaluation()
+    {
+        print("interrupt evaluation");
+        evaluationInterrupted = true;
+    }
+
     public void EvaluatHeightmap()
     {
         if (!evaluationActive) return;
@@ -145,26 +191,7 @@ public class HeightmapEvaluation : MonoBehaviour
         StartCoroutine(InterruptAndEvaluate());
     }
 
-    public void ActivateEvaluation(bool value)
-    {
-        print("activate Evaluation: " + value);
-        evaluationActive = value;
 
-        if(value)
-        {
-            FadeInTaskText();
-        }
-        else
-        {
-            FadeOutText();
-        }
-    }
-
-    public void InterrutEvaluation()
-    {
-        print("interrupt evaluation");
-        evaluationInterrupted = true;
-    }
 
     IEnumerator InterruptAndEvaluate()
     {
@@ -198,15 +225,21 @@ public class HeightmapEvaluation : MonoBehaviour
 
         string nextVideoName = "";
 
+        ShowRipples();
+
         if (taskFulfilled)
         {
-            
+
             nextVideoName = tasks[currentTaskIndex].videoAtSuccess;
 
             print("task fulfilled, next video " + nextVideoName);
 
 
-            SpawnIndicators(true, currentTaskIndex);
+            //SpawnIndicators(true, currentTaskIndex);
+
+            
+
+
 
             if (videoControl != null)
             {
@@ -223,7 +256,7 @@ public class HeightmapEvaluation : MonoBehaviour
         else
         {
             print("task NOT  fulfilled");
-            SpawnIndicators(false, currentTaskIndex);
+            //SpawnIndicators(false, currentTaskIndex);
         }
 
 
@@ -371,7 +404,41 @@ public class HeightmapEvaluation : MonoBehaviour
 
     }
 
+    void ShowRipples()
+    {
 
+        print("show ripples");
+        Vector2 [] newHillPositions;
+        Vector2[] newTroughPositions;
+        if(heightmapAnalysis.GetMainHillsTexturePositions() != null)
+        {
+            newHillPositions = heightmapAnalysis.GetMainHillsTexturePositions();
+        }
+        else
+        {
+            newHillPositions = new Vector2[0];
+        }
+
+        if(heightmapAnalysis.GetMainTroughsTexturePositions() != null)
+        {
+            newTroughPositions = heightmapAnalysis.GetMainTroughsTexturePositions();
+        }
+        else
+        {
+            newTroughPositions = new Vector2[0];
+        }
+
+        rippleShaderController.CreateRipples(newHillPositions, newTroughPositions);
+        
+        //GetComponent<RippleShaderController>().CreateRipples(heightmapAnalysis.GetMainTroughsTexturePositions(), 2f, false);
+
+        // if (rippleShaderController != null)
+        // {
+        //     rippleShaderController.CreateRipples(heightmapAnalysis.GetMainHillsTexturePositions(), 2f);
+        // }
+    }
+
+    // Text
 
     public void FadeOutText()
     {

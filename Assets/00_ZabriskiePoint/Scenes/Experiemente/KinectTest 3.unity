@@ -322,6 +322,15 @@ VisualEffect:
       - m_Value: {fileID: 8400000, guid: a28da55773dd4a54fa3b6838fdeb0162, type: 2}
         m_Name: _TextRT
         m_Overridden: 1
+      - m_Value: {fileID: 8400000, guid: 7fd8de95f2992b54298ad1c7e67106fe, type: 2}
+        m_Name: RippleTexture
+        m_Overridden: 1
+      - m_Value: {fileID: 8400000, guid: 8f7c743cc8202d540814e02ab1943539, type: 2}
+        m_Name: TroughsRippleTexture
+        m_Overridden: 1
+      - m_Value: {fileID: 8400000, guid: 7fd8de95f2992b54298ad1c7e67106fe, type: 2}
+        m_Name: HillsRippleTexture
+        m_Overridden: 1
     m_Bool:
       m_Array: []
 --- !u!4 &17019675
@@ -1648,7 +1657,8 @@ MonoBehaviour:
     m_RotationOrder: 4
   tasks:
   - name: Start
-    taskText: "VER\xC4NDERT DIE LANDSCHAFT\nDANN ENTFERNT EURE H\xC4NDE"
+    taskText: "<size=600>VER\xC4NDERT DIE LANDSCHAFT</size>\n<size=300>DANN ENTFERNT
+      EURE H\xC4NDE</size>"
     hills: -1
     troughs: -1
     lowestTrough: -1
@@ -1661,7 +1671,8 @@ MonoBehaviour:
     troughIndicatorAtSuccess: {fileID: 8770761004508411240, guid: 1b7989715a859d14bbe6199a53be9e51, type: 3}
     troughIndicatorAtNoSuccess: {fileID: 8770761004508411240, guid: b44679167d3f3be479e71813c0189c4c, type: 3}
   - name: Pistole
-    taskText: "FORMT EINEN EBENE FL\xC4CHE\nDANN ENTFERNT EURE H\xC4NDE"
+    taskText: "<size=600>FORMT EINEN EBENE FL\xC4CHE</size>\n<size=300>DANN ENTFERNT
+      EURE H\xC4NDE</size>"
     hills: -1
     troughs: -1
     lowestTrough: -1
@@ -1674,9 +1685,10 @@ MonoBehaviour:
     troughIndicatorAtSuccess: {fileID: 8770761004508411240, guid: 1b7989715a859d14bbe6199a53be9e51, type: 3}
     troughIndicatorAtNoSuccess: {fileID: 8770761004508411240, guid: b44679167d3f3be479e71813c0189c4c, type: 3}
   - name: Flugzeug
-    taskText: "FORMT MEHRERE T\xC4LER\nDANN ENTFERNT EURE H\xC4NDE"
-    hills: -1
-    troughs: -1
+    taskText: "<size=600>FORMT MEHRERE T\xC4LER</size>\n<size=300>DANN ENTFERNT EURE
+      H\xC4NDE</size>"
+    hills: 100000
+    troughs: 100000
     lowestTrough: -1
     highestHill: -1
     minimalHeightDifference: -1
@@ -1687,7 +1699,8 @@ MonoBehaviour:
     troughIndicatorAtSuccess: {fileID: 8770761004508411240, guid: 1b7989715a859d14bbe6199a53be9e51, type: 3}
     troughIndicatorAtNoSuccess: {fileID: 8770761004508411240, guid: b44679167d3f3be479e71813c0189c4c, type: 3}
   - name: Valley
-    taskText: "FORMT MEHRERE BERGE\nDANN ENTFERNT EURE H\xC4NDE"
+    taskText: "<size=600>FORMT MEHRERE BERGE</size>\n<size=300>DANN ENTFERNT EURE
+      H\xC4NDE</size>"
     hills: -1
     troughs: -1
     lowestTrough: -1
@@ -1700,7 +1713,8 @@ MonoBehaviour:
     troughIndicatorAtSuccess: {fileID: 8770761004508411240, guid: 1b7989715a859d14bbe6199a53be9e51, type: 3}
     troughIndicatorAtNoSuccess: {fileID: 8770761004508411240, guid: b44679167d3f3be479e71813c0189c4c, type: 3}
   - name: Auto
-    taskText: "FORMT EINEN HOHEN BERG\nDANN ENTFERNT EURE H\xC4NDE"
+    taskText: "<size=600>FORMT EINEN HOHEN BERG</size>\n<size=300>DANN ENTFERNT EURE
+      H\xC4NDE</size>"
     hills: -1
     troughs: -1
     lowestTrough: -1
@@ -1713,7 +1727,8 @@ MonoBehaviour:
     troughIndicatorAtSuccess: {fileID: 8770761004508411240, guid: 1b7989715a859d14bbe6199a53be9e51, type: 3}
     troughIndicatorAtNoSuccess: {fileID: 8770761004508411240, guid: b44679167d3f3be479e71813c0189c4c, type: 3}
   - name: Haus
-    taskText: "VER\xC4NDERT DIE LANDSCHAFT\nDANN ENTFERNT EURE H\xC4NDE"
+    taskText: "<size=600>VER\xC4NDERT DIE LANDSCHAFT</size>\n>size=300>DANN ENTFERNT
+      EURE H\xC4NDE</size>"
     hills: -1
     troughs: -1
     lowestTrough: -1
@@ -1726,7 +1741,113 @@ MonoBehaviour:
     troughIndicatorAtSuccess: {fileID: 8770761004508411240, guid: 1b7989715a859d14bbe6199a53be9e51, type: 3}
     troughIndicatorAtNoSuccess: {fileID: 8770761004508411240, guid: b44679167d3f3be479e71813c0189c4c, type: 3}
   waitBeforeAnalyze: 4
+  rippleShaderController: {fileID: 207321078}
   currentTaskIndex: 0
+--- !u!114 &207321078
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 207321066}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee1820a2805b546449716262c1a7e2fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rippleComputeShader: {fileID: 7200000, guid: e6af456784871d148a8c86272103720c, type: 3}
+  lineSize: 0.05
+  minSize: 0.01
+  maxSize: 0.4
+  minStrength: 1
+  maxStrength: 0
+  tilingX: 1
+  sizeCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.3064165
+      value: 0.6423482
+      inSlope: -0.22706747
+      outSlope: -0.22706747
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.5536663
+      value: 0.2804986
+      inSlope: -0.2652485
+      outSlope: -0.2652485
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.47080168
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.73744273
+      value: 0.0024600662
+      inSlope: 2.0084124
+      outSlope: 2.0084124
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.6789257
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  strengthCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2.2519102
+      outSlope: 2.2519102
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.12104493
+    - serializedVersion: 3
+      time: 0.87691385
+      value: 0.9678397
+      inSlope: 0.034180433
+      outSlope: 0.034180433
+      tangentMode: 0
+      weightedMode: 3
+      inWeight: 0.55805844
+      outWeight: 1
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: -17.230177
+      outSlope: -17.230177
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.12437901
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  duration: 7
+  ripplesRT: {fileID: 8400000, guid: 7fd8de95f2992b54298ad1c7e67106fe, type: 2}
 --- !u!4 &212661070 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: e45f12ec1dbbaef4c859b3da1860cac9, type: 3}
@@ -1855,6 +1976,88 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e45f12ec1dbbaef4c859b3da1860cac9, type: 3}
+--- !u!1001 &361840911
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 207321073}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: e45f12ec1dbbaef4c859b3da1860cac9, type: 3}
+      propertyPath: m_RootOrder
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e45f12ec1dbbaef4c859b3da1860cac9, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.50503
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e45f12ec1dbbaef4c859b3da1860cac9, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.5050301
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e45f12ec1dbbaef4c859b3da1860cac9, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.5050301
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e45f12ec1dbbaef4c859b3da1860cac9, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -634.3
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e45f12ec1dbbaef4c859b3da1860cac9, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.0050582886
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e45f12ec1dbbaef4c859b3da1860cac9, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 53.516045
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e45f12ec1dbbaef4c859b3da1860cac9, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e45f12ec1dbbaef4c859b3da1860cac9, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e45f12ec1dbbaef4c859b3da1860cac9, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e45f12ec1dbbaef4c859b3da1860cac9, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e45f12ec1dbbaef4c859b3da1860cac9, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -90
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e45f12ec1dbbaef4c859b3da1860cac9, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e45f12ec1dbbaef4c859b3da1860cac9, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: e45f12ec1dbbaef4c859b3da1860cac9, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: b65576e796d6c8148a08e18fb6ef188a, type: 2}
+    - target: {fileID: 919132149155446097, guid: e45f12ec1dbbaef4c859b3da1860cac9, type: 3}
+      propertyPath: m_Name
+      value: DebugRipples
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: e45f12ec1dbbaef4c859b3da1860cac9, type: 3}
+--- !u!4 &361840912 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: e45f12ec1dbbaef4c859b3da1860cac9, type: 3}
+  m_PrefabInstance: {fileID: 361840911}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &366436970
 GameObject:
   m_ObjectHideFlags: 0
@@ -3620,9 +3823,37 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2560381250001313071, guid: 4618867bff22436449478594343f3d00, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2790614311600108169, guid: 4618867bff22436449478594343f3d00, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2790614311600108169, guid: 4618867bff22436449478594343f3d00, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2790614311600108169, guid: 4618867bff22436449478594343f3d00, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2790614311600108169, guid: 4618867bff22436449478594343f3d00, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 207321076}
+    - target: {fileID: 2790614311600108169, guid: 4618867bff22436449478594343f3d00, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2790614311600108169, guid: 4618867bff22436449478594343f3d00, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: Reset
+      objectReference: {fileID: 0}
+    - target: {fileID: 2790614311600108169, guid: 4618867bff22436449478594343f3d00, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: HeightmapEvaluation, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 2790614311600108169, guid: 4618867bff22436449478594343f3d00, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
@@ -3743,7 +3974,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "FORMT MEHRERE BERGE\nDANN ENTFERNT EURE H\xC4NDE"
+  m_text: '<size=600>ZABRISKIE POINT</size>
+
+    <size=300>EINE INTERAKTIVE INSTALLATION
+    </size>'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5302535af1044152a457ed104f1f4b91, type: 2}
   m_sharedMaterial: {fileID: 2164040, guid: 5302535af1044152a457ed104f1f4b91, type: 2}
@@ -4113,7 +4347,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 915306497}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 160.01, y: 0, z: 89.998}
+  m_LocalPosition: {x: 160.01, y: -119.7, z: 90}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -5083,6 +5317,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: e45f12ec1dbbaef4c859b3da1860cac9, type: 3}
       insertIndex: -1
       addedObject: {fileID: 52039795}
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: e45f12ec1dbbaef4c859b3da1860cac9, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 361840912}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: e45f12ec1dbbaef4c859b3da1860cac9, type: 3}
       insertIndex: -1
@@ -5102,6 +5339,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: e45f12ec1dbbaef4c859b3da1860cac9, type: 3}
       insertIndex: -1
       addedObject: {fileID: 207321076}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: e45f12ec1dbbaef4c859b3da1860cac9, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 207321078}
   m_SourcePrefab: {fileID: 100100000, guid: e45f12ec1dbbaef4c859b3da1860cac9, type: 3}
 --- !u!1 &1326899311
 GameObject:

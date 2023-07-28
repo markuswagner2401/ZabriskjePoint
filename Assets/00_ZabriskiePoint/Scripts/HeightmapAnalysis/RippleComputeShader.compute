@@ -1,0 +1,74 @@
+#pragma kernel Ripple
+
+RWTexture2D<float4> outputTexture;
+
+struct Position
+{
+    float2 value;
+    float size;
+    float strength;
+};
+
+StructuredBuffer<Position> positionsHills;
+int positionHillCount;
+
+StructuredBuffer<Position> positionsTroughs;
+int positionTroughCount;
+
+float lineSize;
+float value;
+float maxValue;
+float minSize;
+float maxSize;
+float minStrength;
+float maxStrength;
+float tilingX;
+
+uint outputWidth;
+uint outputHeight;
+
+[numthreads(8,8,1)]
+void Ripple (uint3 id : SV_DispatchThreadID)
+{
+    // Compute aspect ratio
+    float aspectRatio = outputWidth / outputHeight;
+
+    // Adjust the uv coordinates for non-square aspect ratio
+    float2 uv = (id.xy) / float2(outputWidth, outputHeight);
+
+    float resultHill = 0;
+
+    for(int i = 0; i < positionHillCount; i++)
+    {
+        float2 diff = positionsHills[i].value - uv;
+        diff.x *= tilingX;
+        float distance = length(diff);
+
+        float size = positionsHills[i].size;
+        float mappedSize = lerp(minSize, maxSize, size);
+        float strength = positionsHills[i].strength;
+        float mappedStrength = lerp(maxStrength, minStrength, strength);
+        resultHill += smoothstep(lineSize, 0.0, abs(distance - mappedSize)) * mappedStrength;
+    }
+
+    resultHill = clamp(resultHill, 0, maxValue) / maxValue;
+
+    float resultTroughs = 0;
+
+    for(int i = 0; i < positionTroughCount; i++)
+    {
+        float2 diff = positionsTroughs[i].value - uv;
+        diff.x *= tilingX;
+        float distance = length(diff);
+
+        float size = positionsTroughs[i].size;
+        float mappedSize = lerp(minSize, maxSize, size);
+        float strength = positionsTroughs[i].strength;
+        float mappedStrength = lerp(maxStrength, minStrength, strength);
+        resultTroughs += smoothstep(lineSize, 0.0, abs(distance - mappedSize)) * mappedStrength;
+    }
+
+    resultTroughs = clamp(resultTroughs, 0, maxValue) / maxValue;
+
+    outputTexture[id.xy] = float4(resultHill, resultTroughs, 0, 1);
+}

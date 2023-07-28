@@ -63,4 +63,11 @@ public class InputReader : MonoBehaviour, ZabrPointControls.IMenueActions
 
         FindObjectOfType<ColorCamUserImageProvider>()?.CaptureDefaultTexture();
     }
+
+    public void OnReset(InputAction.CallbackContext context)
+    {
+        if(!context.performed) return;
+
+        FindObjectOfType<HeightmapEvaluation>().Reset();
+    }
 }

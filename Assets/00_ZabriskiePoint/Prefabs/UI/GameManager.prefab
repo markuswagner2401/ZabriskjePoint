@@ -696,6 +696,8 @@ MonoBehaviour:
     deviceSelector: {fileID: 7781025947983016929}
     kinectManager: {fileID: 0}
     kinect4AzureInterface: {fileID: 0}
+    minDepthDistance: 0
+    maxDepthDistance: 0
     camera: {fileID: 0}
     displayOK: 0
     kinectOK: 0
@@ -703,6 +705,8 @@ MonoBehaviour:
     deviceSelector: {fileID: 6212932428066824489}
     kinectManager: {fileID: 0}
     kinect4AzureInterface: {fileID: 0}
+    minDepthDistance: 0
+    maxDepthDistance: 0
     camera: {fileID: 0}
     displayOK: 0
     kinectOK: 0
@@ -710,6 +714,8 @@ MonoBehaviour:
     deviceSelector: {fileID: 351590771377012644}
     kinectManager: {fileID: 0}
     kinect4AzureInterface: {fileID: 0}
+    minDepthDistance: 0
+    maxDepthDistance: 0
     camera: {fileID: 0}
     displayOK: 0
     kinectOK: 0
@@ -717,6 +723,8 @@ MonoBehaviour:
     deviceSelector: {fileID: 1091703503643661704}
     kinectManager: {fileID: 0}
     kinect4AzureInterface: {fileID: 0}
+    minDepthDistance: 0
+    maxDepthDistance: 0
     camera: {fileID: 0}
     displayOK: 0
     kinectOK: 0
@@ -724,6 +732,8 @@ MonoBehaviour:
     deviceSelector: {fileID: 9204122187651402708}
     kinectManager: {fileID: 0}
     kinect4AzureInterface: {fileID: 0}
+    minDepthDistance: 0
+    maxDepthDistance: 0
     camera: {fileID: 0}
     displayOK: 0
     kinectOK: 0
@@ -2189,8 +2199,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "M - Men\xFC zeigen / verbergen\nQ - Anwendung beenden\nZum Kinect-Ger\xE4tewechsel
-    erst stoppen\n"
+  m_text: "M - Men\xFC zeigen / verbergen\nR - Auf Anfang\nQ - Anwendung beenden\nZum
+    Kinect-Ger\xE4tewechsel erst stoppen\n"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5302535af1044152a457ed104f1f4b91, type: 2}
   m_sharedMaterial: {fileID: 2164040, guid: 5302535af1044152a457ed104f1f4b91, type: 2}
