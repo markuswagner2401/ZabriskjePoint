@@ -210,6 +210,9 @@ public class HeightmapEvaluation : MonoBehaviour
             timer += Time.deltaTime;
             yield return null;
         }
+
+        if (evaluationInterrupted) yield break;
+
         heightmapAnalysis.AnalyseHeightmap();
 
         yield return new WaitForSeconds(1f);

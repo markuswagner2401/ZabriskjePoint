@@ -11,7 +11,17 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
     [Tooltip("Depth sensor index - 0 is the 1st one, 1 - the 2nd one, etc.")]
     public int sensorIndex = 0;
 
-    // Trigger
+    
+    // masking
+    [SerializeField] int maskPercentage = 100;
+
+    int lastMaskPercentage;
+
+    [SerializeField] MaskImage maskImage;
+
+    [SerializeField] RenderTexture maskedImge;
+
+
 
 
 
@@ -35,6 +45,8 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
     private int[] changeData;
 
     [SerializeField] int pixelChangeThreshold = 100;
+
+    
 
 
 
@@ -175,6 +187,7 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
 
     void Start()
     {
+        maskImage = GetComponent<MaskImage>();
         //Initialize();
 
         // if (materialPropertiesFader_2 == null)
@@ -236,13 +249,15 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
         {
             if (receiverMaterial != null)
             {
-                receiverMaterial.SetTexture(depthTextureRef, depthImageTexture);
+                //receiverMaterial.SetTexture(depthTextureRef, depthImageTexture);
+                receiverMaterial.SetTexture(depthTextureRef, maskedImge);
                 print("Set Texture at receiver material");
             }
 
             if (vfx != null)
             {
-                vfx.SetTexture(depthTextureRef, depthImageTexture);
+                //vfx.SetTexture(depthTextureRef, depthImageTexture);
+                vfx.SetTexture(depthTextureRef, maskedImge);
                 print("depth image texture resolution: " + depthImageTexture.width + " " + depthImageTexture.height);
                 vfx.Reinit();
             }
@@ -429,6 +444,14 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
 
     void Update()
     {
+        if(maskPercentage != lastMaskPercentage)
+        {
+            vfx?.Reinit();
+        }
+
+        lastMaskPercentage = maskPercentage;
+
+
         if (kinectManager && kinectManager.IsInitialized() && sensorData != null)
         {
 
@@ -666,8 +689,10 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
             depthCheckShader.SetBuffer(depthCheckKernel, "prevDepthData", prevDepthBuffer);
             depthCheckShader.SetBuffer(depthCheckKernel, "changeData", changeDataBuffer);
             depthCheckShader.SetInt("depthImageWidth", depthImageTexture.width);
+            depthCheckShader.SetInt("depthImageHeight", depthImageTexture.height);
             depthCheckShader.SetInt("maxDepthDistance", DepthSensorBase.MAX_DEPTH_DISTANCE_MM);
             depthCheckShader.SetInt("distanceChangeThreshold", distChangeThreshold);
+            depthCheckShader.SetInt("maskPercentage", maskPercentage);
 
             depthCheckShader.SetTexture(depthCheckKernel, "changePointsDebug", writableDepthChangeDebug);
 
@@ -914,6 +939,8 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
             if (nearestDistanceChanging)
             {
                 Graphics.Blit(null, depthImageTexture, depthImageMaterial);
+
+                Graphics.Blit(maskImage.GetMaskedImage(depthImageTexture, maskedImge, maskPercentage), maskedImge);
             }
 
 

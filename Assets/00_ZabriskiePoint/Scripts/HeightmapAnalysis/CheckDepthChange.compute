@@ -6,7 +6,9 @@ RWStructuredBuffer<int> changeData;
 RWTexture2D<float4> changePointsDebug;
 int distanceChangeThreshold;
 int depthImageWidth;
+int depthImageHeight;
 int maxDepthDistance;
+float maskPercentage;
 
 [numthreads(256, 1, 1)]
 void CheckDepthChange (uint3 id : SV_DispatchThreadID)
@@ -14,15 +16,22 @@ void CheckDepthChange (uint3 id : SV_DispatchThreadID)
     if (id.x >= currentDepthData.Length)
         return;
 
-    
-
-        
-
     int2 pixelPos = int2(id.x % depthImageWidth, id.x / depthImageWidth);
 
-    // changePointsDebug[pixelPos] = float4(1, 0, 0, 1); return; // Red
+    // Calculate the mask dimensions
+    int maskWidth = (int)(depthImageWidth * maskPercentage / 100);
+    int maskHeight = (int)(depthImageHeight * maskPercentage / 100);
 
-    
+    // Calculate the start and end positions for the mask
+    int2 maskStart = int2((depthImageWidth - maskWidth) / 2, (depthImageHeight - maskHeight) / 2);
+    int2 maskEnd = int2(maskStart.x + maskWidth, maskStart.y + maskHeight);
+
+    // If the pixel is outside the mask, color it blue and return
+    if (pixelPos.x < maskStart.x || pixelPos.x >= maskEnd.x || pixelPos.y < maskStart.y || pixelPos.y >= maskEnd.y)
+    {
+        changePointsDebug[pixelPos] = float4(0, 0, 1, 1); // Blue
+        return;
+    }
 
     
 
