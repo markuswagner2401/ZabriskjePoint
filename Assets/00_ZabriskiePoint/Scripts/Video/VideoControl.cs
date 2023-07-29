@@ -63,6 +63,8 @@ public class VideoControl : MonoBehaviour
         public UnityEvent doOnAudioStart;
 
         public UnityEvent doOnAudioEnd;
+
+        public Gradient gradient;
         public VideoFader[] videoFaders;
         public int currentFaderIndex;
     }
@@ -81,6 +83,8 @@ public class VideoControl : MonoBehaviour
 
     public AudioSource audioSourceA;
     public AudioSource audioSourceB;
+
+    public VFXGradientBlender vFXGradientBlender;
 
 
     private bool isBlendingTransition;
@@ -148,7 +152,7 @@ public class VideoControl : MonoBehaviour
 
     public void Desintegrate()
     {
-        PlayNamedFaderOfCurrentSequence("Outro");
+        //PlayNamedFaderOfCurrentSequence("Outro");
     }
 
     //
@@ -176,6 +180,7 @@ public class VideoControl : MonoBehaviour
         print("Play first video of current sequence: sequence: " + currentSequenceIndex);
         PlayVideoOfSequence(currentSequenceIndex, SequenceBehaviour.PlayFirstVideoOfSequence, string.Empty);
         StartCoroutine(AudioBlendingRoutine(currentSequenceIndex));
+        vFXGradientBlender.BlendInGradient(videoSequences[currentSequenceIndex].gradient);
     }
 
     public void PlayNextVideoOfCurrentSequence()
@@ -462,6 +467,7 @@ public class VideoControl : MonoBehaviour
     IEnumerator AudioBlendingRoutine(int sequenceIndex)
     {
         videoSequences[sequenceIndex].doOnAudioStart.Invoke();
+
         print("do on audiostart");
 
        
