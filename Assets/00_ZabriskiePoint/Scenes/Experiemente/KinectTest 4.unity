@@ -258,6 +258,9 @@ VisualEffect:
       - m_Value: 0
         m_Name: GradientABBlend
         m_Overridden: 1
+      - m_Value: 1
+        m_Name: HillsTroughsColorStrength
+        m_Overridden: 1
     m_Vector2f:
       m_Array:
       - m_Value: {x: 0, y: 1}
@@ -269,7 +272,13 @@ VisualEffect:
     m_Vector3f:
       m_Array: []
     m_Vector4f:
-      m_Array: []
+      m_Array:
+      - m_Value: {x: 0, y: 0.24754572, z: 1, w: 1}
+        m_Name: HillsColor
+        m_Overridden: 1
+      - m_Value: {x: 1, y: 0.017629389, z: 0, w: 1}
+        m_Name: TroughsColor
+        m_Overridden: 1
     m_Uint:
       m_Array: []
     m_Int:
@@ -1539,7 +1548,7 @@ MonoBehaviour:
   maskedImge: {fileID: 8400000, guid: d0eb7e5113cb2e648945dd1ca4ecb5bd, type: 2}
   depthCheckShader: {fileID: 7200000, guid: f6d003a821a71604b8fbc59d0c1812c2, type: 3}
   fillRectangelShader: {fileID: 7200000, guid: 9f00804571514354e8001148be7c8d2c, type: 3}
-  pixelChangeThreshold: 200
+  pixelChangeThreshold: 1000
   depthChangeDebug: {fileID: 8400000, guid: a1f5ef55534d5d445b44e962a97d9414, type: 2}
   changingRectangleDebug: {fileID: 8400000, guid: 1c10780eb3db50243a0ee8d9bb22321e, type: 2}
   changingRectEdgeWidth: 200
@@ -1691,14 +1700,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hillAndTroughShader: {fileID: 7200000, guid: 406884681a0042645a53227e0ca299e3, type: 3}
-  maxClusters: 10
+  maxClusters: 100
   rend: {fileID: 0}
   heightmapRef: _Texture
   material: {fileID: 2100000, guid: 548ae71cefcc0e5468920c1aa417fe58, type: 2}
   clusterThreshold: 30
   neighborThreshold: 300
-  blurInterations: 3
-  textureSteps: 100
+  blurInterations: 1
+  textureSteps: 200
   border: 20
   detectHills: 1
   detectTroughs: 1
@@ -1777,8 +1786,10 @@ MonoBehaviour:
   - name: Start
     taskText: "<size=600>VER\xC4NDERT DIE LANDSCHAFT</size>\n<size=300>DANN ENTFERNT
       EURE H\xC4NDE</size>"
-    hills: -1
-    troughs: -1
+    minHills: 0
+    maxHills: 0
+    minTroughs: 0
+    maxTroughs: 0
     lowestTrough: -1
     highestHill: -1
     minimalHeightDifference: -1
@@ -1789,10 +1800,12 @@ MonoBehaviour:
     troughIndicatorAtSuccess: {fileID: 8770761004508411240, guid: 1b7989715a859d14bbe6199a53be9e51, type: 3}
     troughIndicatorAtNoSuccess: {fileID: 8770761004508411240, guid: b44679167d3f3be479e71813c0189c4c, type: 3}
   - name: Pistole
-    taskText: "<size=600>FORMT EINEN EBENE FL\xC4CHE</size>\n<size=300>DANN ENTFERNT
+    taskText: "<size=600>FORMT EINE EBENE FL\xC4CHE</size>\n<size=300>DANN ENTFERNT
       EURE H\xC4NDE</size>"
-    hills: -1
-    troughs: -1
+    minHills: 0
+    maxHills: 0
+    minTroughs: 0
+    maxTroughs: 0
     lowestTrough: -1
     highestHill: -1
     minimalHeightDifference: -1
@@ -1805,8 +1818,10 @@ MonoBehaviour:
   - name: Flugzeug
     taskText: "<size=600>FORMT MEHRERE T\xC4LER</size>\n<size=300>DANN ENTFERNT EURE
       H\xC4NDE</size>"
-    hills: 100000
-    troughs: 100000
+    minHills: 0
+    maxHills: 0
+    minTroughs: 0
+    maxTroughs: 0
     lowestTrough: -1
     highestHill: -1
     minimalHeightDifference: -1
@@ -1819,8 +1834,10 @@ MonoBehaviour:
   - name: Valley
     taskText: "<size=600>FORMT MEHRERE BERGE</size>\n<size=300>DANN ENTFERNT EURE
       H\xC4NDE</size>"
-    hills: -1
-    troughs: -1
+    minHills: 0
+    maxHills: 0
+    minTroughs: 0
+    maxTroughs: 0
     lowestTrough: -1
     highestHill: -1
     minimalHeightDifference: -1
@@ -1833,8 +1850,10 @@ MonoBehaviour:
   - name: Auto
     taskText: "<size=600>FORMT EINEN HOHEN BERG</size>\n<size=300>DANN ENTFERNT EURE
       H\xC4NDE</size>"
-    hills: -1
-    troughs: -1
+    minHills: 0
+    maxHills: 0
+    minTroughs: 0
+    maxTroughs: 0
     lowestTrough: -1
     highestHill: -1
     minimalHeightDifference: -1
@@ -1845,10 +1864,29 @@ MonoBehaviour:
     troughIndicatorAtSuccess: {fileID: 8770761004508411240, guid: 1b7989715a859d14bbe6199a53be9e51, type: 3}
     troughIndicatorAtNoSuccess: {fileID: 8770761004508411240, guid: b44679167d3f3be479e71813c0189c4c, type: 3}
   - name: Haus
-    taskText: "<size=600>VER\xC4NDERT DIE LANDSCHAFT</size>\n>size=300>DANN ENTFERNT
+    taskText: "<size=600>ZERTEILT DIE LANDSCHAFT</size>\n>size=300>DANN ENTFERNT
       EURE H\xC4NDE</size>"
-    hills: -1
-    troughs: -1
+    minHills: 0
+    maxHills: 0
+    minTroughs: 0
+    maxTroughs: 0
+    lowestTrough: -1
+    highestHill: -1
+    minimalHeightDifference: -1
+    maximalHeightDifference: -1
+    videoAtSuccess: Start
+    hillIndicatorAtSuccess: {fileID: 8770761004508411240, guid: c865272683c385c47b63d1931e0452bc, type: 3}
+    hillIndicatorAtNoSuccess: {fileID: 8770761004508411240, guid: 3b247c87d1cfc5e48b38c29d319cae73, type: 3}
+    troughIndicatorAtSuccess: {fileID: 8770761004508411240, guid: 1b7989715a859d14bbe6199a53be9e51, type: 3}
+    troughIndicatorAtNoSuccess: {fileID: 8770761004508411240, guid: b44679167d3f3be479e71813c0189c4c, type: 3}
+  - name: Ende
+    taskText: '<size=600>ENDE</size>
+
+      >size=300></size>'
+    minHills: 0
+    maxHills: 0
+    minTroughs: 0
+    maxTroughs: 0
     lowestTrough: -1
     highestHill: -1
     minimalHeightDifference: -1
@@ -1876,7 +1914,7 @@ MonoBehaviour:
   rippleComputeShader: {fileID: 7200000, guid: e6af456784871d148a8c86272103720c, type: 3}
   lineSize: 0.05
   minSize: 0.01
-  maxSize: 0.4
+  maxSize: 0.2
   minStrength: 1
   maxStrength: 0
   tilingX: 1
@@ -2910,7 +2948,7 @@ MonoBehaviour:
       m_NumAlphaKeys: 2
     videoFaders:
     - name: GoneIn
-      videoClip: {fileID: 32900000, guid: 331299b3fcb31b848a90d5e239c5e6f6, type: 3}
+      videoClip: {fileID: 32900000, guid: 770dc328a53428b469b04d3a232a16c6, type: 3}
       fadeInDurationVideo: 3
       animationCurve:
         serializedVersion: 2
@@ -2938,7 +2976,7 @@ MonoBehaviour:
         m_RotationOrder: 4
       clipEndBehaviour: 1
     - name: GunLoop
-      videoClip: {fileID: 32900000, guid: d93434a43351dfd42bb1669ca05e2aa8, type: 3}
+      videoClip: {fileID: 32900000, guid: f70840365b71a1e4bb73145824f3a667, type: 3}
       fadeInDurationVideo: 3
       animationCurve:
         serializedVersion: 2
@@ -2966,7 +3004,7 @@ MonoBehaviour:
         m_RotationOrder: 4
       clipEndBehaviour: 1
     - name: Outro
-      videoClip: {fileID: 32900000, guid: 369c5ccff394c9b46948f0efb94f524b, type: 3}
+      videoClip: {fileID: 32900000, guid: aa736d7a87d2ce748878b38292b4d4ef, type: 3}
       fadeInDurationVideo: 3
       animationCurve:
         serializedVersion: 2
@@ -2994,7 +3032,7 @@ MonoBehaviour:
         m_RotationOrder: 4
       clipEndBehaviour: 1
     - name: Transition
-      videoClip: {fileID: 32900000, guid: b059765068af0494c893c3535bf33421, type: 3}
+      videoClip: {fileID: 32900000, guid: 5829dc44d10ec954f9a96d7b8f3700ed, type: 3}
       fadeInDurationVideo: 3
       animationCurve:
         serializedVersion: 2
@@ -3110,8 +3148,8 @@ MonoBehaviour:
       m_NumColorKeys: 6
       m_NumAlphaKeys: 2
     videoFaders:
-    - name: CubeIn
-      videoClip: {fileID: 32900000, guid: 157132394d39f47429aa99a8fddf67b4, type: 3}
+    - name: FlugzeugIn
+      videoClip: {fileID: 32900000, guid: 7d3bf544baa4f834b8b4f63527176ed3, type: 3}
       fadeInDurationVideo: 3
       animationCurve:
         serializedVersion: 2
@@ -3138,8 +3176,8 @@ MonoBehaviour:
         m_PostInfinity: 2
         m_RotationOrder: 4
       clipEndBehaviour: 1
-    - name: CubeLoop
-      videoClip: {fileID: 32900000, guid: 21a6698e2cb5bb94eb9f05667346ca98, type: 3}
+    - name: FlugzeugLoop
+      videoClip: {fileID: 32900000, guid: b53ab0d2f7bcd1247a1a061a06efc40e, type: 3}
       fadeInDurationVideo: 3
       animationCurve:
         serializedVersion: 2
@@ -3167,7 +3205,7 @@ MonoBehaviour:
         m_RotationOrder: 4
       clipEndBehaviour: 1
     - name: Outro
-      videoClip: {fileID: 32900000, guid: 352666a9ce7e27a41b2c3ab99f27a4c7, type: 3}
+      videoClip: {fileID: 32900000, guid: 85132f3b9b0ef2446b00bfae581ba5da, type: 3}
       fadeInDurationVideo: 3
       animationCurve:
         serializedVersion: 2
@@ -3195,7 +3233,7 @@ MonoBehaviour:
         m_RotationOrder: 4
       clipEndBehaviour: 1
     - name: Transition
-      videoClip: {fileID: 32900000, guid: e2f6b38426c17c043bf14e65f8fbc510, type: 3}
+      videoClip: {fileID: 32900000, guid: 5829dc44d10ec954f9a96d7b8f3700ed, type: 3}
       fadeInDurationVideo: 3
       animationCurve:
         serializedVersion: 2
@@ -3682,6 +3720,195 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 1
           m_CallState: 2
+    gradient:
+      serializedVersion: 2
+      key0: {r: 0.20507877, g: 0.07818743, b: 0.046665095, a: 1}
+      key1: {r: 0.63075733, g: 0.1470273, b: 0.011612245, a: 1}
+      key2: {r: 0.21586053, g: 0.06847818, b: 0.035601325, a: 0}
+      key3: {r: 0.7075472, g: 0.054215565, b: 0.03042456, a: 0}
+      key4: {r: 0.589, g: 0.2640345, b: 0.18279313, a: 0}
+      key5: {r: 0.011, g: 0.008450445, b: 0.007722, a: 0}
+      key6: {r: 0, g: 0, b: 0, a: 0}
+      key7: {r: 0, g: 0, b: 0, a: 0}
+      ctime0: 0
+      ctime1: 9441
+      ctime2: 28047
+      ctime3: 43208
+      ctime4: 48789
+      ctime5: 65535
+      ctime6: 0
+      ctime7: 0
+      atime0: 0
+      atime1: 65535
+      atime2: 0
+      atime3: 0
+      atime4: 0
+      atime5: 0
+      atime6: 0
+      atime7: 0
+      m_Mode: 0
+      m_ColorSpace: -1
+      m_NumColorKeys: 6
+      m_NumAlphaKeys: 2
+    videoFaders:
+    - name: SphereIn
+      videoClip: {fileID: 32900000, guid: 9ee07690b81edd84b9b36c350323bf2d, type: 3}
+      fadeInDurationVideo: 3
+      animationCurve:
+        serializedVersion: 2
+        m_Curve:
+        - serializedVersion: 3
+          time: 0
+          value: 0
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        - serializedVersion: 3
+          time: 1
+          value: 1
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      clipEndBehaviour: 1
+    - name: SphereLoop
+      videoClip: {fileID: 32900000, guid: 2602dccf390b9fc47a27c15833c63bbd, type: 3}
+      fadeInDurationVideo: 3
+      animationCurve:
+        serializedVersion: 2
+        m_Curve:
+        - serializedVersion: 3
+          time: 0
+          value: 0
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        - serializedVersion: 3
+          time: 1
+          value: 1
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      clipEndBehaviour: 1
+    - name: Outro
+      videoClip: {fileID: 32900000, guid: 66ad40eca12fc464fbaed791037fea70, type: 3}
+      fadeInDurationVideo: 3
+      animationCurve:
+        serializedVersion: 2
+        m_Curve:
+        - serializedVersion: 3
+          time: 0
+          value: 0
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        - serializedVersion: 3
+          time: 1
+          value: 1
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      clipEndBehaviour: 1
+    - name: Transition
+      videoClip: {fileID: 32900000, guid: e2f6b38426c17c043bf14e65f8fbc510, type: 3}
+      fadeInDurationVideo: 3
+      animationCurve:
+        serializedVersion: 2
+        m_Curve:
+        - serializedVersion: 3
+          time: 0
+          value: 0
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        - serializedVersion: 3
+          time: 1
+          value: 1
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      clipEndBehaviour: 2
+    currentFaderIndex: 0
+  - name: Ende
+    audioClip: {fileID: 8300000, guid: 140b1fa51a6ae94469288ca4867f74c0, type: 3}
+    audioBlendCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    audioFadeDuration: 3
+    doOnAudioStart:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 207321076}
+          m_TargetAssemblyTypeName: HeightmapEvaluation, Assembly-CSharp
+          m_MethodName: ActivateEvaluation
+          m_Mode: 6
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+    doOnAudioEnd:
+      m_PersistentCalls:
+        m_Calls: []
     gradient:
       serializedVersion: 2
       key0: {r: 0.20507877, g: 0.07818743, b: 0.046665095, a: 1}
@@ -4401,7 +4628,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &845873057
 MonoBehaviour:
   m_ObjectHideFlags: 0

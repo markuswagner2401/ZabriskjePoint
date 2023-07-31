@@ -214,13 +214,13 @@ public class HeightmapAnalysis : MonoBehaviour
 
     public float GetHeightOfLowestTrough()
     {
-        float height = 100000;
+        float height = 0;
         foreach (var item in neighborTroughs)
         {
-            height = Mathf.Min(height, item.heighestPosition.y);
+            height = Mathf.Max(height, item.heighestPosition.y);
         }
 
-        return height;
+        return 1 - height;
     }
 
 

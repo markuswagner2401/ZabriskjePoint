@@ -34,11 +34,21 @@ public class HeightmapEvaluation : MonoBehaviour
         [TextArea(3, 10)]
         public string taskText;
 
-        [Tooltip("-1 for not needed to fulfill task")]
-        public int hills;
+
 
         [Tooltip("-1 for not needed to fulfill task")]
-        public int troughs;
+        public int minHills;
+
+        [Tooltip("-1 for not needed to fulfill task")]
+        public int maxHills;
+
+
+
+        [Tooltip("-1 for not needed to fulfill task")]
+        public int minTroughs;
+
+        [Tooltip("-1 for not needed to fulfill task")]
+        public int maxTroughs;
 
         [Tooltip("-1 for not needed to fulfill task")]
         public float lowestTrough;
@@ -86,10 +96,10 @@ public class HeightmapEvaluation : MonoBehaviour
             videoControl = FindObjectOfType<VideoControl>();
         }
 
-        
-        
+
+
         rippleShaderController = GetComponent<RippleShaderController>();
-        
+
     }
 
 
@@ -103,6 +113,18 @@ public class HeightmapEvaluation : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.S))
         {
             ShowRipples();
+            int hillsCount = heightmapAnalysis.GetMainHillsCount();
+            int troughsCount = heightmapAnalysis.GetMainTroughsCount();
+            float heightestHillHeight = heightmapAnalysis.GetHeightOfHeighestHill();
+            float lowestTroughHeight = heightmapAnalysis.GetHeightOfLowestTrough();
+
+            print("hills Count: " + hillsCount);
+            print("troughs Count: " + troughsCount);
+            print("heighest hill: " + heightestHillHeight);
+            print("lowest trough: " + lowestTroughHeight);
+            print("difference: " + Mathf.Abs(heightestHillHeight - lowestTroughHeight) );
+            
+
         }
 
 
@@ -219,6 +241,8 @@ public class HeightmapEvaluation : MonoBehaviour
 
         if (evaluationInterrupted) yield break;
 
+
+
         int hillsCount = heightmapAnalysis.GetMainHillsCount();
         int troughsCount = heightmapAnalysis.GetMainTroughsCount();
         float heightestHillHeight = heightmapAnalysis.GetHeightOfHeighestHill();
@@ -240,7 +264,7 @@ public class HeightmapEvaluation : MonoBehaviour
 
             //SpawnIndicators(true, currentTaskIndex);
 
-            
+
 
 
 
@@ -272,42 +296,65 @@ public class HeightmapEvaluation : MonoBehaviour
     bool EvaluateTask(int hillsCount, int troughsCount, float heighestHillHeight, float lowestTroughHeight)
     {
         print("Evaluate Task: hills: " + hillsCount + " troughs: " + troughsCount + " heighestHill: " + heighestHillHeight + " lowestTrough: " + lowestTroughHeight);
-        if (tasks[currentTaskIndex].hills >= 0)
+        if (tasks[currentTaskIndex].minHills >= 0)
         {
-            if (hillsCount != tasks[currentTaskIndex].hills)
+            if (hillsCount < tasks[currentTaskIndex].minHills)
             {
+                print("Not Enough hills: task not fulfilled");
                 return false;
             }
         }
 
-        if (tasks[currentTaskIndex].troughs >= 0)
+        if (tasks[currentTaskIndex].maxHills >= 0)
         {
-            if (troughsCount != tasks[currentTaskIndex].troughs)
+            if (hillsCount > tasks[currentTaskIndex].maxHills)
             {
+                print("Too many hills: task not fulfilled");
+                return false;
+            }
+        }
+
+        if (tasks[currentTaskIndex].minTroughs >= 0)
+        {
+            if (troughsCount < tasks[currentTaskIndex].minTroughs)
+            {
+                print("not enough troughs: task not fulfilled");
+                return false;
+            }
+        }
+
+        if (tasks[currentTaskIndex].maxTroughs >= 0)
+        {
+            if (troughsCount > tasks[currentTaskIndex].maxTroughs)
+            {
+                print("too many troughs: task not fulfilled");
                 return false;
             }
         }
 
         if (tasks[currentTaskIndex].highestHill >= 0)
         {
-            if (tasks[currentTaskIndex].highestHill < heighestHillHeight)
+            if (heighestHillHeight < tasks[currentTaskIndex].highestHill)
             {
+                print("heighest hill not heigh enough: taks not fulfulled");
                 return false;
             }
         }
 
         if (tasks[currentTaskIndex].lowestTrough >= 0)
         {
-            if (tasks[currentTaskIndex].lowestTrough > lowestTroughHeight)
+            if (lowestTroughHeight > tasks[currentTaskIndex].lowestTrough)
             {
+                print("lowest trough not deep enough: task not fulfilled");
                 return false;
             }
         }
 
         if (tasks[currentTaskIndex].maximalHeightDifference >= 0)
         {
-            if (tasks[currentTaskIndex].maximalHeightDifference > (Mathf.Abs(heighestHillHeight - lowestTroughHeight)))
+            if ((Mathf.Abs(heighestHillHeight - lowestTroughHeight)) > tasks[currentTaskIndex].maximalHeightDifference)
             {
+                print("difference from heighest hill to lowest trough too big: " + (Mathf.Abs(heighestHillHeight - lowestTroughHeight)) + " : task not fulfilled");
                 return false;
             }
         }
@@ -411,9 +458,9 @@ public class HeightmapEvaluation : MonoBehaviour
     {
 
         print("show ripples");
-        Vector2 [] newHillPositions;
+        Vector2[] newHillPositions;
         Vector2[] newTroughPositions;
-        if(heightmapAnalysis.GetMainHillsTexturePositions() != null)
+        if (heightmapAnalysis.GetMainHillsTexturePositions() != null)
         {
             newHillPositions = heightmapAnalysis.GetMainHillsTexturePositions();
         }
@@ -422,7 +469,7 @@ public class HeightmapEvaluation : MonoBehaviour
             newHillPositions = new Vector2[0];
         }
 
-        if(heightmapAnalysis.GetMainTroughsTexturePositions() != null)
+        if (heightmapAnalysis.GetMainTroughsTexturePositions() != null)
         {
             newTroughPositions = heightmapAnalysis.GetMainTroughsTexturePositions();
         }
@@ -432,7 +479,7 @@ public class HeightmapEvaluation : MonoBehaviour
         }
 
         rippleShaderController.CreateRipples(newHillPositions, newTroughPositions);
-        
+
         //GetComponent<RippleShaderController>().CreateRipples(heightmapAnalysis.GetMainTroughsTexturePositions(), 2f, false);
 
         // if (rippleShaderController != null)
