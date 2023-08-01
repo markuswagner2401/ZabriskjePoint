@@ -5,6 +5,8 @@ RWTexture2D<float4> outputTexture;
 int maskPercentage;
 int2 inputResolution;
 int2 outputResolution;
+float verticalShift;
+float horizontalShift;
 
 [numthreads(8,8,1)]
 void MaskImage (uint3 id : SV_DispatchThreadID)
@@ -16,12 +18,11 @@ void MaskImage (uint3 id : SV_DispatchThreadID)
     int maskHeight = inputResolution.y * maskPercentage / 100;
     int2 maskStart = int2((inputResolution.x - maskWidth) / 2, (inputResolution.y - maskHeight) / 2);
     
-    int2 inputPos = maskStart + id.xy;
+    int2 inputPos = maskStart + id.xy + int2(horizontalShift, verticalShift);
 
     if(inputPos.x < inputResolution.x && inputPos.y < inputResolution.y)
     {
         float2 uv = (inputPos) / float2(inputResolution.x, inputResolution.y);
-        //float4 pixelColor = inputTexture.SampleLevel(sampler_linear_clamp, uv, 0);
         float2 uvPixelSpace = uv * inputResolution;
         float4 pixelColor = inputTexture[uvPixelSpace];
         

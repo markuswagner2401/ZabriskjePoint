@@ -180,6 +180,10 @@ namespace com.rfilkov.components
         {
             if (kinectManager && kinectManager.IsInitialized() && sensorData != null)
             {
+                if(Input.GetKeyDown(KeyCode.P))
+                {
+                    StartCoroutine(GetComponent<TextureSaver>().WaitAndSaveRenderTextureToDisk(bodyImage, "BodyImage", 5f));
+                }
 
 
                 // check for new color camera aligned frames

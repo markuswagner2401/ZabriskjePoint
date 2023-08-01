@@ -9,6 +9,8 @@ int depthImageWidth;
 int depthImageHeight;
 int maxDepthDistance;
 float maskPercentage;
+float verticalShift;
+float horizontalShift;
 
 [numthreads(256, 1, 1)]
 void CheckDepthChange (uint3 id : SV_DispatchThreadID)
@@ -23,8 +25,8 @@ void CheckDepthChange (uint3 id : SV_DispatchThreadID)
     int maskHeight = (int)(depthImageHeight * maskPercentage / 100);
 
     // Calculate the start and end positions for the mask
-    int2 maskStart = int2((depthImageWidth - maskWidth) / 2, (depthImageHeight - maskHeight) / 2);
-    int2 maskEnd = int2(maskStart.x + maskWidth, maskStart.y + maskHeight);
+    int2 maskStart = int2((depthImageWidth - maskWidth) / 2, (depthImageHeight - maskHeight) / 2) + int2(horizontalShift, verticalShift);
+    int2 maskEnd = maskStart + int2(maskWidth, maskHeight);
 
     // If the pixel is outside the mask, color it blue and return
     if (pixelPos.x < maskStart.x || pixelPos.x >= maskEnd.x || pixelPos.y < maskStart.y || pixelPos.y >= maskEnd.y)

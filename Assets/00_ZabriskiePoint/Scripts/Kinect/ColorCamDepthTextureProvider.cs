@@ -11,15 +11,29 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
     [Tooltip("Depth sensor index - 0 is the 1st one, 1 - the 2nd one, etc.")]
     public int sensorIndex = 0;
 
-    
+
     // masking
     [SerializeField] int maskPercentage = 100;
+
+    [SerializeField] float horizontalShift = 0;
+    [SerializeField] float verticalShift = 0;
 
     int lastMaskPercentage;
 
     [SerializeField] MaskImage maskImage;
 
     [SerializeField] RenderTexture maskedImge;
+
+    [SerializeField] RenderTexture maskedColorImage;
+
+    [Tooltip("Turn off after setup/debugging")]
+    [SerializeField] bool renderColorImage = true;
+
+    // remapping depht shader
+
+    [SerializeField] Vector2 depthShaderInMinMax;
+
+    [SerializeField] Vector2 depthShaderOutMinMax;
 
 
 
@@ -46,7 +60,12 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
 
     [SerializeField] int pixelChangeThreshold = 100;
 
-    
+    [SerializeField] int changeCountBeforeTrigger = 2;
+    [SerializeField] int changeCounter = 0;
+
+    [SerializeField] int noChangeCounter = 0;
+
+
 
 
 
@@ -197,17 +216,132 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
 
     }
 
-    // Debugging
-
-    public void DebugOnDephtsChangingEnd()
+    void Update()
     {
-        onDepthChangingEnd.Invoke();
+        if (maskPercentage != lastMaskPercentage)
+        {
+            vfx?.Reinit();
+        }
+
+        lastMaskPercentage = maskPercentage;
+
+
+        if (kinectManager && kinectManager.IsInitialized() && sensorData != null)
+        {
+
+            UpdateTextureWithNewFrame();
+
+            if (!closestPointTriggerRunning)
+            {
+                //StartCoroutine(ClosestPointTriggerRoutine()); old
+                StartCoroutine(DepthsCheckRoutine()); // new with compute shader
+                closestPointTriggerRunning = true;
+            }
+
+
+            // for debugging, disable later to safe performance
+            if (!colorTextureSet)
+            {
+                if (receiverMaterial != null && maskedColorImage != null)
+                {
+                    receiverMaterial.SetTexture(colorTextureRef, maskedColorImage);
+                }
+
+                //kinectManager.GetColorImageTex(sensorIndex)
+
+                if (vfx != null && maskedColorImage != null)
+                {
+                    vfx.SetTexture(colorTextureRef, maskedColorImage);
+                }
+
+                colorTextureSet = true;
+            }
+
+        }
+
+        if (nearestDistanceChanging)
+        {
+            changingBar = Mathf.Lerp(changingBar, 1f, Time.deltaTime * triggerDelayIn);
+
+            if (materialPropertiesFader_2 != null && materialPropertiesFader_2.gameObject.activeInHierarchy)
+            {
+                materialPropertiesFader_2.UpdateFloat(2, 0.98f);
+            }
+
+            if (vFXParameterAnimator != null && vFXParameterAnimator.gameObject.activeInHierarchy)
+            {
+                vFXParameterAnimator.UpdateFloat(2, 0.98f);
+            }
+
+        }
+
+        else
+        {
+            changingBar = Mathf.Lerp(changingBar, 0f, Time.deltaTime * triggerDelayOut);
+            if (materialPropertiesFader_2 != null && materialPropertiesFader_2.gameObject.activeInHierarchy)
+            {
+                materialPropertiesFader_2.UpdateFloat(2, 0f);
+            }
+
+            if (vFXParameterAnimator != null && vFXParameterAnimator.gameObject.activeInHierarchy)
+            {
+                vFXParameterAnimator.UpdateFloat(2, 0f);
+            }
+
+
+        }
+
+        if (changingBar > 0.1f)
+        {
+            changingEndEventTriggered = false;
+            if (!changingEventTriggered)
+            {
+                if (gameObject.activeInHierarchy)
+                {
+                    changingEventTriggered = true;
+                    onDepthChangingStart.Invoke();
+                    print("trigger changing");
+                }
+
+            }
+        }
+
+        if (changingBar < 0.1f)
+        {
+            changingEventTriggered = false;
+            if (!changingEndEventTriggered)
+            {
+                if (gameObject.activeInHierarchy)
+                {
+                    changingEndEventTriggered = true;
+                    onDepthChangingEnd.Invoke();
+                }
+
+                print("trigger changing end");
+            }
+        }
+
+        // if (changingPosition != Vector2.zero)
+        // {
+        //     if (materialPropertiesFader_2 != null && materialPropertiesFader_2.gameObject.activeInHierarchy)
+        //     {
+        //         materialPropertiesFader_2?.UpdateFloat(0, changingPosition.x);
+        //         materialPropertiesFader_2?.UpdateFloat(1, changingPosition.y);
+        //     }
+
+        //     if (vFXParameterAnimator != null && vFXParameterAnimator.gameObject.activeInHierarchy)
+        //     {
+        //         vFXParameterAnimator?.UpdateFloat(0, changingPosition.x);
+        //         vFXParameterAnimator?.UpdateFloat(1, changingPosition.y);
+        //     }
+
+        // }
+
+
+
     }
 
-    public void DebugOnDepthChaningStart()
-    {
-        onDepthChangingStart.Invoke();
-    }
+    // Initializing
 
     public void Initialize()
     {
@@ -228,7 +362,12 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
 
             // create the output texture and needed buffers
             depthImageTexture = KinectInterop.CreateRenderTexture(depthImageTexture, sensorData.colorImageWidth, sensorData.colorImageHeight);
-            depthImageMaterial = new Material(Shader.Find("Kinect/DepthHistImageShaderSW"));
+            depthImageMaterial = new Material(Shader.Find("Kinect/DepthHistImageShaderSWRemap"));
+
+            depthImageMaterial.SetFloat("_InMin", depthShaderInMinMax.x);
+            depthImageMaterial.SetFloat("_InMax", depthShaderInMinMax.y);
+            depthImageMaterial.SetFloat("_OutMin", depthShaderOutMinMax.x);
+            depthImageMaterial.SetFloat("_OutMax", depthShaderOutMinMax.y);
 
             //int depthBufferLength = sensorData.colorImageWidth * sensorData.colorImageHeight >> 1;
             //depthImageBuffer = KinectInterop.CreateComputeBuffer(depthImageBuffer, depthBufferLength, sizeof(uint));
@@ -405,7 +544,6 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
 
     }
 
-
     void OnDestroy()
     {
         if (depthImageTexture)
@@ -439,224 +577,19 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
         changeDataBuffer?.Release();
     }
 
+    // Debugging
 
-
-
-    void Update()
+    public void DebugOnDephtsChangingEnd()
     {
-        if(maskPercentage != lastMaskPercentage)
-        {
-            vfx?.Reinit();
-        }
-
-        lastMaskPercentage = maskPercentage;
-
-
-        if (kinectManager && kinectManager.IsInitialized() && sensorData != null)
-        {
-
-            UpdateTextureWithNewFrame();
-
-            if (!closestPointTriggerRunning)
-            {
-                //StartCoroutine(ClosestPointTriggerRoutine()); old
-                StartCoroutine(DepthsCheckRoutine()); // new with compute shader
-                closestPointTriggerRunning = true;
-            }
-
-
-            // for debugging, disable later to safe performance
-            if (!colorTextureSet)
-            {
-                if (receiverMaterial != null)
-                {
-                    receiverMaterial.SetTexture(colorTextureRef, kinectManager.GetColorImageTex(sensorIndex));
-                }
-
-                if (vfx != null)
-                {
-                    vfx.SetTexture(colorTextureRef, kinectManager.GetColorImageTex(sensorIndex));
-                }
-
-                colorTextureSet = true;
-            }
-
-        }
-
-        if (nearestDistanceChanging)
-        {
-            changingBar = Mathf.Lerp(changingBar, 1f, Time.deltaTime * triggerDelayIn);
-
-            if (materialPropertiesFader_2 != null && materialPropertiesFader_2.gameObject.activeInHierarchy)
-            {
-                materialPropertiesFader_2.UpdateFloat(2, 0.98f);
-            }
-
-            if (vFXParameterAnimator != null && vFXParameterAnimator.gameObject.activeInHierarchy)
-            {
-                vFXParameterAnimator.UpdateFloat(2, 0.98f);
-            }
-
-        }
-
-        else
-        {
-            changingBar = Mathf.Lerp(changingBar, 0f, Time.deltaTime * triggerDelayOut);
-            if (materialPropertiesFader_2 != null && materialPropertiesFader_2.gameObject.activeInHierarchy)
-            {
-                materialPropertiesFader_2.UpdateFloat(2, 0f);
-            }
-
-            if (vFXParameterAnimator != null && vFXParameterAnimator.gameObject.activeInHierarchy)
-            {
-                vFXParameterAnimator.UpdateFloat(2, 0f);
-            }
-
-
-        }
-
-        if (changingBar > 0.1f)
-        {
-            changingEndEventTriggered = false;
-            if (!changingEventTriggered)
-            {
-                if (gameObject.activeInHierarchy)
-                {
-                    changingEventTriggered = true;
-                    onDepthChangingStart.Invoke();
-                    print("trigger changing");
-                }
-
-            }
-        }
-
-        if (changingBar < 0.1f)
-        {
-            changingEventTriggered = false;
-            if (!changingEndEventTriggered)
-            {
-                if (gameObject.activeInHierarchy)
-                {
-                    changingEndEventTriggered = true;
-                    onDepthChangingEnd.Invoke();
-                }
-
-                print("trigger changing end");
-            }
-        }
-
-        // if (changingPosition != Vector2.zero)
-        // {
-        //     if (materialPropertiesFader_2 != null && materialPropertiesFader_2.gameObject.activeInHierarchy)
-        //     {
-        //         materialPropertiesFader_2?.UpdateFloat(0, changingPosition.x);
-        //         materialPropertiesFader_2?.UpdateFloat(1, changingPosition.y);
-        //     }
-
-        //     if (vFXParameterAnimator != null && vFXParameterAnimator.gameObject.activeInHierarchy)
-        //     {
-        //         vFXParameterAnimator?.UpdateFloat(0, changingPosition.x);
-        //         vFXParameterAnimator?.UpdateFloat(1, changingPosition.y);
-        //     }
-
-        // }
-
-
-
+        onDepthChangingEnd.Invoke();
     }
 
-    // IEnumerator ClosestPointTriggerRoutine()
-    // {
-    //     //CreatePixelSegmentLookup(depthImageTexture.width, depthImageTexture.height);
+    public void DebugOnDepthChaningStart()
+    {
+        onDepthChangingStart.Invoke();
+    }
 
-
-
-    //     SegmentInfo[] closestPointsInSegments = new SegmentInfo[heightSegments * widthSegments];
-    //     SegmentInfo[] lastClosestPointsInSegments = new SegmentInfo[heightSegments * widthSegments];
-
-
-
-    //     while (true)
-    //     {
-    //         if (sensorData == null || sensorData.sensorInterface == null || sensorData.colorCamDepthImage == null)
-    //             yield return null;
-
-    //         //int frameLen = sensorData.colorCamDepthImage.Length;
-
-    //         // local copy for consistency
-
-    //         // int[] localDepthImage = new int[frameLen];
-    //         // Array.Copy(sensorData.colorCamDepthImage, localDepthImage, frameLen);
-
-    //         //
-
-    //         //currentDepthImage = sensorData.colorCamDepthImage;
-
-
-
-    //         Array.Copy(sensorData.colorCamDepthImage, currentDepthImage, sensorData.colorCamDepthImage.Length);
-
-    //         for (int i = 0; i < closestPointsInSegments.Length; i++)
-    //         {
-    //             closestPointsInSegments[i] = new SegmentInfo { ClosestLength = 100000, PixelIndex = closestPointsInSegments[i].PixelIndex };
-    //         }
-
-    //         nearestDistanceChanging = false;
-    //         changingPosition = Vector2.zero;
-
-    //         for (int i = 0; i < frameLen; i++)
-    //         {
-    //             //int depth = sensorData.colorCamDepthImage[i];
-
-    //             int depth = currentDepthImage[i];
-
-    //             int limDepth = (depth <= DepthSensorBase.MAX_DEPTH_DISTANCE_MM) ? depth : 0;
-
-    //             int currentTriggerSegment = lookupPixelSegment[i];
-
-    //             if (limDepth > 0 && limDepth < closestPointsInSegments[currentTriggerSegment].ClosestLength)
-    //             {
-    //                 closestPointsInSegments[currentTriggerSegment] = new SegmentInfo { ClosestLength = limDepth, PixelIndex = i };
-    //             }
-    //         }
-
-    //         for (int j = 0; j < closestPointsInSegments.Length; j++)
-    //         {
-    //             if (Mathf.Abs(closestPointsInSegments[j].ClosestLength - lastClosestPointsInSegments[j].ClosestLength) > distChangeThreshold)
-    //             {
-    //                 nearestDistanceChanging = true;
-    //                 lastClosestPointsInSegments[j] = closestPointsInSegments[j];
-
-    //                 int x = closestPointsInSegments[j].PixelIndex % depthImageTexture.width; // column index
-    //                 int y = closestPointsInSegments[j].PixelIndex / depthImageTexture.width; // row index
-
-    //                 float uvX = (float)x / (float)depthImageTexture.width;
-    //                 float uvY = (float)y / (float)depthImageTexture.height;
-
-
-
-    //                 changingPosition = new Vector2(uvX, uvY);
-
-    //                 //print("Changing position: " + changingPosition);
-
-
-    //             }
-    //         }
-
-
-
-    //         yield return new WaitForSeconds(distanceChecckFrequency);
-
-
-    //     }
-
-
-
-
-    // }
-
-    // compute shader way
-
+    // Depth Check
 
     IEnumerator DepthsCheckRoutine()
     {
@@ -711,7 +644,7 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
 
 
             // TODO: Check changeData array for any changes and perform necessary actions.
-            nearestDistanceChanging = false;
+            
             int sumPosX = 0;
             int sumPosY = 0;
             int changingPixels = 0;
@@ -725,8 +658,13 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
             List<int> posXList = new List<int>();
             List<int> posYList = new List<int>();
 
+            //nearestDistanceChanging = false;
+            bool changingThisFrame = false;
+            
+
             for (int i = 0; i < changeData.Length; i++)
             {
+                
                 int limDepth = (changeData[i] <= DepthSensorBase.MAX_DEPTH_DISTANCE_MM) ? changeData[i] : 0;
                 if (limDepth == 1)
                 {
@@ -734,8 +672,9 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
                     changingPixels += 1;
                     if (changingPixels > pixelChangeThreshold)
                     {
-                        nearestDistanceChanging = true;
-
+                        changingThisFrame = true;
+                        
+                        //nearestDistanceChanging = true;
                     }
 
                     int posX = i % depthImageTexture.width;
@@ -758,6 +697,31 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
                     prevDepthData[i] = currentDepthData[i]; // only change prevDeppthBuffer for changing pixels.
                 }
             }
+
+            // check this area
+
+            if(changingThisFrame)
+            {
+                changeCounter += 1;
+                noChangeCounter = 0;
+
+                if(changeCounter >= changeCountBeforeTrigger)
+                {
+                    nearestDistanceChanging = true;
+                }
+            }
+
+            else
+            {
+                noChangeCounter += 1;
+                changeCounter = 0;
+                if(noChangeCounter >=changeCountBeforeTrigger)
+                {
+                    nearestDistanceChanging = false;
+                }
+            }
+
+            
 
             if (nearestDistanceChanging)
             {
@@ -814,12 +778,7 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
 
 
 
-                // changing position
-                // float uvX = (float)(sumPosX / changingPixels) / (float)depthImageTexture.width;
-                // float uvY = (float)(sumPosY / changingPixels) / (float)depthImageTexture.height;
-
-                // changingPosition.x = uvX;
-                // changingPosition.y = uvY;
+                
 
                 kickstart = false; // after the a changing was detected the system is running and we only set prevDepthData for changing pixels
 
@@ -840,6 +799,11 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
             yield return new WaitForSeconds(distanceChecckFrequency);
         }
     }
+
+    
+
+
+
 
     // checks for new color-camera aligned frames, and composes an updated body-index texture, if needed
     private void UpdateTextureWithNewFrame()
@@ -934,13 +898,24 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
             depthImageMaterial.SetBuffer("_HistMap", depthHistBuffer);
             depthImageMaterial.SetInt("_TotalPoints", depthHistTotalPoints);
 
+            depthImageMaterial.SetFloat("_InMin", depthShaderInMinMax.x);
+            depthImageMaterial.SetFloat("_InMax", depthShaderInMinMax.y);
+            depthImageMaterial.SetFloat("_OutMin", depthShaderOutMinMax.x);
+            depthImageMaterial.SetFloat("_OutMax", depthShaderOutMinMax.y);
+
+
 
 
             if (nearestDistanceChanging)
             {
                 Graphics.Blit(null, depthImageTexture, depthImageMaterial);
 
-                Graphics.Blit(maskImage.GetMaskedImage(depthImageTexture, maskedImge, maskPercentage), maskedImge);
+                Graphics.Blit(maskImage.GetMaskedImage(depthImageTexture, maskedImge, maskPercentage, verticalShift, horizontalShift), maskedImge);
+
+                if(renderColorImage)
+                {
+                    Graphics.Blit(maskImage.GetMaskedImage(kinectManager.GetColorImageTex(sensorIndex), maskedColorImage, maskPercentage, verticalShift, horizontalShift), maskedColorImage);
+                }
             }
 
 
@@ -949,45 +924,6 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
 
     }
 
-    // private void CreatePixelSegmentLookup(int imageWidth, int imageHeight)
-    // {
-
-    //     int segmentHeight = imageHeight / heightSegments; // height of each segment
-    //     int segmentWidth = imageWidth / widthSegments; // width of each segment
-
-    //     // Check if the image height and width are evenly divisible by the number of segments
-    //     if (imageHeight % heightSegments != 0 || imageWidth % widthSegments != 0)
-    //     {
-    //         Debug.LogError("The image dimensions are not evenly divisible by the number of segments. This can cause Problems");
-    //     }
-
-    //     int totalPixels = imageHeight * imageWidth;
-    //     for (int i = 0; i < totalPixels; i++)
-    //     {
-    //         int row = i / imageWidth; // calculate row of the pixel
-    //         int col = i % imageWidth; // calculate column of the pixel
-
-    //         int segmentRow = row / segmentHeight; // calculate segment row
-    //         int segmentCol = col / segmentWidth; // calculate segment column
-
-    //         // calculate unique segment number
-    //         int segmentNumber = segmentRow * widthSegments + segmentCol;
-
-    //         lookupPixelSegment.Add(i, segmentNumber);
-    //     }
-    // }
-
-
-
-    // int[] CreateClosestPointsStartArray()
-    // {
-    //     int[] newArray = new int[heightSegments * widthSegments];
-    //     for (int i = 0; i < newArray.Length; i++)
-    //     {
-    //         newArray[i] = 10000;
-    //     }
-    //     return newArray;
-    // }
 }
 
 
