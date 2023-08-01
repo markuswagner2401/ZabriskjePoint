@@ -243,9 +243,9 @@ public class HeightmapAnalysis : MonoBehaviour
         inputRenderTexture.Create();
 
         Graphics.Blit(heightmap, inputRenderTexture);
-        //FindHillsAndTroughs(heightmap);
+        FindHillsAndTroughs(inputRenderTexture);
         //StartCoroutine(BlurAndFindHillsAndTroughs(inputRenderTexture));
-        StartCoroutine(TextureStepssAndFindHillsAndTroughs(inputRenderTexture));
+        //StartCoroutine(TextureStepssAndFindHillsAndTroughs(inputRenderTexture));
     }
 
     private void OnDestroy()

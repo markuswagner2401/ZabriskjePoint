@@ -33,7 +33,14 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
 
     [SerializeField] Vector2 depthShaderInMinMax;
 
-    [SerializeField] Vector2 depthShaderOutMinMax;
+    [SerializeField] float depthRangeStart = 0;
+    [SerializeField] float depthRangeEnd = 1f;
+
+    [SerializeField] float outMin;
+
+    [SerializeField] float outMax;
+
+    
 
 
 
@@ -362,12 +369,13 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
 
             // create the output texture and needed buffers
             depthImageTexture = KinectInterop.CreateRenderTexture(depthImageTexture, sensorData.colorImageWidth, sensorData.colorImageHeight);
-            depthImageMaterial = new Material(Shader.Find("Kinect/DepthHistImageShaderSWRemap"));
+            //depthImageMaterial = new Material(Shader.Find("Kinect/DepthHistImageShaderSWRemap"));
+            depthImageMaterial = new Material(Shader.Find("Kinect/DepthDirectRemap"));
 
-            depthImageMaterial.SetFloat("_InMin", depthShaderInMinMax.x);
-            depthImageMaterial.SetFloat("_InMax", depthShaderInMinMax.y);
-            depthImageMaterial.SetFloat("_OutMin", depthShaderOutMinMax.x);
-            depthImageMaterial.SetFloat("_OutMax", depthShaderOutMinMax.y);
+            depthImageMaterial.SetFloat("_DepthRangeStart", depthRangeStart);
+            depthImageMaterial.SetFloat("_DepthRangeEnd", depthRangeEnd);
+            depthImageMaterial.SetFloat("_OutMin", outMin);
+            depthImageMaterial.SetFloat("_OutMax", outMax);
 
             //int depthBufferLength = sensorData.colorImageWidth * sensorData.colorImageHeight >> 1;
             //depthImageBuffer = KinectInterop.CreateComputeBuffer(depthImageBuffer, depthBufferLength, sizeof(uint));
@@ -841,6 +849,8 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
             int depthMinDistance = (int)(minDistance * 1000f);
             int depthMaxDistance = (int)(maxDistance * 1000f);
 
+            //print("Min and Max Distance set for depthHistShader: " + depthMinDistance + " " + depthMaxDistance);
+
             int frameLen = sensorData.colorCamDepthImage.Length;
 
 
@@ -898,10 +908,10 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
             depthImageMaterial.SetBuffer("_HistMap", depthHistBuffer);
             depthImageMaterial.SetInt("_TotalPoints", depthHistTotalPoints);
 
-            depthImageMaterial.SetFloat("_InMin", depthShaderInMinMax.x);
-            depthImageMaterial.SetFloat("_InMax", depthShaderInMinMax.y);
-            depthImageMaterial.SetFloat("_OutMin", depthShaderOutMinMax.x);
-            depthImageMaterial.SetFloat("_OutMax", depthShaderOutMinMax.y);
+            depthImageMaterial.SetFloat("_DepthRangeStart", depthRangeStart);
+            depthImageMaterial.SetFloat("_DepthRangeEnd", depthRangeEnd);
+            depthImageMaterial.SetFloat("_OutMin", outMin);
+            depthImageMaterial.SetFloat("_OutMax", outMax);
 
 
 

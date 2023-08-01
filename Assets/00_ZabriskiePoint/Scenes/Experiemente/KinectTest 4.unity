@@ -263,7 +263,7 @@ VisualEffect:
         m_Overridden: 1
     m_Vector2f:
       m_Array:
-      - m_Value: {x: 0, y: 1}
+      - m_Value: {x: 0, y: 0.11}
         m_Name: _InMinMax
         m_Overridden: 1
       - m_Value: {x: 0, y: 1}
@@ -1063,7 +1063,10 @@ MonoBehaviour:
   maskedColorImage: {fileID: 0}
   renderColorImage: 1
   depthShaderInMinMax: {x: 0, y: 0}
-  depthShaderOutMinMax: {x: 0, y: 0}
+  depthRangeStart: 0
+  depthRangeEnd: 1
+  outMin: 0
+  outMax: 0
   depthCheckShader: {fileID: 0}
   fillRectangelShader: {fileID: 0}
   pixelChangeThreshold: 100
@@ -1560,7 +1563,10 @@ MonoBehaviour:
   maskedColorImage: {fileID: 8400000, guid: 3208d6d73262cbf4a972d8b85f42e204, type: 2}
   renderColorImage: 1
   depthShaderInMinMax: {x: 0, y: 1}
-  depthShaderOutMinMax: {x: 0, y: 1}
+  depthRangeStart: 700
+  depthRangeEnd: 900
+  outMin: 0
+  outMax: 1
   depthCheckShader: {fileID: 7200000, guid: f6d003a821a71604b8fbc59d0c1812c2, type: 3}
   fillRectangelShader: {fileID: 7200000, guid: 9f00804571514354e8001148be7c8d2c, type: 3}
   pixelChangeThreshold: 500
@@ -4428,7 +4434,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3985320487150695616, guid: 4618867bff22436449478594343f3d00, type: 3}
       propertyPath: deviceUses.Array.data[0].minDepthDistance
-      value: 0.2
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 3985320487150695616, guid: 4618867bff22436449478594343f3d00, type: 3}
       propertyPath: deviceUses.Array.data[0].kinect4AzureInterface
