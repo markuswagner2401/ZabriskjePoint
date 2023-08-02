@@ -1810,6 +1810,10 @@ MonoBehaviour:
   - name: Start
     taskText: "<size=600>VER\xC4NDERT DIE LANDSCHAFT</size>\n<size=300>DANN ENTFERNT
       EURE H\xC4NDE</size>"
+    hillsMinHeight: 0
+    showFirstXHills: 0
+    troughsMaxHeight: 0
+    showFirstXTroughs: 0
     minHills: 0
     maxHills: 0
     minTroughs: 0
@@ -1826,6 +1830,10 @@ MonoBehaviour:
   - name: Pistole
     taskText: "<size=600>FORMT EINE EBENE FL\xC4CHE</size>\n<size=300>DANN ENTFERNT
       EURE H\xC4NDE</size>"
+    hillsMinHeight: 0
+    showFirstXHills: 0
+    troughsMaxHeight: 0
+    showFirstXTroughs: 0
     minHills: 0
     maxHills: 0
     minTroughs: 0
@@ -1842,6 +1850,10 @@ MonoBehaviour:
   - name: Flugzeug
     taskText: "<size=600>FORMT MEHRERE T\xC4LER</size>\n<size=300>DANN ENTFERNT EURE
       H\xC4NDE</size>"
+    hillsMinHeight: 0
+    showFirstXHills: 0
+    troughsMaxHeight: 0
+    showFirstXTroughs: 0
     minHills: 0
     maxHills: 0
     minTroughs: 0
@@ -1858,6 +1870,10 @@ MonoBehaviour:
   - name: Valley
     taskText: "<size=600>FORMT MEHRERE BERGE</size>\n<size=300>DANN ENTFERNT EURE
       H\xC4NDE</size>"
+    hillsMinHeight: 0
+    showFirstXHills: 0
+    troughsMaxHeight: 0
+    showFirstXTroughs: 0
     minHills: 0
     maxHills: 0
     minTroughs: 0
@@ -1874,6 +1890,10 @@ MonoBehaviour:
   - name: Auto
     taskText: "<size=600>FORMT EINEN HOHEN BERG</size>\n<size=300>DANN ENTFERNT EURE
       H\xC4NDE</size>"
+    hillsMinHeight: 0
+    showFirstXHills: 0
+    troughsMaxHeight: 0
+    showFirstXTroughs: 0
     minHills: 0
     maxHills: 0
     minTroughs: 0
@@ -1890,6 +1910,10 @@ MonoBehaviour:
   - name: Haus
     taskText: "<size=600>ZERTEILT DIE LANDSCHAFT</size>\n>size=300>DANN ENTFERNT
       EURE H\xC4NDE</size>"
+    hillsMinHeight: 0
+    showFirstXHills: 0
+    troughsMaxHeight: 0
+    showFirstXTroughs: 0
     minHills: 0
     maxHills: 0
     minTroughs: 0
@@ -1907,6 +1931,10 @@ MonoBehaviour:
     taskText: '<size=600>ENDE</size>
 
       >size=300></size>'
+    hillsMinHeight: 0
+    showFirstXHills: 0
+    troughsMaxHeight: 0
+    showFirstXTroughs: 0
     minHills: 0
     maxHills: 0
     minTroughs: 0

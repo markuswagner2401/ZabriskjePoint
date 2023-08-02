@@ -168,6 +168,20 @@ public class HeightmapAnalysis : MonoBehaviour
         return positions;
     }
 
+    public Vector3[] GetMainHillsTexturePositionsAndHeights()
+    {
+        Vector3[] positions = new Vector3[neighborHills.Count];
+
+        for (int i = 0; i < neighborHills.Count; i++)
+        {
+            positions[i] = neighborHills[i].heighestPosition;
+        }
+
+        return positions;
+    }
+
+
+
     public Vector2[] GetMainTroughsTexturePositions()
     {
         Vector2[] positions = new Vector2[neighborTroughs.Count];
@@ -182,6 +196,18 @@ public class HeightmapAnalysis : MonoBehaviour
 
         return positions;
 
+    }
+
+    public Vector3[] GetMainTroughsTexturePositionsAndHeights()
+    {
+        Vector3[] positions = new Vector3[neighborHills.Count];
+
+        for (int i = 0; i < neighborTroughs.Count; i++)
+        {
+            positions[i] = neighborTroughs[i].heighestPosition;
+        }
+
+        return positions;
     }
 
     public int GetMainTroughsCount()

@@ -34,6 +34,16 @@ public class HeightmapEvaluation : MonoBehaviour
         [TextArea(3, 10)]
         public string taskText;
 
+        public float hillsMinHeight;
+
+        [Tooltip("0 for not show hills, -1 for show all found hills")]
+        public int showFirstXHills;
+
+        public float troughsMaxHeight;
+
+        [Tooltip("0 for not show troughs, -1 for show all found troughs")]
+        public int showFirstXTroughs;
+
 
 
         [Tooltip("-1 for not needed to fulfill task")]
@@ -112,7 +122,7 @@ public class HeightmapEvaluation : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.S))
         {
-            ShowRipples();
+            ShowRipples(-1,-1,-1,-1);
             int hillsCount = heightmapAnalysis.GetMainHillsCount();
             int troughsCount = heightmapAnalysis.GetMainTroughsCount();
             float heightestHillHeight = heightmapAnalysis.GetHeightOfHeighestHill();
@@ -122,8 +132,8 @@ public class HeightmapEvaluation : MonoBehaviour
             print("troughs Count: " + troughsCount);
             print("heighest hill: " + heightestHillHeight);
             print("lowest trough: " + lowestTroughHeight);
-            print("difference: " + Mathf.Abs(heightestHillHeight - lowestTroughHeight) );
-            
+            print("difference: " + Mathf.Abs(heightestHillHeight - lowestTroughHeight));
+
 
         }
 
@@ -252,7 +262,7 @@ public class HeightmapEvaluation : MonoBehaviour
 
         string nextVideoName = "";
 
-        ShowRipples();
+        ShowRipples(tasks[currentTaskIndex].showFirstXHills, tasks[currentTaskIndex].hillsMinHeight, tasks[currentTaskIndex].showFirstXTroughs, tasks[currentTaskIndex].troughsMaxHeight);
 
         if (taskFulfilled)
         {
@@ -454,39 +464,83 @@ public class HeightmapEvaluation : MonoBehaviour
 
     }
 
-    void ShowRipples()
+    void ShowRipples(int hillsCount, float hillsMinHeight, int troughsCount, float troughsMaxHeight)
     {
-
         print("show ripples");
-        Vector2[] newHillPositions;
-        Vector2[] newTroughPositions;
-        if (heightmapAnalysis.GetMainHillsTexturePositions() != null)
+        List<Vector3> validHills = new List<Vector3>();
+        Vector2[] newHillsPositions = new Vector2[0];
+        List<Vector3> validTroughs = new List<Vector3>();
+        Vector2[] newTroughsPositions = new Vector2[0];
+
+        if (hillsCount != 0 && heightmapAnalysis.GetMainHillsTexturePositionsAndHeights() != null)
         {
-            newHillPositions = heightmapAnalysis.GetMainHillsTexturePositions();
-        }
-        else
-        {
-            newHillPositions = new Vector2[0];
+            foreach (var item in heightmapAnalysis.GetMainHillsTexturePositionsAndHeights())
+            {
+                validHills.Add(item);
+            }
+
+            // sort list by y value
+            validHills.Sort((v1, v2) => v2.y.CompareTo(v1.y));
+
+            // filter by y value
+            if (hillsMinHeight != -1)
+            {
+                validHills.RemoveAll(item => item.y <= hillsMinHeight);
+            }
+
+            // filter by count
+            if (hillsCount != -1 && hillsCount < validHills.Count)
+            {
+                validHills.RemoveRange(hillsCount, validHills.Count - hillsCount);
+            }
+
+            newHillsPositions = new Vector2[validHills.Count];
+
+            for (int i = 0; i < validHills.Count; i++)
+            {
+                Vector2 position = new Vector2();
+                position.x = validHills[i].x;
+                position.y = validHills[i].z;
+                newHillsPositions[i] = position;
+            }
         }
 
-        if (heightmapAnalysis.GetMainTroughsTexturePositions() != null)
+        if (troughsCount != 0 && heightmapAnalysis.GetMainTroughsTexturePositionsAndHeights() != null)
         {
-            newTroughPositions = heightmapAnalysis.GetMainTroughsTexturePositions();
+            foreach (var item in heightmapAnalysis.GetMainTroughsTexturePositionsAndHeights())
+            {
+                validTroughs.Add(item);
+            }
+
+            // sort list by y value
+            validTroughs.Sort((v1, v2) => v2.y.CompareTo(v1.y));
+
+            // filter by y value
+            if (troughsMaxHeight != -1)
+            {
+                validTroughs.RemoveAll(item => 1f - item.y >= troughsMaxHeight);
+            }
+
+            // filter by count
+            if (troughsCount != -1 && troughsCount < validTroughs.Count)
+            {
+                validTroughs.RemoveRange(troughsCount, validTroughs.Count - troughsCount);
+            }
+
+            newTroughsPositions = new Vector2[validTroughs.Count];
+
+            for (int i = 0; i < validTroughs.Count; i++)
+            {
+                Vector2 position = new Vector2();
+                position.x = validTroughs[i].x;
+                position.y = validTroughs[i].z;
+                newTroughsPositions[i] = position;
+            }
         }
-        else
-        {
-            newTroughPositions = new Vector2[0];
-        }
 
-        rippleShaderController.CreateRipples(newHillPositions, newTroughPositions);
-
-        //GetComponent<RippleShaderController>().CreateRipples(heightmapAnalysis.GetMainTroughsTexturePositions(), 2f, false);
-
-        // if (rippleShaderController != null)
-        // {
-        //     rippleShaderController.CreateRipples(heightmapAnalysis.GetMainHillsTexturePositions(), 2f);
-        // }
+        rippleShaderController.CreateRipples(newHillsPositions, newTroughsPositions);
     }
+
 
     // Text
 
