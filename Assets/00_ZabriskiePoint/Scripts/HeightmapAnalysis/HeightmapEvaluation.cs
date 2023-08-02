@@ -24,6 +24,8 @@ public class HeightmapEvaluation : MonoBehaviour
 
     bool textBlendInterrupted = false;
 
+    [SerializeField] Task debugTask; 
+
     [SerializeField] Task[] tasks;
 
     [System.Serializable]
@@ -122,7 +124,7 @@ public class HeightmapEvaluation : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.S))
         {
-            ShowRipples(-1,-1,-1,-1);
+            ShowRipples(debugTask.showFirstXHills, debugTask.hillsMinHeight, debugTask.showFirstXTroughs, debugTask.troughsMaxHeight);
             int hillsCount = heightmapAnalysis.GetMainHillsCount();
             int troughsCount = heightmapAnalysis.GetMainTroughsCount();
             float heightestHillHeight = heightmapAnalysis.GetHeightOfHeighestHill();
@@ -305,7 +307,7 @@ public class HeightmapEvaluation : MonoBehaviour
 
     bool EvaluateTask(int hillsCount, int troughsCount, float heighestHillHeight, float lowestTroughHeight)
     {
-        print("Evaluate Task: hills: " + hillsCount + " troughs: " + troughsCount + " heighestHill: " + heighestHillHeight + " lowestTrough: " + lowestTroughHeight);
+        print("Evaluate Task: hills: " + hillsCount + " troughs: " + troughsCount + " heighestHill: " + heighestHillHeight + " lowestTrough: " + lowestTroughHeight + " difference: " + (Mathf.Abs(heighestHillHeight - lowestTroughHeight)) );
         if (tasks[currentTaskIndex].minHills >= 0)
         {
             if (hillsCount < tasks[currentTaskIndex].minHills)
@@ -373,6 +375,7 @@ public class HeightmapEvaluation : MonoBehaviour
         {
             if (tasks[currentTaskIndex].minimalHeightDifference < (Mathf.Abs(heighestHillHeight - lowestTroughHeight)))
             {
+                print("difference from heighest hill to lowest trough not big enough: " + (Mathf.Abs(heighestHillHeight - lowestTroughHeight)) + " : task not fulfilled");
                 return false;
             }
         }

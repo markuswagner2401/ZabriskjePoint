@@ -346,8 +346,8 @@ MonoBehaviour:
       serializedVersion: 2
       x: 1411
       y: 2347
-      width: 1120
-      height: 471
+      width: 1121
+      height: 472
     contents:
     - model: {fileID: 8926484042661616015}
       id: 0
@@ -374,10 +374,10 @@ MonoBehaviour:
   categories: []
   uiBounds:
     serializedVersion: 2
-    x: -6862
-    y: -942
-    width: 11346
-    height: 5356
+    x: -6863
+    y: -941
+    width: 11348
+    height: 5355
 --- !u!114 &114350483966674976
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -30533,7 +30533,7 @@ MonoBehaviour:
     linkedSlots:
     - outputSlot: {fileID: 8926484042661616004}
       inputSlot: {fileID: 8926484042661616030}
-    position: {x: 1672.6666, y: 2734.6667}
+    position: {x: 1576, y: 2742}
     expandedSlots: []
     expanded: 0
 --- !u!114 &8926484042661616004

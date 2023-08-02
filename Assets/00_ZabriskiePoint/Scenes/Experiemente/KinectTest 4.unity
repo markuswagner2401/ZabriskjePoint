@@ -273,10 +273,10 @@ VisualEffect:
       m_Array: []
     m_Vector4f:
       m_Array:
-      - m_Value: {x: 0, y: 0.24754572, z: 1, w: 1}
+      - m_Value: {x: 0.6444799, y: 0.43965724, z: 0.19806935, w: 1}
         m_Name: HillsColor
         m_Overridden: 1
-      - m_Value: {x: 1, y: 0.017629389, z: 0, w: 1}
+      - m_Value: {x: 0.026241222, y: 0.057805434, z: 0.033104774, w: 1}
         m_Name: TroughsColor
         m_Overridden: 1
     m_Uint:
@@ -1806,18 +1806,38 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  tasks:
-  - name: Start
-    taskText: "<size=600>VER\xC4NDERT DIE LANDSCHAFT</size>\n<size=300>DANN ENTFERNT
-      EURE H\xC4NDE</size>"
-    hillsMinHeight: 0
-    showFirstXHills: 0
-    troughsMaxHeight: 0
-    showFirstXTroughs: 0
+  debugTask:
+    name: debugTask
+    taskText: 
+    hillsMinHeight: -1
+    showFirstXHills: -1
+    troughsMaxHeight: -1
+    showFirstXTroughs: -1
     minHills: 0
     maxHills: 0
     minTroughs: 0
     maxTroughs: 0
+    lowestTrough: 0
+    highestHill: 0
+    minimalHeightDifference: 0
+    maximalHeightDifference: 0
+    videoAtSuccess: 
+    hillIndicatorAtSuccess: {fileID: 0}
+    hillIndicatorAtNoSuccess: {fileID: 0}
+    troughIndicatorAtSuccess: {fileID: 0}
+    troughIndicatorAtNoSuccess: {fileID: 0}
+  tasks:
+  - name: Start
+    taskText: "<size=600>VER\xC4NDERT DIE LANDSCHAFT</size>\n<size=300>DANN ENTFERNT
+      EURE H\xC4NDE</size>"
+    hillsMinHeight: -1
+    showFirstXHills: 3
+    troughsMaxHeight: -1
+    showFirstXTroughs: 3
+    minHills: -1
+    maxHills: -1
+    minTroughs: -1
+    maxTroughs: -1
     lowestTrough: -1
     highestHill: -1
     minimalHeightDifference: -1
@@ -1830,18 +1850,18 @@ MonoBehaviour:
   - name: Pistole
     taskText: "<size=600>FORMT EINE EBENE FL\xC4CHE</size>\n<size=300>DANN ENTFERNT
       EURE H\xC4NDE</size>"
-    hillsMinHeight: 0
+    hillsMinHeight: -1
     showFirstXHills: 0
-    troughsMaxHeight: 0
+    troughsMaxHeight: -1
     showFirstXTroughs: 0
-    minHills: 0
-    maxHills: 0
-    minTroughs: 0
-    maxTroughs: 0
+    minHills: -1
+    maxHills: -1
+    minTroughs: -1
+    maxTroughs: -1
     lowestTrough: -1
     highestHill: -1
     minimalHeightDifference: -1
-    maximalHeightDifference: -1
+    maximalHeightDifference: 0.1
     videoAtSuccess: Flugzeug
     hillIndicatorAtSuccess: {fileID: 8770761004508411240, guid: c865272683c385c47b63d1931e0452bc, type: 3}
     hillIndicatorAtNoSuccess: {fileID: 8770761004508411240, guid: 3b247c87d1cfc5e48b38c29d319cae73, type: 3}
@@ -1850,14 +1870,14 @@ MonoBehaviour:
   - name: Flugzeug
     taskText: "<size=600>FORMT MEHRERE T\xC4LER</size>\n<size=300>DANN ENTFERNT EURE
       H\xC4NDE</size>"
-    hillsMinHeight: 0
+    hillsMinHeight: -1
     showFirstXHills: 0
-    troughsMaxHeight: 0
-    showFirstXTroughs: 0
-    minHills: 0
-    maxHills: 0
-    minTroughs: 0
-    maxTroughs: 0
+    troughsMaxHeight: -1
+    showFirstXTroughs: 3
+    minHills: -1
+    maxHills: -1
+    minTroughs: 2
+    maxTroughs: -1
     lowestTrough: -1
     highestHill: -1
     minimalHeightDifference: -1
@@ -1870,14 +1890,14 @@ MonoBehaviour:
   - name: Valley
     taskText: "<size=600>FORMT MEHRERE BERGE</size>\n<size=300>DANN ENTFERNT EURE
       H\xC4NDE</size>"
-    hillsMinHeight: 0
-    showFirstXHills: 0
-    troughsMaxHeight: 0
+    hillsMinHeight: -1
+    showFirstXHills: 3
+    troughsMaxHeight: -1
     showFirstXTroughs: 0
-    minHills: 0
-    maxHills: 0
-    minTroughs: 0
-    maxTroughs: 0
+    minHills: 2
+    maxHills: -1
+    minTroughs: -1
+    maxTroughs: -1
     lowestTrough: -1
     highestHill: -1
     minimalHeightDifference: -1
@@ -1890,14 +1910,14 @@ MonoBehaviour:
   - name: Auto
     taskText: "<size=600>FORMT EINEN HOHEN BERG</size>\n<size=300>DANN ENTFERNT EURE
       H\xC4NDE</size>"
-    hillsMinHeight: 0
-    showFirstXHills: 0
-    troughsMaxHeight: 0
+    hillsMinHeight: -1
+    showFirstXHills: 1
+    troughsMaxHeight: -1
     showFirstXTroughs: 0
-    minHills: 0
-    maxHills: 0
-    minTroughs: 0
-    maxTroughs: 0
+    minHills: 1
+    maxHills: -1
+    minTroughs: -1
+    maxTroughs: -1
     lowestTrough: -1
     highestHill: -1
     minimalHeightDifference: -1
@@ -1910,14 +1930,14 @@ MonoBehaviour:
   - name: Haus
     taskText: "<size=600>ZERTEILT DIE LANDSCHAFT</size>\n>size=300>DANN ENTFERNT
       EURE H\xC4NDE</size>"
-    hillsMinHeight: 0
-    showFirstXHills: 0
-    troughsMaxHeight: 0
-    showFirstXTroughs: 0
-    minHills: 0
-    maxHills: 0
-    minTroughs: 0
-    maxTroughs: 0
+    hillsMinHeight: -1
+    showFirstXHills: -1
+    troughsMaxHeight: -1
+    showFirstXTroughs: -1
+    minHills: -1
+    maxHills: -1
+    minTroughs: -1
+    maxTroughs: -1
     lowestTrough: -1
     highestHill: -1
     minimalHeightDifference: -1
@@ -1931,14 +1951,14 @@ MonoBehaviour:
     taskText: '<size=600>ENDE</size>
 
       >size=300></size>'
-    hillsMinHeight: 0
-    showFirstXHills: 0
-    troughsMaxHeight: 0
-    showFirstXTroughs: 0
-    minHills: 0
-    maxHills: 0
-    minTroughs: 0
-    maxTroughs: 0
+    hillsMinHeight: -1
+    showFirstXHills: -1
+    troughsMaxHeight: -1
+    showFirstXTroughs: -1
+    minHills: -1
+    maxHills: -1
+    minTroughs: -1
+    maxTroughs: -1
     lowestTrough: -1
     highestHill: -1
     minimalHeightDifference: -1

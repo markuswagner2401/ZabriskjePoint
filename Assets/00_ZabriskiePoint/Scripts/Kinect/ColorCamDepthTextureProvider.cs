@@ -40,7 +40,7 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
 
     [SerializeField] float outMax;
 
-    
+
 
 
 
@@ -617,10 +617,6 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
                 currentDepthData[i] = sensorData.colorCamDepthImage[i];
             }
 
-
-
-
-
             currentDepthBuffer.SetData(currentDepthData);
             prevDepthBuffer.SetData(prevDepthData);
             changeDataBuffer.SetData(changeData);
@@ -652,7 +648,7 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
 
 
             // TODO: Check changeData array for any changes and perform necessary actions.
-            
+
             int sumPosX = 0;
             int sumPosY = 0;
             int changingPixels = 0;
@@ -668,11 +664,11 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
 
             //nearestDistanceChanging = false;
             bool changingThisFrame = false;
-            
+
 
             for (int i = 0; i < changeData.Length; i++)
             {
-                
+
                 int limDepth = (changeData[i] <= DepthSensorBase.MAX_DEPTH_DISTANCE_MM) ? changeData[i] : 0;
                 if (limDepth == 1)
                 {
@@ -681,7 +677,7 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
                     if (changingPixels > pixelChangeThreshold)
                     {
                         changingThisFrame = true;
-                        
+
                         //nearestDistanceChanging = true;
                     }
 
@@ -708,12 +704,12 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
 
             // check this area
 
-            if(changingThisFrame)
+            if (changingThisFrame)
             {
                 changeCounter += 1;
                 noChangeCounter = 0;
 
-                if(changeCounter >= changeCountBeforeTrigger)
+                if (changeCounter >= changeCountBeforeTrigger)
                 {
                     nearestDistanceChanging = true;
                 }
@@ -723,74 +719,136 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
             {
                 noChangeCounter += 1;
                 changeCounter = 0;
-                if(noChangeCounter >=changeCountBeforeTrigger)
+                if (noChangeCounter >= changeCountBeforeTrigger)
                 {
                     nearestDistanceChanging = false;
                 }
             }
 
-            
-
             if (nearestDistanceChanging)
             {
                 // changing rectangle
 
-
-
                 posXList.Sort();
                 posYList.Sort();
 
-                int lowerPercentileIndex = posXList.Count * lowerPercentile / 100; // lowerPercentile is an int between 0 and 100
-                int upperPercentileIndex = posXList.Count * upperPercentile / 100; // upperPercentile is an int between 0 and 100
-
-
-
-                leftMost = posXList[upperPercentileIndex];
-                rightMost = posXList[lowerPercentileIndex];
-                upMost = posYList[lowerPercentileIndex];
-                downMost = posYList[upperPercentileIndex];
-
-                rightMost = (int)Mathf.Floor(Mathf.Lerp(lastRightMost, rightMost, changingAreaSmoothing));
-                leftMost = (int)Mathf.Floor(Mathf.Lerp(lastLeftMost, leftMost, changingAreaSmoothing));
-                upMost = (int)Mathf.Floor(Mathf.Lerp(lastUpMost, upMost, changingAreaSmoothing));
-                downMost = (int)Mathf.Floor(Mathf.Lerp(lastDownMost, downMost, changingAreaSmoothing));
-
-                lastRightMost = rightMost;
-                lastLeftMost = leftMost;
-                lastUpMost = upMost;
-                lastDownMost = downMost;
-
-
-
-
-                fillRectangelShader.SetTexture(fillRectangleKernel, "outputTexture", writableRectangleDebug);
-                fillRectangelShader.SetInt("left", leftMost);
-                fillRectangelShader.SetInt("right", rightMost);
-                fillRectangelShader.SetInt("up", upMost);
-                fillRectangelShader.SetInt("down", downMost);
-                fillRectangelShader.SetInt("edgeWidth", changingRectEdgeWidth);  // Set edge width
-                fillRectangelShader.SetInts("textureSize", new int[2] { writableRectangleDebug.width, writableRectangleDebug.height });
-
-                fillRectangelShader.Dispatch(fillRectangleKernel, writableRectangleDebug.width / 8, writableRectangleDebug.height / 8, 1);
-
-                if (writableRectangleDebug.width == changingRectangleDebug.width && writableRectangleDebug.height == changingRectangleDebug.height)
+                if (posXList.Count > 0 && posYList.Count > 0)
                 {
-                    Graphics.Blit(writableRectangleDebug, changingRectangleDebug);
+                    int lowerPercentileIndex = Mathf.Min(posXList.Count * lowerPercentile / 100, posXList.Count - 1);
+                    int upperPercentileIndex = Mathf.Min(posXList.Count * upperPercentile / 100, posXList.Count - 1);
 
+                    leftMost = posXList[upperPercentileIndex];
+                    rightMost = posXList[lowerPercentileIndex];
+
+                    lowerPercentileIndex = Mathf.Min(posYList.Count * lowerPercentile / 100, posYList.Count - 1);
+                    upperPercentileIndex = Mathf.Min(posYList.Count * upperPercentile / 100, posYList.Count - 1);
+
+                    upMost = posYList[lowerPercentileIndex];
+                    downMost = posYList[upperPercentileIndex];
+
+                    rightMost = (int)Mathf.Floor(Mathf.Lerp(lastRightMost, rightMost, changingAreaSmoothing));
+                    leftMost = (int)Mathf.Floor(Mathf.Lerp(lastLeftMost, leftMost, changingAreaSmoothing));
+                    upMost = (int)Mathf.Floor(Mathf.Lerp(lastUpMost, upMost, changingAreaSmoothing));
+                    downMost = (int)Mathf.Floor(Mathf.Lerp(lastDownMost, downMost, changingAreaSmoothing));
+
+                    lastRightMost = rightMost;
+                    lastLeftMost = leftMost;
+                    lastUpMost = upMost;
+                    lastDownMost = downMost;
+
+                    fillRectangelShader.SetTexture(fillRectangleKernel, "outputTexture", writableRectangleDebug);
+                    fillRectangelShader.SetInt("left", leftMost);
+                    fillRectangelShader.SetInt("right", rightMost);
+                    fillRectangelShader.SetInt("up", upMost);
+                    fillRectangelShader.SetInt("down", downMost);
+                    fillRectangelShader.SetInt("edgeWidth", changingRectEdgeWidth);
+                    fillRectangelShader.SetInts("textureSize", new int[2] { writableRectangleDebug.width, writableRectangleDebug.height });
+
+                    fillRectangelShader.Dispatch(fillRectangleKernel, writableRectangleDebug.width / 8, writableRectangleDebug.height / 8, 1);
+
+                    if (writableRectangleDebug.width == changingRectangleDebug.width && writableRectangleDebug.height == changingRectangleDebug.height)
+                    {
+                        Graphics.Blit(writableRectangleDebug, changingRectangleDebug);
+                    }
+                    else
+                    {
+                        Debug.LogError("Texture Resolution Mismach: writableRectangleDebug, changingRectangleDebug");
+                    }
+
+                    kickstart = false; // after the a changing was detected the system is running and we only set prevDepthData for changing pixels
                 }
                 else
                 {
-                    Debug.LogError("Texture Resolution Mismach: writableRectangleDebug, changingRectangleDebug");
+                    Debug.LogWarning("Empty posXList and/or posYList");
                 }
-
-
-
-
-                
-
-                kickstart = false; // after the a changing was detected the system is running and we only set prevDepthData for changing pixels
-
             }
+
+
+
+            // if (nearestDistanceChanging)
+            // {
+            //     // changing rectangle
+
+
+
+
+
+            //     posXList.Sort();
+            //     posYList.Sort();
+
+            //     int lowerPercentileIndex = posXList.Count * lowerPercentile / 100; // lowerPercentile is an int between 0 and 100
+            //     int upperPercentileIndex = posXList.Count * upperPercentile / 100; // upperPercentile is an int between 0 and 100
+
+
+
+
+
+            //     leftMost = posXList[upperPercentileIndex];
+            //     rightMost = posXList[lowerPercentileIndex];
+            //     upMost = posYList[lowerPercentileIndex];
+            //     downMost = posYList[upperPercentileIndex];
+
+            //     rightMost = (int)Mathf.Floor(Mathf.Lerp(lastRightMost, rightMost, changingAreaSmoothing));
+            //     leftMost = (int)Mathf.Floor(Mathf.Lerp(lastLeftMost, leftMost, changingAreaSmoothing));
+            //     upMost = (int)Mathf.Floor(Mathf.Lerp(lastUpMost, upMost, changingAreaSmoothing));
+            //     downMost = (int)Mathf.Floor(Mathf.Lerp(lastDownMost, downMost, changingAreaSmoothing));
+
+            //     lastRightMost = rightMost;
+            //     lastLeftMost = leftMost;
+            //     lastUpMost = upMost;
+            //     lastDownMost = downMost;
+
+
+
+
+            //     fillRectangelShader.SetTexture(fillRectangleKernel, "outputTexture", writableRectangleDebug);
+            //     fillRectangelShader.SetInt("left", leftMost);
+            //     fillRectangelShader.SetInt("right", rightMost);
+            //     fillRectangelShader.SetInt("up", upMost);
+            //     fillRectangelShader.SetInt("down", downMost);
+            //     fillRectangelShader.SetInt("edgeWidth", changingRectEdgeWidth);  // Set edge width
+            //     fillRectangelShader.SetInts("textureSize", new int[2] { writableRectangleDebug.width, writableRectangleDebug.height });
+
+            //     fillRectangelShader.Dispatch(fillRectangleKernel, writableRectangleDebug.width / 8, writableRectangleDebug.height / 8, 1);
+
+            //     if (writableRectangleDebug.width == changingRectangleDebug.width && writableRectangleDebug.height == changingRectangleDebug.height)
+            //     {
+            //         Graphics.Blit(writableRectangleDebug, changingRectangleDebug);
+
+            //     }
+            //     else
+            //     {
+            //         Debug.LogError("Texture Resolution Mismach: writableRectangleDebug, changingRectangleDebug");
+            //     }
+
+
+
+
+
+
+            //     kickstart = false; // after the a changing was detected the system is running and we only set prevDepthData for changing pixels
+
+            // }
 
             else
             {
@@ -808,7 +866,7 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
         }
     }
 
-    
+
 
 
 
@@ -922,7 +980,7 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
 
                 Graphics.Blit(maskImage.GetMaskedImage(depthImageTexture, maskedImge, maskPercentage, verticalShift, horizontalShift), maskedImge);
 
-                if(renderColorImage)
+                if (renderColorImage)
                 {
                     Graphics.Blit(maskImage.GetMaskedImage(kinectManager.GetColorImageTex(sensorIndex), maskedColorImage, maskPercentage, verticalShift, horizontalShift), maskedColorImage);
                 }

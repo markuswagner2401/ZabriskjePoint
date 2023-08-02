@@ -200,7 +200,7 @@ public class HeightmapAnalysis : MonoBehaviour
 
     public Vector3[] GetMainTroughsTexturePositionsAndHeights()
     {
-        Vector3[] positions = new Vector3[neighborHills.Count];
+        Vector3[] positions = new Vector3[neighborTroughs.Count];
 
         for (int i = 0; i < neighborTroughs.Count; i++)
         {
