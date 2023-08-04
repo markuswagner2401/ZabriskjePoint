@@ -34,17 +34,14 @@ public class VideoControl : MonoBehaviour
         public string name;
         public VideoClip videoClip;
 
-    
+
 
         public float fadeInDurationVideo;
 
-       
+
         public AnimationCurve animationCurve;
         public ClipEndBehaviour clipEndBehaviour;
 
-        
-
-        
 
 
     }
@@ -55,6 +52,8 @@ public class VideoControl : MonoBehaviour
         public string name;
 
         public AudioClip audioClip;
+
+
 
         public AnimationCurve audioBlendCurve;
 
@@ -77,7 +76,9 @@ public class VideoControl : MonoBehaviour
 
     [SerializeField] private VideoSequence[] videoSequences;
 
-    public Material VideoShader;
+    //public Material VideoShader;
+
+    public Material[] videoMaterials;
     public VideoPlayer videoPlayerA;
     public VideoPlayer videoPlayerB;
 
@@ -85,7 +86,6 @@ public class VideoControl : MonoBehaviour
     public AudioSource audioSourceB;
 
     public VFXGradientBlender vFXGradientBlender;
-
 
     private bool isBlendingTransition;
 
@@ -95,44 +95,31 @@ public class VideoControl : MonoBehaviour
 
     bool audioInterrupted = false;
 
+    // for evaluation activation
 
-    /// public methods (to be used by UnityEvents, therefore without PlayBehaviour enum)
+    bool thematicAudioRunning = false;
 
+    // default audio
 
-    // public void PlayRandomVideoOfSequence(string sequenceName)
-    // {
-    //     int sequenceIndex = GetSequenceIndexByName(sequenceName);
-    //     if (sequenceIndex != -1)
-    //     {
-    //         PlayVideoOfSequence(sequenceIndex, SequenceBehaviour.PlayRandomVideoOfSequence, string.Empty);
-    //     }
-    // }
+    public AudioClip defaultAudio;
 
-    // public void PlayNextVideoOfSequence(string sequenceName)
-    // {
-    //     int sequenceIndex = GetSequenceIndexByName(sequenceName);
-    //     if (sequenceIndex != -1)
-    //     {   
-    //         PlayVideoOfSequence(sequenceIndex, SequenceBehaviour.PlayNextVideoOfSequence, string.Empty);
-    //     }
-    // }
+    public AudioSource defaultSoundAudioSource;
 
-    // public void PlayFirstVideoOfSequence(string sequenceName)
-    // {
-    //     int sequenceIndex = GetSequenceIndexByName(sequenceName);
-    //     if (sequenceIndex != -1)
-    //     {
-    //         PlayVideoOfSequence(sequenceIndex, SequenceBehaviour.PlayFirstVideoOfSequence, string.Empty);
-    //     }
-    // }
+    public float defaultSoundFadeDuration;
+
+    public AnimationCurve defaultSoundFadeCurve;
+
+    public UnityEvent doOnDefaultSoundStart; // for reset timer
+
+    bool defaultSoundBlendInterrupted = false;
 
 
 
-    // public void Integrate()
-    // {
-    //     SetNextSequence();
-    //     PlayFirstVideoOfCurrentSequence();
-    // }
+
+    public bool GetThematicAudioRunning()
+    {
+        return thematicAudioRunning;
+    }
 
     public void Integrate(string sequenceName) // gets called by HeightmapEvaluation
     {
@@ -195,7 +182,7 @@ public class VideoControl : MonoBehaviour
         PlayVideoOfSequence(currentSequenceIndex, SequenceBehaviour.PlayNamedVideoOfSequence, name);
     }
 
-    
+
 
 
 
@@ -292,7 +279,7 @@ public class VideoControl : MonoBehaviour
     {
         //StopAllCoroutines();
         interrupted = true;
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSeconds(0.1f);
         interrupted = false;
         StartCoroutine(BlendingTransitionRoutine(sequenceIndex, faderIndex));
         yield break;
@@ -303,22 +290,37 @@ public class VideoControl : MonoBehaviour
     IEnumerator BlendingTransitionRoutine(int sequenceIndex, int faderIndex)
     {
 
-        float currentBlend = VideoShader.GetFloat("_BlendAB");
+        float currentBlend = videoMaterials[0].GetFloat("_BlendAB");
+
+
         //float targetBlend = currentBlend >= 0.5f ? 1f : 0f;
 
-        
-
-
-        while ((Mathf.Abs(targetBlend - VideoShader.GetFloat("_BlendAB")) > 0.01f) && !interrupted)
+        foreach (var item in videoMaterials)
         {
-            float value = Mathf.MoveTowards(VideoShader.GetFloat("_BlendAB"), targetBlend, Time.deltaTime);
-            VideoShader.SetFloat("_BlendAB", value);
+            item.SetFloat("_BlendAB", currentBlend);
+        }
+
+
+
+
+        while ((Mathf.Abs(targetBlend - videoMaterials[0].GetFloat("_BlendAB")) > 0.01f) && !interrupted)
+        {
+            float value = Mathf.MoveTowards(videoMaterials[0].GetFloat("_BlendAB"), targetBlend, Time.deltaTime);
+            foreach (var item in videoMaterials)
+            {
+                item.SetFloat("_BlendAB", value);
+            }
+
             yield return null;
         }
 
         if (interrupted) yield break;
 
-        VideoShader.SetFloat("_BlendAB", targetBlend);
+        foreach (var item in videoMaterials)
+        {
+            item.SetFloat("_BlendAB", targetBlend);
+        }
+
         isBlendingTransition = false;
         StartBlendInClip(sequenceIndex, faderIndex);
         yield break;
@@ -327,13 +329,13 @@ public class VideoControl : MonoBehaviour
     private void StartBlendInClip(int sequenceIndex, int faderIndex)
     {
 
-        float currentBlend = VideoShader.GetFloat("_BlendAB");
+        float currentBlend = videoMaterials[0].GetFloat("_BlendAB");
 
-        
+
         // Depending on the current blend, set next clip to either ClipA or ClipB
         if (currentBlend >= 0.9f)
         {
-            
+
 
 
             // video
@@ -345,7 +347,7 @@ public class VideoControl : MonoBehaviour
             //
             if (!interrupted)
             {
-                
+
 
                 StartCoroutine(BlendingRoutine(sequenceIndex, faderIndex, currentBlend, targetBlend));
             }
@@ -353,7 +355,7 @@ public class VideoControl : MonoBehaviour
         }
         else
         {
-            
+
 
 
 
@@ -366,8 +368,8 @@ public class VideoControl : MonoBehaviour
             //
             if (!interrupted)
             {
-                
-                
+
+
                 StartCoroutine(BlendingRoutine(sequenceIndex, faderIndex, currentBlend, targetBlend));
             }
 
@@ -382,36 +384,44 @@ public class VideoControl : MonoBehaviour
     {
         print("Start video blending" + videoSequences[sequenceIndex].videoFaders[faderIndex].videoClip.name);
 
-        //videoSequences[sequenceIndex].videoFaders[faderIndex].doOnAudioClipStart.Invoke();
-
         float time = 0f;
         float duration = videoSequences[sequenceIndex].videoFaders[faderIndex].fadeInDurationVideo;
+
         AnimationCurve curve = videoSequences[sequenceIndex].videoFaders[faderIndex].animationCurve;
         double clipLength = videoSequences[sequenceIndex].videoFaders[faderIndex].videoClip.length;
 
-        // video
         VideoPlayer currentVideoPlayer = (endValue == 1f) ? videoPlayerB : videoPlayerA;
         currentVideoPlayer.Play();
 
-        
-
-
+        if (duration == 0)
+        {
+            foreach (var item in videoMaterials)
+            {
+                item.SetFloat("_BlendAB", endValue);
+            }
+            
+        }
 
         while ((time < duration) && !interrupted)
         {
             time += Time.deltaTime;
 
             float value = Mathf.Lerp(startValue, endValue, curve.Evaluate(time / duration));
-            VideoShader.SetFloat("_BlendAB", value);
+            foreach (var item in videoMaterials)
+            {
+                item.SetFloat("_BlendAB", value);
+            }
 
             yield return null;
         }
 
         if (!interrupted)
         {
-            VideoShader.SetFloat("_BlendAB", endValue);
+            foreach (var item in videoMaterials)
+            {
+                item.SetFloat("_BlendAB", endValue);
+            }
         }
-
         else
         {
             yield break;
@@ -464,13 +474,19 @@ public class VideoControl : MonoBehaviour
         yield break;
     }
 
+
+
     IEnumerator AudioBlendingRoutine(int sequenceIndex)
     {
         videoSequences[sequenceIndex].doOnAudioStart.Invoke();
 
+        thematicAudioRunning = true;
+
+        FadeDefaultSound(0f);
+
         print("do on audiostart");
 
-       
+
         float time = 0f;
         float duration = videoSequences[sequenceIndex].audioFadeDuration;
         AnimationCurve curve = videoSequences[sequenceIndex].audioBlendCurve;
@@ -488,9 +504,9 @@ public class VideoControl : MonoBehaviour
         sourceA.Play();
         sourceB.Play();
 
-        
 
-        if(sourceB.volume < 0.01f) sourceB.time = 0;
+
+        if (sourceB.volume < 0.01f) sourceB.time = 0;
 
 
 
@@ -519,16 +535,49 @@ public class VideoControl : MonoBehaviour
             timer += Time.deltaTime;
             yield return null;
         }
-        if(!audioInterrupted)
+        if (!audioInterrupted)
         {
             print("do on audio End");
             videoSequences[sequenceIndex].doOnAudioEnd.Invoke();
+            thematicAudioRunning = false;
+            FadeDefaultSound(1f);
         }
 
         // Handle clip end behaviour the same way as in BlendingRoutine.
     }
 
-    
+    // default sound blending
+
+    void FadeDefaultSound(float targetValue)
+    {
+        StartCoroutine(InterruptAndFadeDefaultSound(targetValue));
+        doOnDefaultSoundStart.Invoke();
+    }
+
+    IEnumerator InterruptAndFadeDefaultSound(float targetValue)
+    {
+        defaultSoundBlendInterrupted = true;
+        yield return new WaitForSeconds(0.1f);
+        defaultSoundBlendInterrupted = false;
+        StartCoroutine(FadeDefaultSoundR(targetValue));
+        yield break;
+    }
+
+    IEnumerator FadeDefaultSoundR(float targetValue)
+    {
+        float timer = 0;
+        float startValue = defaultSoundAudioSource.volume;
+        while (timer < defaultSoundFadeDuration && !defaultSoundBlendInterrupted)
+        {
+            timer += Time.deltaTime;
+            float newValue = Mathf.Lerp(startValue, targetValue, defaultSoundFadeCurve.Evaluate(timer / defaultSoundFadeDuration));
+            defaultSoundAudioSource.volume = newValue;
+            yield return null;
+        }
+        yield break;
+    }
+
+
 
 
 }

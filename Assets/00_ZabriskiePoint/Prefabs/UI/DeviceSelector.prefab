@@ -75,8 +75,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4285071104
-  m_fontColor: {r: 0, g: 1, b: 0.40715814, a: 1}
+    rgba: 4290117513
+  m_fontColor: {r: 0.5362319, g: 1, b: 0.71014494, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -395,8 +395,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4285071104
-  m_fontColor: {r: 0, g: 1, b: 0.40715814, a: 1}
+    rgba: 4290117513
+  m_fontColor: {r: 0.5362319, g: 1, b: 0.71014494, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -1140,8 +1140,8 @@ MonoBehaviour:
   displayDropdownLabel: {fileID: 4723247568412542368}
   sensorDropdown: {fileID: 6965597595222112381}
   sensorDropdownLabel: {fileID: 579300626562567261}
-  validColor: {r: 0.2971698, g: 1, b: 0.5449541, a: 1}
-  invalidColor: {r: 1, g: 0, b: 0.288414, a: 1}
+  validColor: {r: 0.5362319, g: 1, b: 0.71014494, a: 1}
+  invalidColor: {r: 1, g: 0.04117644, b: 0.15294147, a: 1}
 --- !u!1 &3620929797323658256
 GameObject:
   m_ObjectHideFlags: 0

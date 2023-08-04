@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Custom_KeystoneCorrection
+  m_Shader: {fileID: 4800000, guid: f7f029bce6d7d2143b45c75c71d3948c, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 8400000, guid: 16149bd84f6b71a4796be81a3b83e84b, type: 2}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats: []
+    m_Colors:
+    - _BottomLeftOffset: {r: 0.052083332, g: 0.037037037, b: 0, a: 0}
+    - _BottomRightOffset: {r: -0.026041666, g: 0.055555556, b: 0, a: 0}
+    - _TopLeftOffset: {r: 0.010416667, g: -0.018518519, b: 0, a: 0}
+    - _TopRightOffset: {r: -0.026041666, g: -0.09259259, b: 0, a: 0}
+  m_BuildTextureStacks: []

@@ -6,6 +6,6 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/00_ZabriskiePoint/Scenes/Experiemente/DisplaysTest.unity
-    guid: a1b0bf51805526246959a9bbdddb5e77
+    path: Assets/00_ZabriskiePoint/Scenes/Experiemente/KinectTest 4.unity
+    guid: a999da55c094cac4fbe32698b066b3e2
   m_configObjects: {}

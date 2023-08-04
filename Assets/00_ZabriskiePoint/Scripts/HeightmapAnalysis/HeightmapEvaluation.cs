@@ -13,6 +13,8 @@ public class HeightmapEvaluation : MonoBehaviour
     [SerializeField] bool evaluationActive = true;
     [SerializeField] VideoControl videoControl = null;
 
+    [SerializeField] ColorCamDepthTextureProvider colorCamDepthTextureProvider = null;
+
     [SerializeField] TextMeshPro tmp;
 
     [SerializeField] VisualEffect vfx;
@@ -24,7 +26,9 @@ public class HeightmapEvaluation : MonoBehaviour
 
     bool textBlendInterrupted = false;
 
-    [SerializeField] Task debugTask; 
+
+
+    [SerializeField] Task debugTask;
 
     [SerializeField] Task[] tasks;
 
@@ -108,6 +112,11 @@ public class HeightmapEvaluation : MonoBehaviour
             videoControl = FindObjectOfType<VideoControl>();
         }
 
+        if (colorCamDepthTextureProvider == null)
+        {
+            colorCamDepthTextureProvider = GetComponent<ColorCamDepthTextureProvider>();
+        }
+
 
 
         rippleShaderController = GetComponent<RippleShaderController>();
@@ -119,8 +128,11 @@ public class HeightmapEvaluation : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // evaluation activation
 
-        // Timer
+
+
+
 
         if (Input.GetKeyDown(KeyCode.S))
         {
@@ -143,6 +155,21 @@ public class HeightmapEvaluation : MonoBehaviour
     }
 
     // Resetting
+
+    public void ChangeResetDuration(string newDuration)
+    {
+        string inputString = newDuration; 
+        float floatValue;
+        if (float.TryParse(inputString, out floatValue))
+        {
+            resetDuration = floatValue;
+            MyConsole.Instance.Print("Neue Reset-Dauer: " + resetDuration + " Sekunden.");
+        }
+        else
+        {
+            MyConsole.Instance.Print("Bitte geben Sie eine Zahl ein");
+        }
+    }
 
     public void StartResetTimer()
     {
@@ -203,6 +230,15 @@ public class HeightmapEvaluation : MonoBehaviour
     IEnumerator WaitAndActivateEvaluation(bool value, float waitTime)
     {
         yield return new WaitForSeconds(waitTime);
+
+        while (colorCamDepthTextureProvider.GetChangingBarValue() > 0.05f)
+        {
+            print("waiting for depthChanging end");
+            yield return null;
+
+        }
+
+
 
         print("activate Evaluation: " + value);
         evaluationActive = value;
@@ -307,7 +343,7 @@ public class HeightmapEvaluation : MonoBehaviour
 
     bool EvaluateTask(int hillsCount, int troughsCount, float heighestHillHeight, float lowestTroughHeight)
     {
-        print("Evaluate Task: hills: " + hillsCount + " troughs: " + troughsCount + " heighestHill: " + heighestHillHeight + " lowestTrough: " + lowestTroughHeight + " difference: " + (Mathf.Abs(heighestHillHeight - lowestTroughHeight)) );
+        print("Evaluate Task: hills: " + hillsCount + " troughs: " + troughsCount + " heighestHill: " + heighestHillHeight + " lowestTrough: " + lowestTroughHeight + " difference: " + (Mathf.Abs(heighestHillHeight - lowestTroughHeight)));
         if (tasks[currentTaskIndex].minHills >= 0)
         {
             if (hillsCount < tasks[currentTaskIndex].minHills)
@@ -385,6 +421,8 @@ public class HeightmapEvaluation : MonoBehaviour
         return true;
     }
 
+
+    // Visualizing result
     void SpawnIndicators(bool success, int taskIndex)
     {
         // destorying
@@ -549,7 +587,7 @@ public class HeightmapEvaluation : MonoBehaviour
 
     public void FadeOutText()
     {
-        StartCoroutine(InterruptAndFadeOut());
+        StartCoroutine(InterruptAndFadeOutText());
     }
 
     public void FadeInTaskText()
@@ -557,7 +595,7 @@ public class HeightmapEvaluation : MonoBehaviour
         StartCoroutine(ChangeTextRoutine());
     }
 
-    IEnumerator InterruptAndFadeOut()
+    IEnumerator InterruptAndFadeOutText()
     {
         print("fade out text");
 
@@ -602,6 +640,9 @@ public class HeightmapEvaluation : MonoBehaviour
     {
         print("fade text: " + targetValue);
 
+
+
+
         float startValue = vfx.GetFloat(textBlendRef);
         float timer = 0;
 
@@ -615,8 +656,12 @@ public class HeightmapEvaluation : MonoBehaviour
 
         }
 
+
+
         yield break;
     }
+
+
 
 
 

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -98,7 +99,6 @@ public class RippleShaderController : MonoBehaviour
             return;
         }
 
-
         rippleComputeShader.SetTexture(kernelHandle, "outputTexture", outputTexture);
 
         positionsHills = new Vector2[newPositionsHills.Length];
@@ -115,38 +115,25 @@ public class RippleShaderController : MonoBehaviour
             positionsTroughs[i] = new Vector2(newPositionsTroughs[i].x / outputTexture.width, newPositionsTroughs[i].y / outputTexture.height);
         }
 
-
         agesHills = new float[positionsHills.Length];
 
         agesTroughs = new float[positionsTroughs.Length];
 
-        ComputeBuffer positionsHillsBuffer = null;
+        ComputeBuffer positionsHillsBuffer = new ComputeBuffer(Math.Max(1, positionsHills.Length), sizeof(float) * 4);
+        buffers.Add(positionsHillsBuffer);
+        rippleComputeShader.SetBuffer(kernelHandle, "positionsHills", positionsHillsBuffer);
+        // if (positionsHills.Length > 0)
+        // {
+        //     positionsHillsBuffer.SetData(positionsHills);
+        // }
 
-        print("create ripples for " + positionsHills.Length);
-
-        if (positionsHills.Length > 0)
-        {
-            positionsHillsBuffer = new ComputeBuffer(positionsHills.Length, sizeof(float) * 4);
-            buffers.Add(positionsHillsBuffer);
-            rippleComputeShader.SetBuffer(kernelHandle, "positionsHills", positionsHillsBuffer);
-        }
-
-
-
-
-
-        ComputeBuffer positionsTroughsBuffer = null;
-
-        if (positionsTroughs.Length > 0)
-        {
-            positionsTroughsBuffer = new ComputeBuffer(positionsTroughs.Length, sizeof(float) * 4);
-            buffers.Add(positionsTroughsBuffer);
-            rippleComputeShader.SetBuffer(kernelHandle, "positionsTroughs", positionsTroughsBuffer);
-
-        }
-
-
-
+        ComputeBuffer positionsTroughsBuffer = new ComputeBuffer(Math.Max(1, positionsTroughs.Length), sizeof(float) * 4);
+        buffers.Add(positionsTroughsBuffer);
+        rippleComputeShader.SetBuffer(kernelHandle, "positionsTroughs", positionsTroughsBuffer);
+        // if (positionsTroughs.Length > 0)
+        // {
+        //     positionsTroughsBuffer.SetData(positionsTroughs);
+        // }
 
         StartCoroutine(AnimateRipples(duration, positionsHillsBuffer, positionsTroughsBuffer));
     }
@@ -196,6 +183,8 @@ public class RippleShaderController : MonoBehaviour
                 }
                 positionsTroughsBuffer.SetData(positionDataTroughs);
             }
+
+
 
 
 

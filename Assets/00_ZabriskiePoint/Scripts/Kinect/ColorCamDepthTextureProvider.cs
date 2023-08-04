@@ -26,7 +26,8 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
 
     [SerializeField] RenderTexture maskedColorImage;
 
-    [Tooltip("Turn off after setup/debugging")]
+    [Tooltip("To enable/disable renderColorImage")]
+    [SerializeField] GameObject kinectsteuerung = null;
     [SerializeField] bool renderColorImage = true;
 
     // remapping depht shader
@@ -225,6 +226,11 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
 
     void Update()
     {
+        if(kinectsteuerung != null)
+        {
+            renderColorImage = kinectsteuerung.activeInHierarchy;
+        }
+        
         if (maskPercentage != lastMaskPercentage)
         {
             vfx?.Reinit();
@@ -346,6 +352,61 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
 
 
 
+    }
+
+    // UI
+    public void SetRenderColorImage(bool value)
+    {
+        renderColorImage = value;
+    }
+    public void SetMaskPercentage(string value)
+    {
+        string inputString = value;
+        float floatValue;
+        if (float.TryParse(inputString, out floatValue))
+        {
+            maskPercentage = Mathf.FloorToInt(floatValue);
+            MyConsole.Instance.Print("Neue Sensorbildgröße: " + maskPercentage + " Prozent.");
+        }
+        else
+        {
+            MyConsole.Instance.Print("Bitte geben Sie eine Zahl ein");
+        }
+    }
+
+    public void SetHorizontalShift(string value)
+    {
+        string inputString = value;
+        float floatValue;
+        if (float.TryParse(inputString, out floatValue))
+        {
+            horizontalShift = Mathf.FloorToInt(floatValue);
+            MyConsole.Instance.Print("Neuer horizontaler Versatz: " + horizontalShift + " Pixel.");
+        }
+        else
+        {
+            MyConsole.Instance.Print("Bitte geben Sie eine Zahl ein");
+        }
+    }
+
+    public void SetVerticalShift(string value)
+    {
+        string inputString = value;
+        float floatValue;
+        if (float.TryParse(inputString, out floatValue))
+        {
+            verticalShift = Mathf.FloorToInt(floatValue);
+            MyConsole.Instance.Print("Neuer vertikaler Versatz: " + verticalShift + " Pixel.");
+        }
+        else
+        {
+            MyConsole.Instance.Print("Bitte geben Sie eine Zahl ein");
+        }
+    }
+
+    public float GetChangingBarValue()
+    {
+        return changingBar;
     }
 
     // Initializing
@@ -980,10 +1041,12 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
 
                 Graphics.Blit(maskImage.GetMaskedImage(depthImageTexture, maskedImge, maskPercentage, verticalShift, horizontalShift), maskedImge);
 
-                if (renderColorImage)
-                {
-                    Graphics.Blit(maskImage.GetMaskedImage(kinectManager.GetColorImageTex(sensorIndex), maskedColorImage, maskPercentage, verticalShift, horizontalShift), maskedColorImage);
-                }
+
+            }
+
+            if (renderColorImage)
+            {
+                Graphics.Blit(maskImage.GetMaskedImage(kinectManager.GetColorImageTex(sensorIndex), maskedColorImage, maskPercentage, verticalShift, horizontalShift), maskedColorImage);
             }
 
 

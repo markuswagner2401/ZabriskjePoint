@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: VideoShader_CRT_Screen1
+  m_Name: VideoShader_CRT_Screen32zu9_l
   m_Shader: {fileID: -6465566751694194690, guid: d121ec2845ec43a4ea74a8b9c7f4e830, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -37,6 +37,8 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _BlendAB: 0
+    - _BlendAB: 1
+    - _OffsetX: 0
+    - _TilingX: 0.5
     m_Colors: []
   m_BuildTextureStacks: []

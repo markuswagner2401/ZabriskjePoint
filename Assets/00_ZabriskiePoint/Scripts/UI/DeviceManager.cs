@@ -4,6 +4,7 @@ using UnityEngine;
 using com.rfilkov.kinect;
 using TMPro;
 using UnityEngine.SceneManagement;
+using UnityEngine.Events;
 
 public class DeviceManager : MonoBehaviour
 {
@@ -29,6 +30,8 @@ public class DeviceManager : MonoBehaviour
     }
     [SerializeField] DeviceUse[] deviceUses;
 
+    [SerializeField] UnityEvent doOnKinectStarted;
+
     int displayCount;
 
 
@@ -38,6 +41,7 @@ public class DeviceManager : MonoBehaviour
     private void Start()
     {
         Initialize();
+        
     }
 
     
@@ -147,13 +151,15 @@ public class DeviceManager : MonoBehaviour
 
         StartKinects();
 
-        yield return new WaitForSeconds(1f);
+        yield return WaitUntilKinectInitializedR();
 
         InitializeDepthTextureProvider(true);
 
         yield return new WaitForSeconds(0.2f);
 
         UpdateValidColors();
+
+        doOnKinectStarted.Invoke();
 
         yield break;
 
@@ -239,6 +245,16 @@ public class DeviceManager : MonoBehaviour
     private void StartKinects()
     {
         KinectManager.Instance.StartDepthSensors();
+    }
+
+    IEnumerator WaitUntilKinectInitializedR()
+    {
+        while (!KinectManager.Instance.IsInitialized())
+        {
+            yield return null;
+        }
+
+        yield break;
     }
 
     public void StopKinects()
