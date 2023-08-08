@@ -356,6 +356,7 @@ GameObject:
   - component: {fileID: 1574786631629559655}
   - component: {fileID: 5401081307238439503}
   - component: {fileID: 4159692756555502355}
+  - component: {fileID: 4629608795795069603}
   m_Layer: 5
   m_Name: Vertikal
   m_TagString: Untagged
@@ -520,6 +521,19 @@ MonoBehaviour:
   m_isRichTextEditingAllowed: 0
   m_LineLimit: 0
   m_InputValidator: {fileID: 0}
+--- !u!114 &4629608795795069603
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1590009135842757407}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4832d17798dfd8d40b5cb19634ba060c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tMP_InputField: {fileID: 0}
 --- !u!1 &1590959233853827072
 GameObject:
   m_ObjectHideFlags: 0
@@ -707,6 +721,7 @@ GameObject:
   - component: {fileID: 4986070616351151803}
   - component: {fileID: 7552713943832050732}
   - component: {fileID: 9191433698878013933}
+  - component: {fileID: 4816651984140150204}
   m_Layer: 5
   m_Name: Horizontal
   m_TagString: Untagged
@@ -871,6 +886,19 @@ MonoBehaviour:
   m_isRichTextEditingAllowed: 0
   m_LineLimit: 0
   m_InputValidator: {fileID: 0}
+--- !u!114 &4816651984140150204
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4229242639679027218}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4832d17798dfd8d40b5cb19634ba060c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tMP_InputField: {fileID: 0}
 --- !u!1 &4644839250109688649
 GameObject:
   m_ObjectHideFlags: 0
