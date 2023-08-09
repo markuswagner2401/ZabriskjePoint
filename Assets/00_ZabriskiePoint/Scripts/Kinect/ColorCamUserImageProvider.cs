@@ -100,7 +100,7 @@ namespace com.rfilkov.components
 
                 // create the user texture and needed buffers
                 bodyImageTexture = KinectInterop.CreateRenderTexture(bodyImageTexture, sensorData.colorImageWidth, sensorData.colorImageHeight);
-                bodyImageMaterial = new Material(Shader.Find("Kinect/UserHistImageShader"));
+                bodyImageMaterial = new Material(Shader.Find("Kinect/UserHistImageShader_bw"));
 
                 bodyHistBuffer = KinectInterop.CreateComputeBuffer(bodyHistBuffer, DepthSensorBase.MAX_DEPTH_DISTANCE_MM + 1, sizeof(int));
 
