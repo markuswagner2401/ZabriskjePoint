@@ -180,10 +180,10 @@ namespace com.rfilkov.components
         {
             if (kinectManager && kinectManager.IsInitialized() && sensorData != null)
             {
-                if(Input.GetKeyDown(KeyCode.P))
-                {
-                    StartCoroutine(GetComponent<TextureSaver>().WaitAndSaveRenderTextureToDisk(bodyImage, "BodyImage", 5f));
-                }
+                // if(Input.GetKeyDown(KeyCode.P))
+                // {
+                //     StartCoroutine(GetComponent<TextureSaver>().WaitAndSaveRenderTextureToDisk(bodyImage, "BodyImage", 5f));
+                // }
 
 
                 // check for new color camera aligned frames
@@ -233,11 +233,11 @@ namespace com.rfilkov.components
                 if (bodyImageTexture == null || bodyImageTexture.width != sensorData.colorImageWidth || bodyImageTexture.height != sensorData.colorImageHeight)
                 {
                     bodyImageTexture = KinectInterop.CreateRenderTexture(bodyImageTexture, sensorData.colorImageWidth, sensorData.colorImageHeight);
-                    if (vfx != null)
-                    {
-                        print("set body image at vfx");
-                        vfx.SetTexture(bodyImageRef, bodyImageTexture);
-                    }
+                    // if (vfx != null)
+                    // {
+                    //     print("set body image at vfx");
+                    //     vfx.SetTexture(bodyImageRef, bodyImageTexture);
+                    // }
                 }
 
                 Array.Clear(depthBodyBufferData, 0, depthBodyBufferData.Length);

@@ -554,6 +554,9 @@ VisualEffect:
       - m_Value: -18.4
         m_Name: SizeByDepth
         m_Overridden: 1
+      - m_Value: 0.4
+        m_Name: GradientBlend
+        m_Overridden: 1
     m_Vector2f:
       m_Array: []
     m_Vector3f:
@@ -572,17 +575,17 @@ VisualEffect:
       m_Array:
       - m_Value:
           serializedVersion: 2
-          key0: {r: 0.018500218, g: 0.05951124, b: 0.03071345, a: 1}
-          key1: {r: 0.68668544, g: 0.4341537, b: 0.17144115, a: 1}
-          key2: {r: 0.47624126, g: 0.41905844, b: 0.36699176, a: 0}
+          key0: {r: 0.52156866, g: 0.2049171, b: 0.01960783, a: 1}
+          key1: {r: 0.6862745, g: 0.4108292, b: 0.007843154, a: 1}
+          key2: {r: 0.7264151, g: 0.599545, b: 0.5448113, a: 0}
           key3: {r: 0.40197787, g: 0.002124689, b: 0.010329823, a: 0}
-          key4: {r: 0.45191252, g: 0.41731334, b: 0.3895987, a: 0}
-          key5: {r: 0.09305898, g: 0.39157256, b: 0.72305536, a: 0}
+          key4: {r: 0.8018868, g: 0.79124856, b: 0.78297436, a: 0}
+          key5: {r: 0.72156864, g: 0.26086688, b: 0.09411763, a: 0}
           key6: {r: 0, g: 0, b: 0, a: 0}
           key7: {r: 0, g: 0, b: 0, a: 0}
           ctime0: 0
-          ctime1: 31906
-          ctime2: 43139
+          ctime1: 21974
+          ctime2: 42791
           ctime3: 44586
           ctime4: 45895
           ctime5: 65535
@@ -597,7 +600,7 @@ VisualEffect:
           atime6: 0
           atime7: 0
           m_Mode: 0
-          m_ColorSpace: -1
+          m_ColorSpace: 1
           m_NumColorKeys: 6
           m_NumAlphaKeys: 2
         m_Name: Gradient
