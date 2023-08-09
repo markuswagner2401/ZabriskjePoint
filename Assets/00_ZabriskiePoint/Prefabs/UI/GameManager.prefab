@@ -8988,7 +8988,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4723247568412542368, guid: d7bf7c4a9fd0163469000f6c4b83303b, type: 3}
       propertyPath: m_text
-      value: DISPLAY III
+      value: DISPLAY I
       objectReference: {fileID: 0}
     - target: {fileID: 6495177065924529025, guid: d7bf7c4a9fd0163469000f6c4b83303b, type: 3}
       propertyPath: m_text
@@ -9008,7 +9008,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9042931297320872222, guid: d7bf7c4a9fd0163469000f6c4b83303b, type: 3}
       propertyPath: m_Value
-      value: 2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9042931297320872222, guid: d7bf7c4a9fd0163469000f6c4b83303b, type: 3}
       propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
@@ -9636,7 +9636,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4723247568412542368, guid: d7bf7c4a9fd0163469000f6c4b83303b, type: 3}
       propertyPath: m_text
-      value: DISPLAY II
+      value: DISPLAY I
       objectReference: {fileID: 0}
     - target: {fileID: 6495177065924529025, guid: d7bf7c4a9fd0163469000f6c4b83303b, type: 3}
       propertyPath: m_text
@@ -9656,7 +9656,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9042931297320872222, guid: d7bf7c4a9fd0163469000f6c4b83303b, type: 3}
       propertyPath: m_Value
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9042931297320872222, guid: d7bf7c4a9fd0163469000f6c4b83303b, type: 3}
       propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Mode

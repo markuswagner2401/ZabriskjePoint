@@ -42,6 +42,7 @@ Material:
     - _MaskShift: 0
     - _OffsetX: 0
     - _TilingX: 0.5
+    - _kalibrationCircleBlend: 0
     - _maskWidth: 0.9
     m_Colors: []
   m_BuildTextureStacks: []
