@@ -1,5 +1,18 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-5715650218930013994
+MonoBehaviour:
+  m_ObjectHideFlags: 11
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0353a89b1f911e48b9e16bdc9f2e058, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 7
 --- !u!21 &2100000
 Material:
   serializedVersion: 8
@@ -7,8 +20,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: AvatarComposite
-  m_Shader: {fileID: -6465566751694194690, guid: 1ceff8e8dd7c2bd46b648d62fec4202e, type: 3}
+  m_Name: MainCameraMasked
+  m_Shader: {fileID: -6465566751694194690, guid: 604880d7deabd5640b5a3594a29974cc, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -23,37 +36,28 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
-    - _ColorTexture:
+    - _MainCameraTexture:
+        m_Texture: {fileID: 8400000, guid: ce82353461d9ec3498632445f1fbcb95, type: 2}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_Lightmaps:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _DefaultTexture:
-        m_Texture: {fileID: 8400000, guid: 826a20fe87183e643be76e94572b7fdf, type: 2}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _DepthTexture:
+    - unity_LightmapsInd:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _UserImage:
+    - unity_ShadowMasks:
         m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _UserMask:
-        m_Texture: {fileID: 8400000, guid: db0ed88bcb473704fb17d4fd2ee6e1a7, type: 2}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Blend: 2.29
-    - _Brightness: 1
-    - _Contrast: 1.03
-    - _MaskHeight: 0.61
-    - _MaskWidth: 0.55
-    - _Saturation: 0.27
-    - _UserImageCutoff: 0.0000001
-    - _correctMaskPosition: 0.16
-    - _correctMaskStretch: 0.68
-    - _rotateUV: 0
+    - _QueueControl: 0
+    - _QueueOffset: 0
+    - _horizontal: 0.95
+    - _stretch: 0.49
+    - _xOffset: 0.26
     m_Colors: []
   m_BuildTextureStacks: []

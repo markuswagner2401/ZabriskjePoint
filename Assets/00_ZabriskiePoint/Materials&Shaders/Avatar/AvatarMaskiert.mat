@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: VideoShader_CRT_Screen32zu9_r
-  m_Shader: {fileID: -6465566751694194690, guid: d121ec2845ec43a4ea74a8b9c7f4e830, type: 3}
+  m_Name: AvatarMaskiert
+  m_Shader: {fileID: -6465566751694194690, guid: ceebd03b1558aaa489de65013d70029f, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -23,25 +23,11 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
-    - _ClipA:
-        m_Texture: {fileID: 8400000, guid: 7767dd1d11190f14b9427ee6a714cbbe, type: 2}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _ClipB:
-        m_Texture: {fileID: 8400000, guid: 2f1443e7351be40478d92bcebd5f7349, type: 2}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _MainTex:
+    - _Texture2D:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Ints: []
-    m_Floats:
-    - _BlendAB: 1
-    - _Float: 0
-    - _MaskShift: -0.02
-    - _OffsetX: 0.42
-    - _TilingX: 0.5
-    - _maskWidth: 0.52
+    m_Floats: []
     m_Colors: []
   m_BuildTextureStacks: []

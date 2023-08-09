@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.02548441, g: 0.012406386, b: 0.005532858, a: 1}
+  m_IndirectSpecularColor: {r: 0.18695527, g: 0.13180685, b: 0.086912654, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -3625,7 +3625,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 660780618}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -864, y: -168.00461, z: 197.97485}
+  m_LocalPosition: {x: -1554, y: -168.00461, z: 197.97485}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -5102,6 +5102,7 @@ GameObject:
   - component: {fileID: 713884285}
   - component: {fileID: 713884287}
   - component: {fileID: 713884286}
+  - component: {fileID: 713884288}
   m_Layer: 0
   m_Name: Partikel2
   m_TagString: Untagged
@@ -5117,7 +5118,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 713884283}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -637, y: -168.00461, z: 197.97485}
+  m_LocalPosition: {x: -1327, y: -168.00461, z: 197.97485}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -5169,7 +5170,7 @@ Camera:
     m_Bits: 4294967295
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
-  m_TargetDisplay: 1
+  m_TargetDisplay: 0
   m_TargetEye: 3
   m_HDR: 1
   m_AllowMSAA: 1
@@ -6607,6 +6608,23 @@ MonoBehaviour:
     mipBias: 0
     varianceClampScale: 0.9
     contrastAdaptiveSharpening: 0
+--- !u!114 &713884288
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 713884283}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8970f79920bafe94ba5b05f1b26f8ecb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _deviceSelection: 0
+  _formatSelection: 0
+  _queueLength: 3
+  _lowLatencyMode: 0
+  _isMaster: 0
 --- !u!1001 &729710459
 PrefabInstance:
   m_ObjectHideFlags: 0

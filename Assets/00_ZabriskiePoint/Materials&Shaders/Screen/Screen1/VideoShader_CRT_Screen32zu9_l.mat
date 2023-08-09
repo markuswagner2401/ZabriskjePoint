@@ -38,7 +38,10 @@ Material:
     m_Ints: []
     m_Floats:
     - _BlendAB: 1
+    - _Float: 0
+    - _MaskShift: 0
     - _OffsetX: 0
     - _TilingX: 0.5
+    - _maskWidth: 0.9
     m_Colors: []
   m_BuildTextureStacks: []
