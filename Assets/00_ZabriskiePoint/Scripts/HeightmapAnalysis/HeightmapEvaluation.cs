@@ -205,7 +205,7 @@ public class HeightmapEvaluation : MonoBehaviour
     public void Reset()
     {
         currentTaskIndex = 0;
-        videoControl.Integrate("Start");
+        videoControl.Integrate("00_Start");
     }
 
     ///
