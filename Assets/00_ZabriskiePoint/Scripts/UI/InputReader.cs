@@ -7,6 +7,7 @@ using com.rfilkov.components;
 
 public class InputReader : MonoBehaviour, ZabrPointControls.IMenueActions
 {
+    
     [SerializeField] GameObject[] displayManagerUIGos;
 
     [SerializeField] GameObject[] quitterGos;

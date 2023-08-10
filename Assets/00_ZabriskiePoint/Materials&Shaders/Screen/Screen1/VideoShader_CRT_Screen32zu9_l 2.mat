@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: VideoShader_CRT_Screen32zu9_r
+  m_Name: VideoShader_CRT_Screen32zu9_l 2
   m_Shader: {fileID: -6465566751694194690, guid: d121ec2845ec43a4ea74a8b9c7f4e830, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -24,11 +24,11 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _ClipA:
-        m_Texture: {fileID: 8400000, guid: 7767dd1d11190f14b9427ee6a714cbbe, type: 2}
+        m_Texture: {fileID: 2800000, guid: c909c5cbc6eef984aafe5fefc85eb76d, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _ClipB:
-        m_Texture: {fileID: 8400000, guid: 2f1443e7351be40478d92bcebd5f7349, type: 2}
+        m_Texture: {fileID: 2800000, guid: c909c5cbc6eef984aafe5fefc85eb76d, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
@@ -37,11 +37,11 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _BlendAB: 1
+    - _BlendAB: 0
     - _Float: 0
-    - _MaskShift: 0
-    - _OffsetX: 0.6
-    - _TilingX: 0.26
+    - _MaskShift: 0.01
+    - _OffsetX: 0
+    - _TilingX: 0.385
     - _kalibrationCircleBlend: 1
     - _maskWidth: 1
     m_Colors: []

@@ -39,10 +39,10 @@ Material:
     m_Floats:
     - _BlendAB: 1
     - _Float: 0
-    - _MaskShift: 0
+    - _MaskShift: 0.01
     - _OffsetX: 0
-    - _TilingX: 0.5
-    - _kalibrationCircleBlend: 0
-    - _maskWidth: 0.9
+    - _TilingX: 0.385
+    - _kalibrationCircleBlend: 1
+    - _maskWidth: 1
     m_Colors: []
   m_BuildTextureStacks: []

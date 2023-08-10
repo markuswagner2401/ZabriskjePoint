@@ -17,6 +17,7 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
 
     [SerializeField] float horizontalShift = 0;
     [SerializeField] float verticalShift = 0;
+    [SerializeField] float rotate = 0;
 
     int lastMaskPercentage;
 

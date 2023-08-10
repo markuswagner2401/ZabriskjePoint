@@ -1,0 +1,52 @@
+#pragma kernel MaskImageRotate
+
+// Textures
+Texture2D inputTexture;
+RWTexture2D<float4> outputTexture;
+
+// Parameters
+int2 inputResolution;
+int2 outputResolution;
+int maskPercentage;
+float verticalShift;
+float horizontalShift;
+float rotationAngle;
+
+[numthreads(8, 8, 1)]
+void MaskImageRotate(uint3 id : SV_DispatchThreadID)
+{
+    // Calculate pixel positions
+    int x = id.x;
+    int y = id.y;
+
+    // Find the center point of the output texture
+    float2 center;
+    center.x = outputResolution.x / 2.0;
+    center.y = outputResolution.y / 2.0;
+
+    // Apply rotation
+    float2 rotatedPos;
+    rotatedPos.x = center.x + (x - center.x) * cos(rotationAngle) - (y - center.y) * sin(rotationAngle);
+    rotatedPos.y = center.y + (x - center.x) * sin(rotationAngle) + (y - center.y) * cos(rotationAngle);
+
+    // Bounds check
+    if (rotatedPos.x < 0 || rotatedPos.x >= inputResolution.x || rotatedPos.y < 0 || rotatedPos.y >= inputResolution.y)
+    {
+        return; // Out of bounds
+    }
+
+    // Fetch the color from the input texture at the rotated position
+    //float4 color = inputTexture.SampleLevel(samplerPoint, rotatedPos / inputResolution, 0);
+    
+    float4 color = inputTexture[rotatedPos.xy];
+
+    // Write the result to the output texture
+    outputTexture[id.xy] = color;
+}
+
+SamplerState samplerPoint
+{
+    Filter = MIN_MAG_MIP_POINT;
+    AddressU = Clamp;
+    AddressV = Clamp;
+};

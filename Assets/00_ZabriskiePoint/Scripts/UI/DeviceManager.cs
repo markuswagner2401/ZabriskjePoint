@@ -8,6 +8,7 @@ using UnityEngine.Events;
 
 public class DeviceManager : MonoBehaviour
 {
+    
     [System.Serializable]
     public struct DeviceUse
     {
@@ -34,6 +35,8 @@ public class DeviceManager : MonoBehaviour
 
     int displayCount;
 
+    
+
 
 
     List<Camera> activeCameras = new List<Camera>();
@@ -41,6 +44,12 @@ public class DeviceManager : MonoBehaviour
     private void Start()
     {
         Initialize();
+        
+    }
+
+    private void Update() 
+    {
+        //KinectManager.Instance.   
         
     }
 
