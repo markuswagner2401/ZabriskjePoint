@@ -37,6 +37,7 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
     [Tooltip("To enable/disable renderColorImage")]
     [SerializeField] GameObject kinectsteuerung = null;
     [SerializeField] bool renderColorImage = true;
+    [SerializeField] bool maskColorImage = true;
 
     // remapping depht shader
 
@@ -1089,7 +1090,16 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
 
             if (renderColorImage)
             {
-                Graphics.Blit(maskImage.GetMaskedImage(kinectManager.GetColorImageTex(sensorIndex), maskedColorImage, maskPercentage, verticalShift, horizontalShift), maskedColorImage);
+                if(maskColorImage)
+                {
+                    Graphics.Blit(maskImage.GetMaskedImage(kinectManager.GetColorImageTex(sensorIndex), maskedColorImage, maskPercentage, verticalShift, horizontalShift), maskedColorImage);
+                }
+
+                else
+                {
+                    Graphics.Blit(kinectManager.GetColorImageTex(sensorIndex), maskedColorImage);
+                }
+               
             }
 
 
