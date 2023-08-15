@@ -5,6 +5,8 @@ using com.rfilkov.kinect;
 using System;
 using UnityEngine.Events;
 using UnityEngine.VFX;
+using TMPro;
+
 
 public class ColorCamDepthTextureProvider : MonoBehaviour
 {
@@ -13,11 +15,16 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
 
 
     // masking
-    [SerializeField] int maskPercentage = 100;
 
+    
+    [SerializeField] int maskPercentage = 100;
     [SerializeField] float horizontalShift = 0;
     [SerializeField] float verticalShift = 0;
     [SerializeField] float rotate = 0;
+
+    [SerializeField] TMP_InputField inputMaskPercentage;
+    [SerializeField] TMP_InputField inputHorizontalShift;
+    [SerializeField] TMP_InputField inputVerticalShift;
 
     int lastMaskPercentage;
 
@@ -271,6 +278,10 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
                 colorTextureSet = true;
             }
 
+           
+
+           
+
         }
 
         if (nearestDistanceChanging)
@@ -355,11 +366,35 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
 
     }
 
-    // UI
+    // UI Getters
+
+    void GetMaskPercentageInput()
+    {
+        if (inputMaskPercentage == null) return;
+        SetMaskPercentage(inputMaskPercentage.text);
+    }
+
+    void GetHorizontalShiftInput()
+    {
+        if (inputHorizontalShift == null) return;
+        SetHorizontalShift(inputHorizontalShift.text);
+    }
+
+    void GetVerticalShiftInput()
+    {
+        if(inputVerticalShift == null) return;
+        SetVerticalShift(inputVerticalShift.text);
+    }
+
+    // UI Setters
+
+
     public void SetRenderColorImage(bool value)
     {
         renderColorImage = value;
     }
+
+   
     public void SetMaskPercentage(string value)
     {
         string inputString = value;
@@ -522,6 +557,13 @@ public class ColorCamDepthTextureProvider : MonoBehaviour
         // Fill Changing Rectangle
 
         fillRectangleKernel = fillRectangelShader.FindKernel("FillRectangle");
+
+        // Initializing mask
+
+
+        GetVerticalShiftInput();
+        GetHorizontalShiftInput();
+        GetMaskPercentageInput();
 
 
 

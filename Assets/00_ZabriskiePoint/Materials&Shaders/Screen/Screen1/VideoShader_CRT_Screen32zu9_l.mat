@@ -38,6 +38,7 @@ Material:
     m_Ints: []
     m_Floats:
     - _BlendAB: 1
+    - _Brightness: 1
     - _Float: 0
     - _MaskShift: 0.01
     - _OffsetX: 0

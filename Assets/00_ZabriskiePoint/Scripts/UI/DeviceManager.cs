@@ -49,7 +49,7 @@ public class DeviceManager : MonoBehaviour
 
     private void Update() 
     {
-        //KinectManager.Instance.   
+        
         
     }
 
@@ -205,6 +205,44 @@ public class DeviceManager : MonoBehaviour
             }
         }
 
+
+    }
+
+    IEnumerator CheckKinectsRoutine()
+    {
+        bool kinectsWorking = true;
+        while (kinectsWorking)
+        {
+            kinectsWorking = CheckKinects();
+            yield return new WaitForSeconds(1f);
+        }
+
+    }
+
+    private bool CheckKinects()
+    {
+
+        for (int i = 0; i < deviceUses.Length; i++)
+        {
+            if (deviceUses[i].kinect4AzureInterface == null) continue;
+
+            int kinectIndex = deviceUses[i].deviceSelector.GetSensorDropdownValue();
+
+            List<KinectInterop.SensorDeviceInfo> alSensors = deviceUses[i].kinect4AzureInterface.GetAvailableSensors();
+            
+            if (kinectIndex >= alSensors.Count)
+            {
+                deviceUses[i].kinectOK = false;
+                return false;
+            }
+            else
+            {
+                deviceUses[i].kinectOK = true;
+                return true;
+  
+            }
+        }
+        return true;
 
     }
 

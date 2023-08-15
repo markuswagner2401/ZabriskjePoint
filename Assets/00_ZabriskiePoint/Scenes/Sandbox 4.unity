@@ -1570,6 +1570,17 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!114 &127757978 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3862282913694898131, guid: 4618867bff22436449478594343f3d00, type: 3}
+  m_PrefabInstance: {fileID: 798667451}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2da0c512f12947e489f739169773d7ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &207321066 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: e45f12ec1dbbaef4c859b3da1860cac9, type: 3}
@@ -1874,6 +1885,9 @@ MonoBehaviour:
   horizontalShift: 20
   verticalShift: 25
   rotate: 0
+  inputMaskPercentage: {fileID: 1757376533}
+  inputHorizontalShift: {fileID: 1269492549}
+  inputVerticalShift: {fileID: 127757978}
   maskImage: {fileID: 207321080}
   maskedImge: {fileID: 8400000, guid: d0eb7e5113cb2e648945dd1ca4ecb5bd, type: 2}
   maskedColorImage: {fileID: 8400000, guid: 3208d6d73262cbf4a972d8b85f42e204, type: 2}
@@ -2261,27 +2275,6 @@ MonoBehaviour:
     minimalHeightDifference: -1
     maximalHeightDifference: -1
     videoAtSuccess: Ende
-    hillIndicatorAtSuccess: {fileID: 8770761004508411240, guid: c865272683c385c47b63d1931e0452bc, type: 3}
-    hillIndicatorAtNoSuccess: {fileID: 8770761004508411240, guid: 3b247c87d1cfc5e48b38c29d319cae73, type: 3}
-    troughIndicatorAtSuccess: {fileID: 8770761004508411240, guid: 1b7989715a859d14bbe6199a53be9e51, type: 3}
-    troughIndicatorAtNoSuccess: {fileID: 8770761004508411240, guid: b44679167d3f3be479e71813c0189c4c, type: 3}
-  - name: Ende
-    taskText: "<size=600>ENDE</size>\n<size=300>K\xFCnstlerische Leitung & Sound:
-      Fabian Raith</size>\n<size=300>Creative Coding: Markus Wagner</size>\n<size=300>3D
-      Animation: Tom\xE1s Montes </size>\n"
-    hillsMinHeight: -1
-    showFirstXHills: -1
-    troughsMaxHeight: -1
-    showFirstXTroughs: -1
-    minHills: -1
-    maxHills: -1
-    minTroughs: -1
-    maxTroughs: -1
-    lowestTrough: -1
-    highestHill: -1
-    minimalHeightDifference: -1
-    maximalHeightDifference: -1
-    videoAtSuccess: Start
     hillIndicatorAtSuccess: {fileID: 8770761004508411240, guid: c865272683c385c47b63d1931e0452bc, type: 3}
     hillIndicatorAtNoSuccess: {fileID: 8770761004508411240, guid: 3b247c87d1cfc5e48b38c29d319cae73, type: 3}
     troughIndicatorAtSuccess: {fileID: 8770761004508411240, guid: 1b7989715a859d14bbe6199a53be9e51, type: 3}
@@ -20358,7 +20351,7 @@ MonoBehaviour:
       m_NumAlphaKeys: 2
     videoFaders:
     - name: GoneIn
-      videoClip: {fileID: 32900000, guid: 03da927bde1791e409e265b3f3405ee6, type: 3}
+      videoClip: {fileID: 32900000, guid: 1f5ad2591cc795c48915719ba33af9cf, type: 3}
       fadeInDurationVideo: 3
       animationCurve:
         serializedVersion: 2
@@ -20896,8 +20889,8 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 207321076}
           m_TargetAssemblyTypeName: HeightmapEvaluation, Assembly-CSharp
-          m_MethodName: ActivateEvaluation
-          m_Mode: 6
+          m_MethodName: Reset
+          m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -20939,151 +20932,6 @@ MonoBehaviour:
     videoFaders:
     - name: SphereIn
       videoClip: {fileID: 32900000, guid: 8200437fa6388e042822bdf4f1904793, type: 3}
-      fadeInDurationVideo: 3
-      animationCurve:
-        serializedVersion: 2
-        m_Curve:
-        - serializedVersion: 3
-          time: 0
-          value: 0
-          inSlope: 0
-          outSlope: 0
-          tangentMode: 0
-          weightedMode: 0
-          inWeight: 0
-          outWeight: 0
-        - serializedVersion: 3
-          time: 1
-          value: 1
-          inSlope: 0
-          outSlope: 0
-          tangentMode: 0
-          weightedMode: 0
-          inWeight: 0
-          outWeight: 0
-        m_PreInfinity: 2
-        m_PostInfinity: 2
-        m_RotationOrder: 4
-      clipEndBehaviour: 1
-    - name: Transition
-      videoClip: {fileID: 32900000, guid: e67f4220ef604d045a28b187f160b897, type: 3}
-      fadeInDurationVideo: 3
-      animationCurve:
-        serializedVersion: 2
-        m_Curve:
-        - serializedVersion: 3
-          time: 0
-          value: 0
-          inSlope: 0
-          outSlope: 0
-          tangentMode: 0
-          weightedMode: 0
-          inWeight: 0
-          outWeight: 0
-        - serializedVersion: 3
-          time: 1
-          value: 1
-          inSlope: 0
-          outSlope: 0
-          tangentMode: 0
-          weightedMode: 0
-          inWeight: 0
-          outWeight: 0
-        m_PreInfinity: 2
-        m_PostInfinity: 2
-        m_RotationOrder: 4
-      clipEndBehaviour: 2
-    currentFaderIndex: 0
-  - name: Ende
-    audioClip: {fileID: 8300000, guid: dde70f17950026b4197d1da3fa12c0fa, type: 3}
-    audioBlendCurve:
-      serializedVersion: 2
-      m_Curve:
-      - serializedVersion: 3
-        time: 0
-        value: 0
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: 0
-        outWeight: 0
-      - serializedVersion: 3
-        time: 1
-        value: 1
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: 0
-        outWeight: 0
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
-    audioFadeDuration: 3
-    doOnAudioStart:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 207321076}
-          m_TargetAssemblyTypeName: HeightmapEvaluation, Assembly-CSharp
-          m_MethodName: ActivateEvaluation
-          m_Mode: 6
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-    doOnAudioEnd:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 207321076}
-          m_TargetAssemblyTypeName: HeightmapEvaluation, Assembly-CSharp
-          m_MethodName: Reset
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-    gradient:
-      serializedVersion: 2
-      key0: {r: 0.040840693, g: 0, b: 0.1792453, a: 1}
-      key1: {r: 0.056064684, g: 0, b: 0.24528301, a: 1}
-      key2: {r: 0.5943396, g: 0.5943396, b: 0.5943396, a: 0}
-      key3: {r: 0.7075472, g: 0.054215565, b: 0.03042456, a: 0}
-      key4: {r: 0.589, g: 0.2640345, b: 0.18279313, a: 0}
-      key5: {r: 0.011, g: 0.008450445, b: 0.007722, a: 0}
-      key6: {r: 0, g: 0, b: 0, a: 0}
-      key7: {r: 0, g: 0, b: 0, a: 0}
-      ctime0: 0
-      ctime1: 14649
-      ctime2: 65535
-      ctime3: 43208
-      ctime4: 48789
-      ctime5: 65535
-      ctime6: 0
-      ctime7: 0
-      atime0: 0
-      atime1: 65535
-      atime2: 0
-      atime3: 0
-      atime4: 0
-      atime5: 0
-      atime6: 0
-      atime7: 0
-      m_Mode: 0
-      m_ColorSpace: -1
-      m_NumColorKeys: 3
-      m_NumAlphaKeys: 2
-    videoFaders:
-    - name: SphereIn
-      videoClip: {fileID: 32900000, guid: 2761ca2d9bc4b5144bacf90d9984bf8d, type: 3}
       fadeInDurationVideo: 3
       animationCurve:
         serializedVersion: 2
@@ -22623,7 +22471,10 @@ PrefabInstance:
     - {fileID: 6679654083276610673, guid: 4618867bff22436449478594343f3d00, type: 3}
     - {fileID: 8196392084887497133, guid: 4618867bff22436449478594343f3d00, type: 3}
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2863075383298442274, guid: 4618867bff22436449478594343f3d00, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2006758762}
   m_SourcePrefab: {fileID: 100100000, guid: 4618867bff22436449478594343f3d00, type: 3}
 --- !u!1 &811401828
 GameObject:
@@ -22920,7 +22771,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &845873057
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -23914,6 +23765,17 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1234316833}
   m_CullTransparentMesh: 1
+--- !u!114 &1269492549 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4117954817343722496, guid: 4618867bff22436449478594343f3d00, type: 3}
+  m_PrefabInstance: {fileID: 798667451}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2da0c512f12947e489f739169773d7ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1309138418
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -24653,6 +24515,17 @@ MonoBehaviour:
     e33: 1
   sensorRotValueY: 0
   usersFaceBackwards: 0
+--- !u!114 &1757376533 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8294507099065505922, guid: 4618867bff22436449478594343f3d00, type: 3}
+  m_PrefabInstance: {fileID: 798667451}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2da0c512f12947e489f739169773d7ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1800449138
 GameObject:
   m_ObjectHideFlags: 0
@@ -38882,6 +38755,24 @@ Transform:
   m_Father: {fileID: 1005990012}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+--- !u!1 &2006758757 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2863075383298442274, guid: 4618867bff22436449478594343f3d00, type: 3}
+  m_PrefabInstance: {fileID: 798667451}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2006758762
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2006758757}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af1e59ff5d668c94392760a2b461e07a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tagetFrameRate: 30
 --- !u!1 &2029666521
 GameObject:
   m_ObjectHideFlags: 0

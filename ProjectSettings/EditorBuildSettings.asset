@@ -6,6 +6,6 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/00_ZabriskiePoint/Scenes/Experiemente/KinectTest 4.unity
-    guid: a999da55c094cac4fbe32698b066b3e2
+    path: Assets/00_ZabriskiePoint/Scenes/Sandbox 4.unity
+    guid: 82f0bf26299540247988c9ebb353bf4b
   m_configObjects: {}

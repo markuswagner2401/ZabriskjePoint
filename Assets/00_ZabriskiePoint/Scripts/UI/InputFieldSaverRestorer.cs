@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.Events;
 
 [RequireComponent(typeof(TMP_InputField))]
 public class InputFieldSaverRestorer : MonoBehaviour
@@ -9,6 +10,8 @@ public class InputFieldSaverRestorer : MonoBehaviour
     [Header("Uses gameObject.name as unique identifier, so set an unique name in the hierarchy")]
     
     [SerializeField] TMP_InputField tMP_InputField = null;
+
+    
 
     private void Start()
     {
