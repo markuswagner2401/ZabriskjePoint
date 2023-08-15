@@ -8,7 +8,8 @@ using UnityEngine.Events;
 
 public class DeviceManager : MonoBehaviour
 {
-    
+    //private static DeviceManager _instance;
+
     [System.Serializable]
     public struct DeviceUse
     {
@@ -33,16 +34,38 @@ public class DeviceManager : MonoBehaviour
 
     [SerializeField] UnityEvent doOnKinectStarted;
 
+    public delegate void DelegateOnKinectStarted();
+
+    //public DelegateOnKinectStarted delegateOnKinectStarted;
+
     int displayCount;
 
-    
-
+    bool kinectsStarted = false;
 
 
     List<Camera> activeCameras = new List<Camera>();
 
+    //public Kinect4AzureInterface generalKinect4AzureInterface;
+
+
+
+    //private void Awake()
+    //{
+    //    if (_instance != null && _instance != this)
+    //    {
+    //        Destroy(this.gameObject);
+    //    }
+    //    else
+    //    {
+    //        _instance = this;
+    //        DontDestroyOnLoad(this.gameObject);
+    //    }
+    //}
+
+
     private void Start()
     {
+        
         Initialize();
         
     }
@@ -53,7 +76,15 @@ public class DeviceManager : MonoBehaviour
         
     }
 
-    
+    //public static DeviceManager Instance
+    //{
+    //    get
+    //    {
+    //        return _instance;
+    //    }
+    //}
+
+
 
     public void Initialize()
     {
@@ -139,7 +170,11 @@ public class DeviceManager : MonoBehaviour
     {
         if (!value)
         {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            if(kinectsStarted)
+            {
+                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            }
+            
 
             // StopKinects();
             // InitializeDepthTextureProvider(false);
@@ -162,6 +197,8 @@ public class DeviceManager : MonoBehaviour
 
         yield return WaitUntilKinectInitializedR();
 
+        
+
         InitializeDepthTextureProvider(true);
 
         yield return new WaitForSeconds(0.2f);
@@ -169,6 +206,14 @@ public class DeviceManager : MonoBehaviour
         UpdateValidColors();
 
         doOnKinectStarted.Invoke();
+
+        //delegateOnKinectStarted.Invoke();
+
+        //KinectReactivator.Instance?.StartKinectReactivator();
+
+        
+
+        //StartCoroutine(CheckKinectsRoutine());
 
         yield break;
 
@@ -208,43 +253,77 @@ public class DeviceManager : MonoBehaviour
 
     }
 
-    IEnumerator CheckKinectsRoutine()
-    {
-        bool kinectsWorking = true;
-        while (kinectsWorking)
-        {
-            kinectsWorking = CheckKinects();
-            yield return new WaitForSeconds(1f);
-        }
+    // checking
 
-    }
+    //IEnumerator CheckKinectsRoutine()
+    //{
+    //    bool kinectsWorking = true;
+    //    while (kinectsStarted && kinectsWorking)
+    //    {
+    //        kinectsWorking = CheckKinects();
+    //        print("check kinects");
+    //        yield return new WaitForSeconds(1f);
+    //    }
 
-    private bool CheckKinects()
-    {
+    //    if(kinectsStarted && !kinectsWorking) 
+    //    {
+    //        print("deactivate kinects on broken connection");
+    //        ActivateKinects(false);
+    //        //StopKinects();
+    //        StartCoroutine(TryReactivateKinectsR());
+    //    }
 
-        for (int i = 0; i < deviceUses.Length; i++)
-        {
-            if (deviceUses[i].kinect4AzureInterface == null) continue;
 
-            int kinectIndex = deviceUses[i].deviceSelector.GetSensorDropdownValue();
 
-            List<KinectInterop.SensorDeviceInfo> alSensors = deviceUses[i].kinect4AzureInterface.GetAvailableSensors();
+    //}
+
+    //IEnumerator TryReactivateKinectsR()
+    //{
+    //    while (kinectsStarted && !CheckKinects())
+    //    {
             
-            if (kinectIndex >= alSensors.Count)
-            {
-                deviceUses[i].kinectOK = false;
-                return false;
-            }
-            else
-            {
-                deviceUses[i].kinectOK = true;
-                return true;
-  
-            }
-        }
-        return true;
+    //        print("Wait for available sensors to reactivate");
+    //        yield return new WaitForSeconds(3f);
+    //    }
+    //    print("reactite kinects");
 
-    }
+    //    ActivateKinects(true);
+
+    //    yield break;
+    //}
+
+    //private bool CheckKinects()
+    //{
+
+        //List<KinectInterop.SensorDeviceInfo> alSensors = generalKinect4AzureInterface.GetAvailableSensors();
+
+        //if (alSensors.Count == 0) { return false; } else { return true; }
+
+        
+
+        //for (int i = 0; i < deviceUses.Length; i++)
+        //{
+        //    if (deviceUses[i].kinect4AzureInterface == null) continue;
+
+        //    int kinectIndex = deviceUses[i].deviceSelector.GetSensorDropdownValue();
+
+        //    List<KinectInterop.SensorDeviceInfo> alSensors = deviceUses[i].kinect4AzureInterface.GetAvailableSensors();
+            
+        //    if (kinectIndex >= alSensors.Count)
+        //    {
+        //        deviceUses[i].kinectOK = false;
+        //        return false;
+        //    }
+        //    else
+        //    {
+        //        deviceUses[i].kinectOK = true;
+        //        return true;
+  
+        //    }
+        //}
+        //return false;
+
+    //}
 
     private void UpdateValidColors()
     {
@@ -292,6 +371,8 @@ public class DeviceManager : MonoBehaviour
     private void StartKinects()
     {
         KinectManager.Instance.StartDepthSensors();
+
+        kinectsStarted = true;
     }
 
     IEnumerator WaitUntilKinectInitializedR()
@@ -307,6 +388,8 @@ public class DeviceManager : MonoBehaviour
     public void StopKinects()
     {
         KinectManager.Instance.StopDepthSensors();
+
+        
     }
 
     private void InitializeDepthTextureProvider(bool value)
