@@ -236,6 +236,10 @@ public class DeviceManager : MonoBehaviour
     {
         for (int i = 0; i < deviceUses.Length; i++)
         {
+            if(deviceUses[i].kinect4AzureInterface == null)
+            {
+                deviceUses[i].kinectOK = true;
+            }
             if (deviceUses[i].camera == null || deviceUses[i].kinect4AzureInterface == null) continue;
 
             int kinectIndex = deviceUses[i].deviceSelector.GetSensorDropdownValue();

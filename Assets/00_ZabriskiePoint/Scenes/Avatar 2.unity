@@ -555,7 +555,7 @@ RectTransform:
   m_Children:
   - {fileID: 631680886}
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -613,7 +613,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.254717, g: 0.254717, b: 0.254717, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -798,7 +798,7 @@ RectTransform:
   m_Children:
   - {fileID: 140217961}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -1150,7 +1150,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &703749589
 GameObject:
@@ -1356,7 +1356,7 @@ Transform:
   m_GameObject: {fileID: 712232487}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 473.6, y: 38, z: 0}
-  m_LocalScale: {x: 90, y: 161, z: 1}
+  m_LocalScale: {x: 91, y: 161, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2061364020}
@@ -1428,7 +1428,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &769760827
 GameObject:
@@ -1474,7 +1474,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &810816387
 GameObject:
@@ -1786,7 +1786,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1784946005168715062, guid: 4618867bff22436449478594343f3d00, type: 3}
       propertyPath: m_RootOrder
-      value: 11
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 1784946005168715062, guid: 4618867bff22436449478594343f3d00, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2582,7 +2582,7 @@ Transform:
   - {fileID: 987479969}
   - {fileID: 51230275}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &987479968
 GameObject:
@@ -2685,7 +2685,7 @@ Transform:
   m_GameObject: {fileID: 1221458352}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 357.1, y: 38, z: 0}
-  m_LocalScale: {x: 90, y: 161, z: 1}
+  m_LocalScale: {x: 91, y: 161, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2061364020}
@@ -2822,7 +2822,7 @@ RectTransform:
   - {fileID: 703749590}
   - {fileID: 83813659}
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -2904,13 +2904,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1483987059}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -329, y: 0, z: 100}
+  m_LocalPosition: {x: -500, y: 0, z: 100}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 611056072}
+  - {fileID: 1708009293}
   m_Father: {fileID: 0}
-  m_RootOrder: 14
+  m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1595994981
 GameObject:
@@ -3071,7 +3072,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 200, y: 50}
+  m_SizeDelta: {x: 1920, y: 701.728}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1628124789
 MonoBehaviour:
@@ -3093,10 +3094,30 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\xF6lkadfv\xFCoidanhfbolkndfb\xE4lkndafb\xE4lkndfb\xE4lknadf\xE4blknadf\xE4lbknadflbknadlfkbn"
+  m_text: "Mitten in der kalifornischen W\xFCste machen sich zwei Menschen gemeinsam
+    auf die Suche nach einem neuen Verst\xE4ndnis von sich selbst, der Natur und
+    ihrem Verh\xE4ltnis zu ihren Mitmenschen. Sie fallen durch Jahrhunderte der Menschheitsgeschichte
+    und landen bei der Erkenntnis, dass das Versprechen, das Ihnen die Gesellschaft
+    macht, unzureichend ist. Am Ende verabschiedet sich das Paar auf unterschiedliche
+    Weise vom b\xFCrgerlichen Leben. \r\n\r\nMichelangelo Antoninis Film Zabriskie
+    Point machte den gleichnamigen Aussichtspunkt im Silicon Valley zur Ikone der
+    Gegenkultur. Seine Protagonist:innen lernen sich neu kennen, unternehmen einen
+    Ausflug durch die W\xFCste, auf dem sie durch einen Rausch neue Verbindungen
+    zur Natur, ihren Mitmenschen und sich selbst selbst aufbauen. Zabriskie Point
+    wurde durch den Film und den zugeh\xF6rigen Soundtrack zu einem Ausflugsziel
+    f\xFCr all diejenigen, die sich selbst und die ihre Umwelt neu erfahren wollen-
+    ob mit Substanzen oder ohne. Der Film stellt die Frage, wie Menschen ihr eigenes
+    Verh\xE4ltnis zur Welt radikal hinterfragen. Auch Michel Foucault fuhr w\xE4hrend
+    eines Studienaufenthalts in den USA eben dort hin, um gemeinsam mit Freunden
+    LSD zu nehmen, Pink Floyd und Boulez zu h\xF6ren und verwarf anschlie\xDFend
+    Teile seiner Theorie. U2 empfand den Ort als so bedeutend, dass sie das Cover
+    zu ihrem Album Joshua Tree dort fotografieren lie\xDFen und die Serie The Mandalorian
+    baute einen ganzen Planeten aus den Ansichten auf Zabriskie Point. Der Ort scheint
+    der Erde entr\xFCckt, Gesteinsformationen ordnen sich zu Wellen, die Pr\xE4senz
+    einer vorherigen, untergegangen Welt scheint sp\xFCrbar."
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 195f8fbe6dbe91f45a5bf73f7e6411be, type: 2}
+  m_sharedMaterial: {fileID: -5483286369271871051, guid: 195f8fbe6dbe91f45a5bf73f7e6411be, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -3120,19 +3141,19 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 12.3
+  m_fontSizeBase: 12.3
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 1
+  m_HorizontalAlignment: 8
   m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
-  m_lineSpacing: 0
+  m_lineSpacing: 15
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
@@ -3156,7 +3177,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: 784.1424, y: 85.583115, z: 785.3534, w: -188.1662}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -3200,7 +3221,7 @@ Transform:
   m_Children:
   - {fileID: 1595994982}
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1708009287
 GameObject:
@@ -3331,13 +3352,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1708009287}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -329, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -100}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_Father: {fileID: 1483987060}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1739059188
 GameObject:
@@ -3485,7 +3506,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 12
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1950549873
 GameObject:
@@ -3721,7 +3742,7 @@ Transform:
   - {fileID: 193047403}
   - {fileID: 1221458353}
   m_Father: {fileID: 0}
-  m_RootOrder: 13
+  m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2132550428
 GameObject:
