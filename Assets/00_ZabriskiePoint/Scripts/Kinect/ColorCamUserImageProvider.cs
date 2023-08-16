@@ -83,6 +83,11 @@ namespace com.rfilkov.components
         void Start()
         {
 
+            Initialize();
+        }
+
+        public void Initialize()
+        {
             if (extendMask == null)
             {
                 extendMask = GetComponent<ExtendMask>();
@@ -93,7 +98,7 @@ namespace com.rfilkov.components
 
             if (sensorData != null)
             {
-                
+
                 // enable the color camera aligned depth & body-index frames 
                 sensorData.sensorInterface.EnableColorCameraDepthFrame(sensorData, true);
                 sensorData.sensorInterface.EnableColorCameraBodyIndexFrame(sensorData, true);
@@ -122,6 +127,44 @@ namespace com.rfilkov.components
                 //     vfx.SetTexture(bodyImageRef, bodyImageTexture);
                 // }
             }
+
+        }
+
+        public void Deinitialize()
+        {
+            StopAllCoroutines();
+
+            if (bodyImageTexture)
+            {
+                bodyImageTexture.Release();
+                bodyImageTexture = null;
+            }
+
+            if (bodyIndexBuffer != null)
+            {
+                bodyIndexBuffer.Dispose();
+                bodyIndexBuffer = null;
+            }
+
+            if (depthImageBuffer != null)
+            {
+                depthImageBuffer.Dispose();
+                depthImageBuffer = null;
+            }
+
+            if (bodyHistBuffer != null)
+            {
+                bodyHistBuffer.Dispose();
+                bodyHistBuffer = null;
+            }
+
+            if (sensorData != null)
+            {
+                // disable the color camera aligned depth & body-index frames 
+                sensorData.sensorInterface.EnableColorCameraDepthFrame(sensorData, false);
+                sensorData.sensorInterface.EnableColorCameraBodyIndexFrame(sensorData, false);
+            }
+
         }
 
 

@@ -20,8 +20,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: MainCameraMaskedLinks
-  m_Shader: {fileID: -6465566751694194690, guid: 604880d7deabd5640b5a3594a29974cc, type: 3}
+  m_Name: Text_Masked
+  m_Shader: {fileID: -6465566751694194690, guid: 75e2895252623f04d8e40f2d7a315641, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []

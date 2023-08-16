@@ -20,7 +20,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: MainCameraMaskedRechts
+  m_Name: MainCameraMasked_Avatar
   m_Shader: {fileID: -6465566751694194690, guid: 604880d7deabd5640b5a3594a29974cc, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -58,6 +58,6 @@ Material:
     - _QueueOffset: 0
     - _horizontal: 1
     - _stretch: 0.49
-    - _xOffset: 0.5
+    - _xOffset: 0.36
     m_Colors: []
   m_BuildTextureStacks: []

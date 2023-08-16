@@ -5,6 +5,7 @@ using com.rfilkov.kinect;
 using TMPro;
 using UnityEngine.SceneManagement;
 using UnityEngine.Events;
+using com.rfilkov.components;
 
 public class DeviceManager : MonoBehaviour
 {
@@ -44,6 +45,8 @@ public class DeviceManager : MonoBehaviour
 
 
     List<Camera> activeCameras = new List<Camera>();
+
+    [SerializeField] bool activateAtStart = false;
 
     //public Kinect4AzureInterface generalKinect4AzureInterface;
 
@@ -90,7 +93,15 @@ public class DeviceManager : MonoBehaviour
     {
         DeactivateUnused();
         UpdateDisplayCameraPatch();
-        SetupKinect();
+        if(activateAtStart)
+        {
+            ActivateKinects(true);
+        }
+        else
+        {
+            SetupKinect();
+        }
+        
 
     }
 
@@ -405,8 +416,22 @@ public class DeviceManager : MonoBehaviour
             {
                 item.Deinitialize();
             }
-
         }
+
+        ColorCamUserImageProvider[] userImageProviders = FindObjectsOfType<ColorCamUserImageProvider>();
+
+        foreach (var item in userImageProviders)
+        {
+            if (value)
+            {
+                item.Initialize();
+            }
+            else
+            {
+                item.Deinitialize();
+            }
+        }
+
     }
 
 
