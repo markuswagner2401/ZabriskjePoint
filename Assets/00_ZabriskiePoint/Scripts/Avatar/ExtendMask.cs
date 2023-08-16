@@ -5,6 +5,8 @@ public class ExtendMask : MonoBehaviour
     // Set this in the Inspector
     public ComputeShader ExtendMaskComputeShader;
 
+    public RenderTexture targetTexture;
+
     public RenderTexture GetExtendedMask(RenderTexture inputTexture, int offset)
     {
         // Get the kernel index
@@ -31,6 +33,10 @@ public class ExtendMask : MonoBehaviour
         // Dispatch the compute shader (start it)
         ExtendMaskComputeShader.Dispatch(kernelHandle, threadGroupsX, threadGroupsY, 1);
 
-        return output;
+        Graphics.Blit(output, targetTexture);
+
+        output.Release();
+
+        return targetTexture;
     }
 }

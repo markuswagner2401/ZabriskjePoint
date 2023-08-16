@@ -37,7 +37,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _BackgroundTexture:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 8400000, guid: 826a20fe87183e643be76e94572b7fdf, type: 2}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainCameraTexture:
@@ -62,12 +62,17 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _GradientBrightness: 0.7
     - _QueueControl: 0
     - _QueueOffset: 0
+    - _gradientShift: 0.12
+    - _gradientStrength: 0.22
     - _horizontal: 1
+    - _nose_scale: 1.7
     - _stretch: 0.49
+    - _textureStrength: 0.12
     - _xOffset: 0.36
     m_Colors:
-    - _BackgroundColor: {r: 0.1509434, g: 0.08864587, b: 0, a: 1}
-    - _TextColor: {r: 1, g: 1, b: 1, a: 1}
+    - _BackgroundColor: {r: 0.6745283, g: 0.68280095, b: 1, a: 1}
+    - _TextColor: {r: 0.9528302, g: 0.9528302, b: 0.9528302, a: 1}
   m_BuildTextureStacks: []

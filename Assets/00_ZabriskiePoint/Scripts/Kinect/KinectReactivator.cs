@@ -10,6 +10,10 @@ public class KinectReactivator : MonoBehaviour
     Kinect4AzureInterface generalKinect4AzureInterface = null;
 
     bool reactivationLoopRunning = false;
+    [Tooltip("-1 to deactivate")]
+
+    [SerializeField] float reloadAfterSec = -1;
+    float timer = 0;
 
 
 
@@ -45,7 +49,17 @@ public class KinectReactivator : MonoBehaviour
     
     void Update()
     {
-        
+        if(reloadAfterSec > 0)
+        {
+            
+
+            timer += Time.deltaTime;
+            if (timer > reloadAfterSec)
+            {
+                timer = 0;
+                FindAnyObjectByType<DeviceManager>().ActivateKinects(false);
+            }
+        }
     }
 
     public void StartKinectReactivator()
@@ -67,17 +81,17 @@ public class KinectReactivator : MonoBehaviour
             }
 
             kinectsWorking = CheckKinects();
-            print("check kinects");
-            yield return new WaitForSeconds(1f);
+            //print("check kinects");
+            yield return null;
         }
 
-        if (!kinectsWorking)
-        {
-            print("deactivate kinects on broken connection");
-            FindAnyObjectByType<DeviceManager>().ActivateKinects(false);
-            //StopKinects();
-            StartCoroutine(TryReactivateKinectsR());
-        }
+        print("deactivate kinects on broken connection");
+        yield return new WaitForSeconds(1f);
+        FindAnyObjectByType<DeviceManager>().ActivateKinects(false);
+        //StopKinects();
+        StartCoroutine(TryReactivateKinectsR());
+
+        
 
 
 

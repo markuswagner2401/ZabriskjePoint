@@ -1040,7 +1040,7 @@ Transform:
   m_GameObject: {fileID: 631680883}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 8313, z: -513}
-  m_LocalScale: {x: 7.611517, y: 5.0045724, z: 7.6}
+  m_LocalScale: {x: 7.6784987, y: 5.0486126, z: 7.66688}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 284418609}
@@ -2559,7 +2559,7 @@ MonoBehaviour:
   displayImages: 01010000
   displayImageWidthPercent: 0.2
   statusInfoText: {fileID: 0}
-  consoleLogMessages: 1
+  consoleLogMessages: 0
   OnDepthSensorsStarted:
     m_PersistentCalls:
       m_Calls: []
@@ -2776,6 +2776,7 @@ GameObject:
   - component: {fileID: 1339226342}
   - component: {fileID: 1339226343}
   - component: {fileID: 1339226344}
+  - component: {fileID: 1339226345}
   m_Layer: 5
   m_Name: CompositeCanvas
   m_TagString: Untagged
@@ -2868,6 +2869,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ExtendMaskComputeShader: {fileID: 7200000, guid: 6c36b23e3b9b463419e40b236e3aaa93, type: 3}
+  targetTexture: {fileID: 8400000, guid: f78fbee6fecde71418746af33539c9dc, type: 2}
 --- !u!114 &1339226344
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2880,6 +2882,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65fd99db7d305874db76a70b555b5d3c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1339226345
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1339226338}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ef145c85b37789439d0d9bbd4bf94b9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colorCamUserImageProvider: {fileID: 1339226342}
+  startAutomaticly: 1
+  captureFreqMin: 1
+  captureFreqMax: 5
 --- !u!1 &1483987059
 GameObject:
   m_ObjectHideFlags: 0
@@ -3177,7 +3195,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 784.1424, y: 85.583115, z: 785.3534, w: -188.1662}
+  m_margin: {x: 784.1424, y: 134.76187, z: 785.3534, w: -188.1662}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -3493,6 +3511,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7bcd398a93640144e962c6eb64e9c3c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  reloadAfterSec: 360
 --- !u!4 &1893715486
 Transform:
   m_ObjectHideFlags: 0

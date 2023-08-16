@@ -88,11 +88,11 @@ namespace com.rfilkov.components
 
         public void Initialize()
         {
-            if (extendMask == null)
-            {
-                extendMask = GetComponent<ExtendMask>();
+            //if (extendMask == null)
+            //{
+            //    extendMask = GetComponent<ExtendMask>();
 
-            }
+            //}
             kinectManager = KinectManager.Instance;
             sensorData = kinectManager != null ? kinectManager.GetSensorData(sensorIndex) : null;
 
@@ -127,6 +127,8 @@ namespace com.rfilkov.components
                 //     vfx.SetTexture(bodyImageRef, bodyImageTexture);
                 // }
             }
+
+            if(kinectManager != null) CaptureDefaultTexture();
 
         }
 
@@ -374,11 +376,11 @@ namespace com.rfilkov.components
 
                 Graphics.Blit(kinectManager.GetColorImageTex(0), colorImage);// workaround for vfx
 
-                // extended Mask
-                if (extendMask != null)
-                {
-                    Graphics.Blit(extendMask.GetExtendedMask(bodyImageTexture, offsetMask), userMask);
-                }
+                // extended Mask // not used for now
+                //if (extendMask != null && userMask != null)
+                //{
+                //    Graphics.Blit(extendMask.GetExtendedMask(bodyImageTexture, offsetMask), userMask);
+                //}
 
             }
         }
