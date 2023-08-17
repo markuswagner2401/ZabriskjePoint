@@ -5,10 +5,10 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
-    path: Assets/00_ZabriskiePoint/Scenes/Avatar 2.unity
-    guid: 9e33efdbca545074dbdb328f57c27b37
   - enabled: 1
     path: Assets/00_ZabriskiePoint/Scenes/Sandbox 5.unity
     guid: 977dcfdaae52ceb4ab84899b8e85ff74
+  - enabled: 0
+    path: Assets/00_ZabriskiePoint/Scenes/Avatar 3.unity
+    guid: 5c7983ce67031f7478b2a9094e3e5d0f
   m_configObjects: {}

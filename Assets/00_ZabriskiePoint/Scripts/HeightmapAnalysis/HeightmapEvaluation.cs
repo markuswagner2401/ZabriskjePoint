@@ -40,6 +40,7 @@ public class HeightmapEvaluation : MonoBehaviour
         [TextArea(3, 10)]
         public string taskText;
 
+
         public float hillsMinHeight;
 
         [Tooltip("0 for not show hills, -1 for show all found hills")]
@@ -204,8 +205,62 @@ public class HeightmapEvaluation : MonoBehaviour
 
     public void Reset()
     {
+        StartCoroutine(ResetRroutine());
+    }
+
+    IEnumerator ResetRroutine()
+    {
+        // deactivate evaluation;
+        evaluationActive = false;
+
+        // fade in start text;
+
+        textBlendInterrupted = true;
+        yield return new WaitForSeconds(0.01f);
+        textBlendInterrupted = false;
+
+        if (vfx.GetFloat(textBlendRef) > 0.001)
+        {
+            StartCoroutine(FadeTextR(0, 1f));
+            yield return new WaitForSeconds(1f);
+        }
+
+        if (textBlendInterrupted) yield break;
+        tmp.text = "<size=600>ZABRISKIE POINT</size>";
+
+        
+
+        StartCoroutine(FadeTextR(1f, textBlendDuration));
+
+        // wait for x seconds;
+
+        yield return new WaitForSeconds(4f);
+
+        // fade out text;
+
+        FadeOutText();
+
+        // taks index
+
         currentTaskIndex = 0;
+
+        // video integrate (-> activate evaluation)
+
         videoControl.Integrate("00_Start");
+
+        yield break;
+
+
+
+
+
+
+
+        
+        
+        
+
+
     }
 
     ///
@@ -593,7 +648,10 @@ public class HeightmapEvaluation : MonoBehaviour
     public void FadeInTaskText()
     {
         StartCoroutine(ChangeTextRoutine());
+
     }
+
+    
 
     IEnumerator InterruptAndFadeOutText()
     {
@@ -635,6 +693,8 @@ public class HeightmapEvaluation : MonoBehaviour
 
         yield break;
     }
+
+    
 
     IEnumerator FadeTextR(float targetValue, float duration)
     {
